@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lightingshop.dao.UserDao">
+
+	<select id="getUserById" resultType="User" parameterType="int">
+		SELECT
+			id,
+			name,
+			password
+		FROM
+			user
+		WHERE
+			id = #{id}
+	</select>
+	
+	<select id="listUser" resultType="User">
+		SELECT
+			id,
+			name,
+			password
+		FROM
+			user
+	</select>
+	
+	<select id="checkUser" resultType="String" parameterType="User">
+		SELECT
+			name
+		FROM
+			user
+		WHERE
+			id = #{id} and password = #{password}
+	</select>
+	
+	<update id="updateUser" parameterType="User">
+		Update 
+			user
+		<set>
+			<if test="name != null">
+				name = #{name},
+			</if>
+			<if test="password != null">
+				password = #{password}
+			</if>
+		</set>	
+	</update>
+	
+</mapper>
