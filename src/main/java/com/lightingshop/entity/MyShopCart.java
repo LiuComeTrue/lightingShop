@@ -13,7 +13,7 @@ public class MyShopCart {
 
     private Integer userID;
 
-    private Date addDate;
+    private String addDate;
 
     public Integer getShopCartID() {
         return shopCartID;
@@ -39,11 +39,11 @@ public class MyShopCart {
         this.userID = userID;
     }
 
-    public Date getAddDate() {
+    public String getAddDate() {
         return addDate;
     }
 
-    public void setAddDate(Date addDate) {
+    public void setAddDate(String addDate) {
         this.addDate = addDate;
     }
 
