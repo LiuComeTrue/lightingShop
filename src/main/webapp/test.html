@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+<div id="app">
+  <h1 v-for="light in lights">{{ light.lightID }}
+  </h1>
+</div>
+<!-- <div class="col-md-12" v-for="light in lights">
+                                single-product-start
+                                <div class="single-product">
+                                    <div class="single-product-img">
+                                        <a href="#"><img :src="light.images" alt="" /></a>
+                                        <span class="new-box">
+                                                <span class="new">New</span>
+                                        </span>
+                                    </div>
+                                    <div class="single-product-content">
+                                        <div class="product-title">
+                                            <h5><a href="#">{{ light.lightID }}</a></h5>
+                                        </div>
+                                        <div class="rating">
+                                            <div class="star star-on"></div>
+                                            <div class="star star-on"></div>
+                                            <div class="star star-on"></div>
+                                            <div class="star star-on"></div>
+                                            <div class="star"></div>
+                                        </div>
+                                        <div class="price-box">
+                                            <span class="price">{{ light.price }}</span>
+                                            <span class="old-price">£70.00</span>
+                                        </div>
+                                        <div class="product-action">
+                                            <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
+                                            <a class="add-wishlist" href="#" title="add to wishlist"><i class="fa fa-heart"></i></a>
+                                            <a class="quick-view" href="#" title="quick view" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                single-product-end
+                            </div> -->
+
+<script type="text/javascript"> 
+var vm = new Vue({
+    el: '#app',
+    data: {
+    	lights: 'Hello Vue!'
+    },
+    mounted() {
+    	$.ajax({
+            type: "get",
+            url: "light/NewLight",
+            dataType: "json",
+            success: function(data){
+                vm.lights = data;
+            },
+            error: function(data){
+                console.log("读取jsonName error!");
+            }
+        });
+    }
+});
+
+</script>
+</body>
+</html>
