@@ -9,5 +9,5 @@ public interface MyShopCartDao {
      * @param myShopCart
      * @return
      */
-    boolean addMyShopCart(MyShopCart myShopCart);
+    int addMyShopCart(MyShopCart myShopCart);
 }
