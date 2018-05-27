@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,5 +23,26 @@ public class LightController {
     public List<Light> listNewLight() {
 
         return lightService.listNewLight();
+    }
+    
+    @RequestMapping("/topLight")
+    @ResponseBody
+    public List<Light> listTopSeller() {
+        
+        return lightService.listTopSeller();
+    }
+    
+    @RequestMapping("/ratedLight")
+    @ResponseBody
+    public List<Light> listRated() {
+        
+        return lightService.listRated();
+    }
+    
+    @RequestMapping("/{currentPage}/{pageSize}")
+    @ResponseBody
+    public List<Light> listLight(@PathVariable Integer currentPage, @PathVariable Integer pageSize) {
+        
+        return lightService.listLight(currentPage, pageSize);
     }
 }

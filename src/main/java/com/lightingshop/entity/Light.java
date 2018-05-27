@@ -28,6 +28,26 @@ public class Light {
     private String description;
 
     private String images;
+    
+    private Integer sales;
+    
+    private Integer score;
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public Integer getSales() {
+        return sales;
+    }
+
+    public void setSales(Integer sales) {
+        this.sales = sales;
+    }
 
     public Integer getLightID() {
         return lightID;

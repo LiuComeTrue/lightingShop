@@ -86,7 +86,7 @@
                                     <ul>
                                         <li><a href="index.html">Home</a></li>
 										<!-- <li><a href="about.html">About</a></li> -->
-										<li><a href="shop.html">Shop</a></li>
+										<li><a href="view/shop.html">Shop</a></li>
                                         <li><a href="contact.html">Help</a></li>
                                     </ul>
                                 </nav>
@@ -201,273 +201,99 @@
                     <div class="col-md-4 col-sm-4 col-xs-12">
                         <div class="best-seller-col wow fadeIn" data-wow-duration=".5s" data-wow-delay=".5s">
                             <h3>top seller</h3>
-                            <div class="best-seller-content">
-                                <!-- single-new-product-start -->
-                                <div class="single-new-product">
+                            <div class="best-seller-content" id="topLight">
+                                <div class="single-new-product" v-for="light in topLights">
                                     <div class="product-img">
-                                        <a href="#"><img src="img/singlepro/41.jpg" alt="" /></a>
+                                        <a href="#"><img :src="light.images" alt="" /></a>
                                     </div>
                                     <div class="product-details">
                                         <div class="single-product-content">
                                             <div class="product-title">
-                                                <h5><a href="#">consectetuer</a></h5>
+                                                <h5><a href="#">{{ light.lightID }}</a></h5>
                                             </div>
-                                            <div class="rating">
+                                            <!-- <div class="rating">
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
-                                            </div>
+                                            </div> -->
                                             <div class="price-box">
-                                                <span class="price">£50.00</span>
-                                                <span class="old-price">£70.00</span>
+                                                <span class="price">￥{{ light.price }}</span>
+                                                <!-- <span class="old-price">£70.00</span> -->
                                             </div>
                                             <div class="product-action">
                                                 <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- single-new-product-start -->
-                                <!-- single-new-product-start -->
-                                <div class="single-new-product">
-                                    <div class="product-img">
-                                        <a href="#"><img src="img/singlepro/4.jpg" alt="" /></a>
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="single-product-content">
-                                            <div class="product-title">
-                                                <h5><a href="#">consectetuer</a></h5>
-                                            </div>
-                                            <div class="rating">
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                            </div>
-                                            <div class="price-box">
-                                                <span class="price">£50.00</span>
-                                                <span class="old-price">£70.00</span>
-                                            </div>
-                                            <div class="product-action">
-                                                <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- single-new-product-start -->
-                                <!-- single-new-product-start -->
-                                <div class="single-new-product">
-                                    <div class="product-img">
-                                        <a href="#"><img src="img/singlepro/7.jpg" alt="" /></a>
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="single-product-content">
-                                            <div class="product-title">
-                                                <h5><a href="#">consectetuer</a></h5>
-                                            </div>
-                                            <div class="rating">
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                            </div>
-                                            <div class="price-box">
-                                                <span class="price">£50.00</span>
-                                                <span class="old-price">£70.00</span>
-                                            </div>
-                                            <div class="product-action">
-                                                <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- single-new-product-start -->
+                                </div>                               
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-xs-12">
                         <div class="best-seller-col top-mar-xs wow fadeIn" data-wow-duration=".5s" data-wow-delay=".5s">
                             <h3>best product</h3>
-                            <div class="best-seller-content">
-                                <!-- single-new-product-start -->
-                                <div class="single-new-product">
+                            <div class="best-seller-content" id="bestLight">
+                                <div class="single-new-product" v-for="light in bestLights">
                                     <div class="product-img">
-                                        <a href="#"><img src="img/singlepro/6.jpg" alt="" /></a>
+                                        <a href="#"><img :src="light.images" alt="" /></a>
                                     </div>
                                     <div class="product-details">
                                         <div class="single-product-content">
                                             <div class="product-title">
-                                                <h5><a href="#">consectetuer</a></h5>
+                                                <h5><a href="#">{{ light.lightID }}</a></h5>
                                             </div>
-                                            <div class="rating">
+                                            <!-- <div class="rating">
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
-                                                <div class="star"></div>
-                                            </div>
+                                                <div class="star star-on"></div>
+                                            </div> -->
                                             <div class="price-box">
-                                                <span class="price">£50.00</span>
-                                                <span class="old-price">£70.00</span>
+                                                <span class="price">￥{{ light.price }}</span>
+                                                <!-- <span class="old-price">£70.00</span> -->
                                             </div>
                                             <div class="product-action">
                                                 <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- single-new-product-start -->
-                                <!-- single-new-product-start -->
-                                <div class="single-new-product">
-                                    <div class="product-img">
-                                        <a href="#"><img src="img/singlepro/43.jpg" alt="" /></a>
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="single-product-content">
-                                            <div class="product-title">
-                                                <h5><a href="#">consectetuer</a></h5>
-                                            </div>
-                                            <div class="rating">
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                            </div>
-                                            <div class="price-box">
-                                                <span class="price">£50.00</span>
-                                                <span class="old-price">£70.00</span>
-                                            </div>
-                                            <div class="product-action">
-                                                <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- single-new-product-start -->
-                                <!-- single-new-product-start -->
-                                <div class="single-new-product">
-                                    <div class="product-img">
-                                        <a href="#"><img src="img/singlepro/10.jpg" alt="" /></a>
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="single-product-content">
-                                            <div class="product-title">
-                                                <h5><a href="#">consectetuer</a></h5>
-                                            </div>
-                                            <div class="rating">
-                                                <div class="star"></div>
-                                                <div class="star"></div>
-                                                <div class="star"></div>
-                                                <div class="star"></div>
-                                                <div class="star"></div>
-                                            </div>
-                                            <div class="price-box">
-                                                <span class="price">£50.00</span>
-                                                <span class="old-price">£70.00</span>
-                                            </div>
-                                            <div class="product-action">
-                                                <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- single-new-product-start -->
+                                </div>                               
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-xs-12">
                         <div class="best-seller-col top-mar-xs wow fadeIn" data-wow-duration=".5s" data-wow-delay=".5s">
                             <h3>top rated product</h3>
-                            <div class="best-seller-content">
-                                <!-- single-new-product-start -->
-                                <div class="single-new-product">
+                            <div class="best-seller-content" id="ratedLight">
+                                <div class="single-new-product" v-for="light in ratedLights">
                                     <div class="product-img">
-                                        <a href="#"><img src="img/singlepro/11.jpg" alt="" /></a>
+                                        <a href="#"><img :src="light.images" alt="" /></a>
                                     </div>
                                     <div class="product-details">
                                         <div class="single-product-content">
                                             <div class="product-title">
-                                                <h5><a href="#">consectetuer</a></h5>
+                                                <h5><a href="#">{{ light.lightID }}</a></h5>
                                             </div>
-                                            <div class="rating">
+                                            <!-- <div class="rating">
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
                                                 <div class="star star-on"></div>
-                                            </div>
+                                            </div> -->
                                             <div class="price-box">
-                                                <span class="price">£50.00</span>
-                                                <span class="old-price">£70.00</span>
+                                                <span class="price">￥{{ light.price }}</span>
+                                                <!-- <span class="old-price">£70.00</span> -->
                                             </div>
                                             <div class="product-action">
                                                 <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- single-new-product-start -->
-                                <!-- single-new-product-start -->
-                                <div class="single-new-product">
-                                    <div class="product-img">
-                                        <a href="#"><img src="img/singlepro/3.jpg" alt="" /></a>
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="single-product-content">
-                                            <div class="product-title">
-                                                <h5><a href="#">consectetuer</a></h5>
-                                            </div>
-                                            <div class="rating">
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                            </div>
-                                            <div class="price-box">
-                                                <span class="price">£50.00</span>
-                                                <span class="old-price">£70.00</span>
-                                            </div>
-                                            <div class="product-action">
-                                                <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- single-new-product-start -->
-                                <!-- single-new-product-start -->
-                                <div class="single-new-product">
-                                    <div class="product-img">
-                                        <a href="#"><img src="img/singlepro/2.jpg" alt="" /></a>
-                                    </div>
-                                    <div class="product-details">
-                                        <div class="single-product-content">
-                                            <div class="product-title">
-                                                <h5><a href="#">consectetuer</a></h5>
-                                            </div>
-                                            <div class="rating">
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                                <div class="star star-on"></div>
-                                            </div>
-                                            <div class="price-box">
-                                                <span class="price">£50.00</span>
-                                                <span class="old-price">£70.00</span>
-                                            </div>
-                                            <div class="product-action">
-                                                <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- single-new-product-start -->
+                                </div>                                
                             </div>
                         </div>
                     </div>
@@ -822,8 +648,67 @@
                     }
                 });
             }
-        });
-        </script>
+         });
+        var vm2 = new Vue({
+            el: '#topLight',
+            data: {
+                topLights: 'topLights'
+            },
+            mounted() {
+                $.ajax({
+                    type: "get",
+                    url: "light/topLight",
+                    dataType: "json",
+                    success: function(data){
+                        vm2.topLights = data;
+                    },
+                    error: function(data){
+                        console.log("读取topLights error!");
+                    }
+                });
+            }
+         });
+        
+        var vm3 = new Vue({
+            el: '#bestLight',
+            data: {
+            	bestLights: 'bestLights'
+            },
+            mounted() {
+                $.ajax({
+                    type: "get",
+                    url: "bestLight",
+                    dataType: "json",
+                    success: function(data){
+                        vm3.bestLights = data;
+                    },
+                    error: function(data){
+                        console.log("读取bestLights error!");
+                    }
+                });
+            }
+         });
+        
+        var vm4 = new Vue({
+            el: '#ratedLight',
+            data: {
+            	ratedLights: 'ratedLights'
+            },
+            mounted() {
+                $.ajax({
+                    type: "get",
+                    url: "light/ratedLight",
+                    dataType: "json",
+                    success: function(data){
+                        vm4.ratedLights = data;
+                    },
+                    error: function(data){
+                        console.log("读取ratedLights error!");
+                    }
+                });
+            }
+         });
+         </script>
         
         <!-- bootstrap js -->
         <script src="js/bootstrap.min.js"></script>
