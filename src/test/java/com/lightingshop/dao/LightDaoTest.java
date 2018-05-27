@@ -27,7 +27,7 @@ public class LightDaoTest extends BaseTest {
     
     @Test
     public void test1() {
-        light = lightDao.getLight(104);
+        light = lightDao.getLightByID(104);
         System.out.println(light);
     }
     
