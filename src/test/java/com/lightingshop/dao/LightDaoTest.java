@@ -22,7 +22,23 @@ public class LightDaoTest extends BaseTest {
         for(int i = 0; i < lightList.size(); i++) {
             light = lightList.get(i);
             System.out.println(light);
-        }
-        
+        }    
+    }
+    
+    @Test
+    public void test1() {
+        light = lightDao.getLight(104);
+        System.out.println(light);
+    }
+    
+    @Autowired
+    private BestLightDao bestLightDao;
+    
+    @Test
+    public void test2() {
+        //bestLightDao.listBestLight();
+        List<Light> list = lightDao.getListLight(bestLightDao.listBestLight());
+        for (int i = 0; i < list.size(); i++)
+            System.out.println(list.get(i));
     }
 }

@@ -12,5 +12,58 @@
         LIMIT 
             0, 5
     </select>
+    
+    <select id="listTopSeller" resultType="Light">
+        SELECT
+            *
+        FROM
+            light
+        ORDER BY 
+            sales DESC
+        LIMIT 
+            0, 3
+    </select>
+    
+    <select id="listRated" resultType="Light">
+        SELECT
+            *
+        FROM
+            light
+        ORDER BY 
+            score DESC
+        LIMIT 
+            0, 3
+    </select>
+    
+    <select id="getLightByID" resultType="Light" parameterType="int">
+        SELECT
+            *
+        FROM
+            light
+        WHERE
+            lightid = #{id}
+    </select>
+    
+    <select id="getListLight" resultType="Light" parameterType="java.util.ArrayList">
+        SELECT
+            *
+        FROM
+            light
+        WHERE
+            lightid 
+        IN 
+        <foreach collection="list" item="BestLight" index="index" open="(" separator="," close=")">
+            #{BestLight.lightID}  
+        </foreach>
+    </select>
+    
+    <select id="listLight" parameterType="map" resultType="Light">
+        select 
+            * 
+        FROM 
+            light 
+        limit 
+            #{currentIndex} , #{pageSize}
+    </select>
       
 </mapper>
