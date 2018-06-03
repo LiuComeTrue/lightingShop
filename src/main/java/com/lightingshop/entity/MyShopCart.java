@@ -12,8 +12,18 @@ public class MyShopCart {
     private Integer lightID;
 
     private Integer userID;
+    
+    private Integer quantity;
 
     private String addDate;
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 
     public Integer getShopCartID() {
         return shopCartID;
@@ -49,7 +59,7 @@ public class MyShopCart {
 
     @Override
     public String toString() {
-        return "MyShopCart [shopCartID=" + shopCartID + ", lightID=" + lightID + ", userID=" + userID + ", addDate="
-                + addDate + "]";
+        return "MyShopCart [shopCartID=" + shopCartID + ", lightID=" + lightID + ", userID=" + userID + ", quantity="
+                + quantity + ", addDate=" + addDate + "]";
     }
 }

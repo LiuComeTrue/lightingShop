@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lightingshop.entity.Light;
@@ -45,4 +46,22 @@ public class LightController {
         
         return lightService.listLight(currentPage, pageSize);
     }
+    
+    @RequestMapping(value = "/{searchMessage}/{currentPage}/{pageSize}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Light> listSearchLight(@PathVariable String searchMessage, 
+            @PathVariable Integer currentPage, @PathVariable Integer pageSize) {
+        
+        //System.out.println("search Controller");
+        //System.out.println(searchMessage);
+        return lightService.listSearchLight(searchMessage, currentPage, pageSize);
+    }
+    
+    @RequestMapping("/{searchMessage}")
+    @ResponseBody
+    public String getSearchPages(@PathVariable String searchMessage) {
+        
+        return lightService.getSearchPages(searchMessage);
+    }
+    
 }

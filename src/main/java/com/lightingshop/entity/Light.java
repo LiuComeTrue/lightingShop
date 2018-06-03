@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 public class Light {
 
     private Integer lightID;
+    
+    private String lightName;
 
-    private Integer catagoryID;
+    private Integer categoryID;
 
     private Integer brandID;
 
@@ -32,6 +34,14 @@ public class Light {
     private Integer sales;
     
     private Integer score;
+
+    public String getLightName() {
+        return lightName;
+    }
+
+    public void setLightName(String lightName) {
+        this.lightName = lightName;
+    }
 
     public Integer getScore() {
         return score;
@@ -57,12 +67,12 @@ public class Light {
         this.lightID = lightID;
     }
 
-    public Integer getCatagoryID() {
-        return catagoryID;
+    public Integer getCategoryID() {
+        return categoryID;
     }
 
-    public void setCatagoryID(Integer catagoryID) {
-        this.catagoryID = catagoryID;
+    public void setCategoryID(Integer categoryID) {
+        this.categoryID = categoryID;
     }
 
     public Integer getBrandID() {
@@ -139,9 +149,10 @@ public class Light {
 
     @Override
     public String toString() {
-        return "Light [lightID=" + lightID + ", catagoryID=" + catagoryID + ", brandID=" + brandID + ", styleID="
-                + styleID + ", stuff=" + stuff + ", color=" + color + ", locate=" + locate + ", price=" + price
-                + ", quantity=" + quantity + ", description=" + description + ", images=" + images + "]";
+        return "Light [lightID=" + lightID + ", lightName=" + lightName + ", categoryID=" + categoryID + ", brandID="
+                + brandID + ", styleID=" + styleID + ", stuff=" + stuff + ", color=" + color + ", locate=" + locate
+                + ", price=" + price + ", quantity=" + quantity + ", description=" + description + ", images=" + images
+                + ", sales=" + sales + ", score=" + score + "]";
     }
     
 }

@@ -19,6 +19,8 @@
         <link rel="stylesheet" href="../css/font-awesome.min.css" />
         <!-- Custom CSS -->
         <link href="../style.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/pagingVue/index.css">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -70,11 +72,9 @@
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-6 hidden-xs">
-                            <div class="search-box">
-                                <form action="#">
-                                    <input class="form-control search-form" type="text" placeholder="Search entire store here" />
-                                    <button class="search-button" value="Search" type="submit"><i class="fa fa-search"></i></button>
-                                </form>
+                            <div class="search-box" id="searchLight">
+                                    <input class="form-control search-form" type="text" v-model="message" placeholder="Search entire store here" />
+                                    <button class="search-button" value="Search" type="button" @click="search()"><i class="fa fa-search"></i></button>
                             </div>
                         </div>                    
                     </div>
@@ -127,47 +127,13 @@
                         <div class="shop-left-col wow fadeIn" data-wow-duration=".5s" data-wow-delay=".5s">
                             <div class="content-box">
                                 <h2>Categories</h2>
-                                <ul>
-                                    <li>
+                                <ul id="categories">
+                                    <li v-for="(option,index) in options">
                                         <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
+                                            <input class="checkbox" v-model="selectedOptions" :value="option.categoryID" :id="'cate'+index" type="checkbox" @change="select()" />
                                         </span>
-                                        <label class="check-label">
-                                            <a href="#">Cloths (13)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">Men (9)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">Women (11)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">Shoes (2)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">Sunglasses (8)</a>
-                                        </label>
-                                    </li>
+                                        <label class="check-label" :for="'cate'+index" v-text="option.categoryName"></label>
+                                    </li>                                    
                                 </ul>
                             </div>
                             <div class="content-box">
@@ -175,159 +141,35 @@
                                 <div class="info_widget">
                                     <div class="price_filter">
                                         <div id="slider-range"></div>
-                                        <div class="price_slider_amount">
-                                            <input type="text" id="amount" name="price"  placeholder="Add Your Price" />
-                                            <input type="submit"  value="Range">  
+                                        <div class="price_slider_amount" id="priceRange">
+                                            <input type="text" id="amount" name="price"  placeholder="￥87 - ￥475" />
+                                            <input type="submit" value="Range" @click="priceRange();">  
                                         </div>
                                     </div>
                                 </div>
-                                <button class="price-filter">
-                                    filter
-                                </button>
                             </div>
                             <div class="content-box">
-                                <h2>filter by</h2>
-                                <ul>
-                                    <li>
+                                <h2>Brands</h2>
+                                <ul id="brands">
+                                    <li v-for="(option,index) in options">
                                         <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
+                                            <input class="checkbox" v-model="selectedOptions" :value="option.brandID" :id="'brand'+index" type="checkbox" @change="select()" />
                                         </span>
-                                        <label class="check-label">
-                                            <a href="#">l (1)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">m (1)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">s (1)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">xl (1)</a>
-                                        </label>
-                                    </li>
+                                        <label class="check-label" :for="'brand'+index" v-text="option.brandName"></label>
+                                    </li>         
                                 </ul>
                             </div>
                             <div class="content-box">
-                                <h2>colors</h2>
-                                <ul>
-                                    <li>
+                                <h2>Styles</h2>
+                                <ul id="styles">
+                                    <li v-for="(option,index) in options">
                                         <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
+                                            <input class="checkbox" v-model="selectedOptions" :value="option.styleID" :id="'style'+index" type="checkbox" @change="select()" />
                                         </span>
-                                        <label class="check-label">
-                                            <a href="#">black (1)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">white (8)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">orange (5)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">blue (7)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">yellow(11)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">brown (16)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">red (9)</a>
-                                        </label>
-                                    </li>
+                                        <label class="check-label" :for="'style'+index" v-text="option.styleName"></label>
+                                    </li>                                    
                                 </ul>
-                            </div>
-                            <div class="content-box">
-                                <h2>properties</h2>
-                                <ul>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">colorful dress (2)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">maxi dress (2)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">midi dress (2)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">short dress (4)</a>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <span class="checkit">
-                                            <input class="checkbox" type="checkbox" />
-                                        </span>
-                                        <label class="check-label">
-                                            <a href="#">short sleeve (3)</a>
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>                           
+                            </div>                          
                         </div>
                     </div>
                     <div class="col-md-9 col-sm-9 col-xs-12">
@@ -347,19 +189,19 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="sort-by hidden-xs">
+                                    <div class="sort-by hidden-xs" id="sort">
                                         <label>Sort by</label>
-                                        <select>
-                                            <option value="#">Price: Lowest first</option>
-                                            <option value="#">Price: Highest first</option>
-                                            <option value="#">Product Name: A to Z</option>
-                                            <option value="#">Product Name: Z to A</option>
-                                            <option value="#">In stock</option>
-                                            <option value="#">Reference: Lowest first</option>
-                                            <option selected="selected" value="#">--</option>
+                                        <select v-model="selected" @change="select()">
+                                            <option value="1">Price: Lowest first</option>
+                                            <option value="2">Price: Highest first</option>
+                                            <option value="3">Score: Lowest first</option>
+                                            <option value="4">Score: Highest first</option>  
+                                            <option value="5">Sales: Lowest first</option>
+                                            <option value="6">Sales: Highest first</option>                                          
+                                            <option selected="selected" value="0">--</option>
                                         </select>
                                     </div>
-                                    <div class="show hidden-xs">
+                                    <!-- <div class="show hidden-xs">
                                         <label>Show</label>
                                         <select>
                                             <option value="#">24</option>
@@ -382,20 +224,21 @@
                                                 <a href="#">></a>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="shop-category-product">
                                     <div class="row">
                                         <div class="category-product">
                                             <!-- Tab panes -->
-                                            <div class="tab-content">
+                                            <div class="tab-content" id="mainLight">
                                                 <div role="tabpanel" class="tab-pane active fade in" id="gried_view">
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 mar-bot">
+                                                    
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar" v-for="light in lights">
                                                         <!-- single-product-start -->
                                                         <div class="single-product">
                                                             <div class="single-product-img">
                                                                 <a href="#">
-                                                                    <img src="img/singlepro/8.jpg" alt="" />
+                                                                    <img :src="'../'+light.images" alt="" />
                                                                 </a>
                                                                 <span class="sale-box">
                                                                     <span class="sale">Sale</span>
@@ -407,19 +250,18 @@
                                                             <div class="single-product-content">
                                                                 <div class="product-title">
                                                                     <h5>
-                                                                        <a href="#">consectetuer</a>
+                                                                        <a href="#">{{ light.lightID }}</a>
                                                                     </h5>
                                                                 </div>
-                                                                <div class="rating">
+                                                                <!-- <div class="rating">
                                                                     <div class="star star-on"></div>
                                                                     <div class="star star-on"></div>
                                                                     <div class="star star-on"></div>
                                                                     <div class="star star-on"></div>
                                                                     <div class="star"></div>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
+                                                                    <span class="price">￥{{ light.price }}</span>                                                                  
                                                                 </div>
                                                                 <div class="product-action">
                                                                     <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
@@ -434,501 +276,19 @@
                                                         </div>
                                                         <!-- single-product-end -->
                                                     </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 mar-bot">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/2.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Feugiat justo lacinia</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 no-mar-top top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/9.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Fermentum dictum</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/1.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Dictum</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/7.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Feugiat justo lacinia</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/4.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">consectetuer</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/11.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Feugiat justo lacinia</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/5.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Fermentum dictum</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/12.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Dictum</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/3.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Feugiat justo lacinia</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/6.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Feugiat justo lacinia</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                    <div class="star"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar">
-                                                        <!-- single-product-start -->
-                                                        <div class="single-product">
-                                                            <div class="single-product-img">
-                                                                <a href="#">
-                                                                    <img src="img/singlepro/1.jpg" alt="" />
-                                                                </a>
-                                                                <span class="sale-box">
-                                                                    <span class="sale">Sale</span>
-                                                                </span>
-                                                                <span class="new-box">
-                                                                    <span class="new">New</span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="single-product-content">
-                                                                <div class="product-title">
-                                                                    <h5>
-                                                                        <a href="#">Fermentum dictum</a>
-                                                                    </h5>
-                                                                </div>
-                                                                <div class="rating">
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                    <div class="star star-on"></div>
-                                                                </div>
-                                                                <div class="price-box">
-                                                                    <span class="price">£50.00</span>
-                                                                    <span class="old-price">£70.00</span>
-                                                                </div>
-                                                                <div class="product-action">
-                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                        <i class="fa fa-heart"></i>
-                                                                    </a>
-                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                        <i class="fa fa-search"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!-- single-product-end -->
-                                                    </div>
+                                                    
                                                 </div>
                                                 <div role="tabpanel" class="tab-pane fade" id="list_view">
                                                     <div class="list-view">
                                                         <div class="row">
-                                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                            
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar" v-for="light in lights">
                                                                 <div class="col-md-4 col-sm-4 col-xs-12">
                                                                     <!-- single-product-start -->
                                                                     <div class="single-product">
                                                                         <div class="single-product-img">
                                                                             <a href="#">
-                                                                                <img src="img/singlepro/1.jpg" alt="" />
+                                                                                <img :src="'../'+light.images" alt="" />
                                                                             </a>
                                                                             <span class="sale-box">
                                                                                 <span class="sale">Sale</span>
@@ -946,22 +306,20 @@
                                                                         <div class="single-product-content">
                                                                             <div class="product-title">
                                                                                 <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
+                                                                                    <a href="#">{{ light.lightID }}</a>
                                                                                 </h5>
                                                                             </div>
-                                                                            <div class="rating">
+                                                                            <!-- <div class="rating">
                                                                                 <div class="star star-on"></div>
                                                                                 <div class="star star-on"></div>
                                                                                 <div class="star star-on"></div>
                                                                                 <div class="star star-on"></div>
                                                                                 <div class="star star-on"></div>
-                                                                            </div>
+                                                                            </div> -->
                                                                             <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
+                                                                                <span class="price">￥{{ light.price }}</span>
                                                                             </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
+                                                                            <p class="product-desc">{{ light.description }}</p>
                                                                             <div class="product-action">
                                                                                 <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
                                                                                 <a class="add-wishlist" href="#" title="add to wishlist">
@@ -979,639 +337,16 @@
                                                                     <!-- single-product-end -->
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/7.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/2.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/8.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/3.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/9.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/1.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/10.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/5.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/11.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/6.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar">
-                                                                <div class="col-md-4 col-sm-4 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-img">
-                                                                            <a href="#">
-                                                                                <img src="img/singlepro/12.jpg" alt="" />
-                                                                            </a>
-                                                                            <span class="sale-box">
-                                                                                <span class="sale">Sale</span>
-                                                                            </span>
-                                                                            <span class="new-box">
-                                                                                <span class="new">New</span>
-                                                                            </span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                                <div class="col-md-8 col-sm-8 col-xs-12">
-                                                                    <!-- single-product-start -->
-                                                                    <div class="single-product">
-                                                                        <div class="single-product-content">
-                                                                            <div class="product-title">
-                                                                                <h5>
-                                                                                    <a href="#">Fermentum dictum</a>
-                                                                                </h5>
-                                                                            </div>
-                                                                            <div class="rating">
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                                <div class="star star-on"></div>
-                                                                            </div>
-                                                                            <div class="price-box">
-                                                                                <span class="price">£50.00</span>
-                                                                                <span class="old-price">£70.00</span>
-                                                                            </div>
-                                                                            <p class="product-desc">Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!
-                                                                            </p>
-                                                                            <div class="product-action">
-                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
-                                                                                    <i class="fa fa-heart"></i>
-                                                                                </a>
-                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
-                                                                                    <i class="fa fa-search"></i>
-                                                                                </a>
-                                                                            </div>
-                                                                            <div class="availability">
-                                                                                <span>In stock</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- single-product-end -->
-                                                                </div>
-                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="topbar-category" id="app" style="text-align: center;">
+                                    <vue-nav :cur="cur" :all="all" :callback="callback"></vue-nav>
                                 </div>
                             </div>
                         </div>
@@ -1965,6 +700,191 @@
         <!-- all js here -->
         <!-- jquery latest version -->
         <script src="../js/vendor/jquery-1.12.0.min.js"></script>
+        
+        <!-- vue.js -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script type="text/javascript">
+        var vm1 = new Vue({
+            el: '#mainLight',
+            data: {
+                lights:"Hello Vue"
+            },
+            mounted() {
+                console.log("currentpage:" + app.cur);
+            	$.ajax({
+                    type: "get",
+                    url: "../light/1/2",
+                    dataType: "json",
+                    success: function(data){
+                        vm1.lights = data;
+                    },
+                    error: function(data){
+                        console.log("读取alllights error!");
+                    }
+                });
+            }                  
+        });
+        
+        var vm2 = new Vue({
+            el: '#categories',
+            data: {
+                options:[],
+                selectedOptions:[]
+            },
+            created: function(){
+                this.getOptions();
+            },
+            methods:{
+                getOptions: function(){
+                    $.ajax({
+                        type: "get",
+                        url: "../category",
+                        dataType: "json",
+                        success: function(data){
+                            vm2.options = data;                         
+                        },
+                        error: function(data){
+                            console.log("读取categories error!");
+                        }
+                    }); 
+                },
+                select: function() {
+                    app.cur = 1;
+                    getAllPages();
+                	showTypeLight();
+                }
+            }           
+        });
+        
+        var vm3 = new Vue({
+            el: '#brands',
+            data: {
+                options:[],
+                selectedOptions:[]
+            },
+            created: function(){
+                this.getOptions();
+            },
+            methods:{
+                getOptions: function(){
+                    $.ajax({
+                        type: "get",
+                        url: "../brand",
+                        dataType: "json",
+                        success: function(data){
+                            vm3.options = data;                           
+                        },
+                        error: function(data){
+                            console.log("读取brands error!");
+                        }
+                    }); 
+                },
+                select: function() {
+                    app.cur = 1;
+                    getAllPages();
+                	showTypeLight();
+                }
+            }           
+        });
+        
+        var vm4 = new Vue({
+            el: '#styles',
+            data: {
+                options:[],
+                selectedOptions:[]
+            },
+            created: function(){
+                this.getOptions();
+            },
+            methods:{
+                getOptions: function(){
+                    $.ajax({
+                        type: "get",
+                        url: "../styles",
+                        dataType: "json",
+                        success: function(data){
+                            vm4.options = data;                           
+                        },
+                        error: function(data){
+                            console.log("读取style error!");
+                        }
+                    }); 
+                },
+                select: function() {
+                    app.cur = 1;
+                    getAllPages();
+                	showTypeLight();
+                }
+            }           
+        });
+        
+        var vm5 = new Vue({
+            el: '#sort',
+            data: {
+            	selected: '0'
+            },
+            methods:{              
+                select: function() {
+                	app.cur = 1;
+                    //getAllPages();
+                    showTypeLight(); 
+                }
+            }           
+        });
+        
+        var vm6 = new Vue({
+            el: '#searchLight',
+            data: {
+                message: ''
+            },
+            methods:{              
+                search: function() {
+                    getSearchPages();
+                    app.cur = 1;
+                    console.log("总页数："+app.all);
+                    showSearchLight();
+                }
+            }           
+        });
+        
+        
+             
+        function showTypeLight() {
+        	vm6.message='';
+        	$.ajax({
+                type: "post",
+                url: "../type/"+app.cur+"/2",
+                dataType: "json",                       
+                data:JSON.stringify({"categories":vm2.selectedOptions, "brands":vm3.selectedOptions, 
+                	"styles":vm4.selectedOptions, "sort":vm5.selected, "lowPrice":vm7.lowPrice, "highPrice":vm7.highPrice}),
+                contentType:"application/json;charset=utf-8",
+                success: function(data) {
+                    vm1.lights = data;
+                    console.log(data);
+                },
+                error: function(data) {
+                    console.log("传值 error!");
+                }
+            });  
+        }      
+        
+        function showSearchLight() {
+        	$.ajax({
+                type: "get",
+                url: "../light/" + vm6.message + "/" + app.cur + "/2",
+                dataType: "json",
+                success: function(data){
+                    vm1.lights = data;                           
+                },
+                error: function(data){
+                    console.log("读取searchLight error!");
+                }
+            });
+        }
+        </script>        
+        
+        
+        
         <!-- bootstrap js -->
         <script src="../js/bootstrap.min.js"></script>
         <!-- owl.carousel js -->
@@ -1980,9 +900,89 @@
         <!-- wow js -->
         <script src="../js/wow.min.js"></script>
         <!-- plugins js -->
-        <script src="../js/plugins.js"></script>
+        <script src="../js/plugins.js"></script>    
         <!-- main js -->
-        <script src="../js/main.js"></script>
+        <script src="../js/main.js"></script>    
+        
+        <script>
+        var vm7 = new Vue({
+            el: '#priceRange',
+            data: {      
+            	lowPrice: 87,
+            	highPrice: 475
+            },
+            methods:{              
+                priceRange: function() {
+                    console.log($("#slider-range").slider("values", 0));
+                    console.log($("#slider-range").slider("values", 1));
+                    vm7.lowPrice = $("#slider-range").slider("values", 0);
+                    vm7.highPrice = $("#slider-range").slider("values", 1);
+                    app.cur = 1;
+                    getAllPages();
+                    showTypeLight();
+                }
+            }           
+        });
+        </script>
+        <!-- 分页组件 -->
+        <script src="../js/pagingVue/vue-nav.js"></script>
+        <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                cur: 1,
+                all: 20
+            },
+            created: function() {
+                getAllPages();
+            },
+            components:{
+                'vue-nav': Vnav
+            },
+            methods:{
+                callback(data) {
+                    this.cur = data;
+                    if (vm6.message == '')
+                        showTypeLight();
+                    else
+                        showSearchLight();
+                }
+            }
+        });
+        
+        
+        
+        function getAllPages() {
+            $.ajax({
+               type: "post",
+               url: "../type",
+               dataType: "json",                       
+               data:JSON.stringify({"categories":vm2.selectedOptions, "brands":vm3.selectedOptions, 
+                   "styles":vm4.selectedOptions, "lowPrice":vm7.lowPrice, "highPrice":vm7.highPrice}),
+               contentType:"application/json;charset=utf-8",
+               success: function(data) {
+                   app.all = data;
+               },
+               error: function(data) {
+                   console.log("getAllPages error!");
+               }
+            });  
+        } 
+        
+        function getSearchPages() {
+            $.ajax({
+               type: "get",
+               url: "../light/" + vm6.message,
+               dataType: "json",
+               success: function(data) {
+                   app.all = data;
+               },
+               error: function(data) {
+                   console.log("getSearchPages error!");
+               }
+            });  
+        }
+        </script>
     </body>
 </html>
 
