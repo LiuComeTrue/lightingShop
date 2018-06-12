@@ -149,10 +149,10 @@
   
     <select id="selectOrdersTip" resultType="INTEGER" >
     SELECT
-    sum(orderStateID)
+    Count(orderStateID)
     from orders
     where 
-    orderStateID=0 or orderStateID=1
+    orderStateID BETWEEN 0 and 1
   </select>
   
   <!-- 更新订单 -->

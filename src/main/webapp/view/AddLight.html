@@ -113,7 +113,7 @@
               </div>
               <div class="form-group">
                 <label for="locate">Locate</label>
-                <input type="text" class="form-control" id="locate" name="locate" placeholder="产地" value="" maxlength="20">
+                <input type="text" class="form-control" id="locate" name="locate" placeholder="安装位置" value="" maxlength="20">
               </div>
               <div class="form-group">
                 <label for="price">Price</label>
@@ -335,9 +335,11 @@ $("#formSubmit").click(function(){
         async: false,
 		success: function(res){
 			console.log("读取jsonName Success!");
+			bootbox.alert("添加成功");
         },
         error: function(res){
             console.log("读取jsonName error!");
+            bootbox.alert("添加失败");
         }
 	}).done(function(res) {
 		console.log("读取jsonName no done!");
