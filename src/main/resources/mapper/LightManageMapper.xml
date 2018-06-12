@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lightingshop.dao.LightManageDao">
+  <resultMap id="LightsResultMap" type="com.lightingshop.entity.Light">
+    <id column="lightID" jdbcType="INTEGER" property="lightID" />
+    <result column="lightName" jdbcType="VARCHAR" property="lightName" />
+    <result column="stuff" jdbcType="VARCHAR" property="stuff" />
+    <result column="color" jdbcType="VARCHAR" property="color" />
+    <result column="locate" jdbcType="VARCHAR" property="locate" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="images" jdbcType="VARCHAR" property="images" />
+    <result column="sales" jdbcType="INTEGER" property="sales" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="categoryIDWithLight" jdbcType="INTEGER" property="categoryID" />
+    <result column="styleIDWithLight" jdbcType="INTEGER" property="styleID" />
+    <result column="brandIDWithLight" jdbcType="INTEGER" property="brandID" />
+    <!-- 多对一的关系 -->
+    <!-- property: 指的是属性名称, javaType：指的是属性的类型 -->
+    <association property="category" javaType="Category">
+        <id column="categoryID" property="categoryID"/>
+        <result column="categoryName" property="categoryName"/>
+    </association>
+    <association property="brand" javaType="Brand">
+        <id column="brandID" property="brandID"/>
+        <result column="brandName" property="brandName"/>
+    </association>
+    <association property="style" javaType="Style">
+        <id column="styleID" property="styleID"/>
+        <result column="styleName" property="styleName"/>
+    </association>
+  </resultMap>
+  
+    <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+    <select id="listLight" parameterType="com.lightingshop.entity.LightExample" resultMap="LightsResultMap">
+        select
+	    <if test="distinct">
+	      distinct
+	    </if>
+            l.lightID, l.lightName, l.stuff, l.color, l.locate, l.price, l.quantity, l.description,
+            l.images, l.sales, l.score, l.categoryID 'categoryIDWithLight', l.styleID 'styleIDWithLight', l.brandID 'brandIDWithLight',
+            c.categoryID, c.categoryName, b.brandID,b.brandName, s.styleID,s.styleName
+        FROM light l
+        left join category c on l.categoryID = c.categoryID
+        left join brand b on l.brandID = b.brandID
+        left join style s on l.styleID = s.styleID
+        
+        <if test="_parameter != null">
+          <include refid="Example_Where_Clause" />
+        </if>
+
+	    <if test="orderByClause != null">
+	      order by ${orderByClause}
+	    </if>
+    </select>
+
+    <select id="selectLightTips" resultType="INTEGER">
+		SELECT
+		COUNT(quantity)
+		
+		from light
+		
+		where 
+		quantity BETWEEN 0 and 9
+    </select>
+
+  <insert id="insertSelective" parameterType="com.lightingshop.entity.Light"  useGeneratedKeys="true" keyProperty="lightID">
+    insert into light
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lightID != null">
+        lightID,
+      </if>
+      <if test="lightName != null">
+        lightName,
+      </if>
+      <if test="categoryID != null">
+        categoryID,
+      </if>
+      <if test="brandID != null">
+        brandID,
+      </if>
+      <if test="styleID != null">
+        styleID,
+      </if>
+      <if test="stuff != null">
+        stuff,
+      </if>
+      <if test="color != null">
+        color,
+      </if>
+      <if test="locate != null">
+        locate,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="images != null">
+        images,
+      </if>
+      <if test="sales != null">
+        sales,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lightID != null">
+        #{lightID,jdbcType=INTEGER},
+      </if>
+      <if test="lightName != null">
+        #{lightName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryID != null">
+        #{categoryID,jdbcType=INTEGER},
+      </if>
+      <if test="brandID != null">
+        #{brandID,jdbcType=INTEGER},
+      </if>
+      <if test="styleID != null">
+        #{styleID,jdbcType=INTEGER},
+      </if>
+      <if test="stuff != null">
+        #{stuff,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null">
+        #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="locate != null">
+        #{locate,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null">
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null">
+        #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <insert id="InsertAllImages" parameterType="com.lightingshop.entity.LightImage" >
+    insert into lightimages
+        (lightID,images)
+    values (#{lightID,jdbcType=INTEGER}, #{images,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="InsertImageInfo" parameterType="com.lightingshop.entity.LightImage" >
+    insert into lightdescriptionimages
+        (lightID,images)
+    values (#{lightID,jdbcType=INTEGER}, #{images,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.lightingshop.entity.Light">
+    update light
+    <set>
+      <if test="lightName != null">
+        lightName = #{lightName,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryID != null">
+        categoryID = #{categoryID,jdbcType=INTEGER},
+      </if>
+      <if test="brandID != null">
+        brandID = #{brandID,jdbcType=INTEGER},
+      </if>
+      <if test="styleID != null">
+        styleID = #{styleID,jdbcType=INTEGER},
+      </if>
+      <if test="stuff != null">
+        stuff = #{stuff,jdbcType=VARCHAR},
+      </if>
+      <if test="color != null">
+        color = #{color,jdbcType=VARCHAR},
+      </if>
+      <if test="locate != null">
+        locate = #{locate,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null">
+        images = #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="sales != null">
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=INTEGER},
+      </if>
+    </set>
+    where lightID = #{lightID,jdbcType=INTEGER}
+  </update>
+</mapper>

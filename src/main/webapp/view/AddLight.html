@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+<title>Test</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/fullcalendar.css" />
+<link rel="stylesheet" href="../css/matrix-style.css" />
+<link rel="stylesheet" href="../css/matrix-media.css" />
+<link href="../font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" href="../css/jquery.gritter.css" />
+<link rel="stylesheet" href="../css/bootstrap-datetimepicker.min.css" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+
+</head>
+<body style="padding-right:0px !important;">
+    <div id="header">
+        <h1>
+            <a href="dashboard.html">MatAdmin</a>
+        </h1>
+    </div>
+    <div id="user-nav" class="navbar navbar-inverse">
+        <ul class="nav">
+            <li class=""><a title="" href="adminLogin.html"><i class="icon icon-share-alt"></i> <span class="text">退出</span></a></li>
+        </ul>
+    </div>
+
+    <div id="sidebar">
+        <a href="#" class="visible-phone"><i class="icon icon-home"></i>
+            控制台</a>
+        <ul>
+            <li><a href="adminIndex.html"><i class="icon icon-home"></i>
+                    <span>首页</span></a></li>
+            <li><a href="orderManage.html"><i class="icon icon-th-list"></i>
+                    <span>订单管理</span></a></li>
+            <li class="submenu active"><a href="#"><i class="icon icon-th-list"></i>
+                    <span>商品管理</span> </a>
+                <ul>
+                    <li class="active"><a href="#">商品添加</a></li>
+                    <li><a href="lightManage.html">信息修改</a></li>
+                </ul></li>
+            <li><a href="countInfo.html"><i class="icon icon-th-list"></i>
+                    <span>统计信息</span></a>
+            </li>
+
+        </ul>
+    </div>
+    <div id="content">
+        <div id="content-header">
+            <div id="breadcrumb">
+                <a href="adminIndex.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+                <a href="AddLight.html" class="current">添加商品</a>
+            </div>
+            <h1></h1>
+        </div>
+        
+        <!-- 图片预览DIV -->
+		<div id="ImgSet" class="panel panel-default" style="width:335px;height:370px;float:left;margin-left:200px;margin-top:100px;visibility:hidden;" >
+            <div class="panel-heading">图片预览</div>
+            <div class="panel-body" id="localImag">
+                <img src="" id="preview" alt="">
+            </div>
+		 </div>
+		 
+        <div class="container" style="width:500px; float:left;margin-left: 80px;">
+			<form>
+			  <div class="form-group">
+			    <label for="lightName">Light</label>
+			    <input type="text" class="form-control" id="lightName" name="lightName" placeholder="Title" value="" maxlength="50">
+			  </div>
+			  <div class="form-group" id="selectGroup">
+                <label for="categoryID">Type</label><br/>
+                <select id="categoryID" name="categoryID" v-model="selectedA">
+                    <option v-for="optionA in optionAs" v-bind:value="optionA.categoryID">
+                        {{ optionA.categoryName }}
+                    </option>
+<!--                     <option value="1" selected="selected">节能灯</option>
+                    <option value="2">日光灯</option>
+                    <option value="3">白炽灯</option>
+                    <option value="4">吸顶灯</option>
+                    <option value="5">吊灯</option>
+                    <option value="6">壁灯</option> -->
+                </select>
+                <select id="brandID" name="brandID"  v-model="selectedB">
+                    <option v-for="optionB in optionBs" v-bind:value="optionB.brandID">
+                        {{ optionB.brandName }}
+                    </option>
+<!--                     <option value="1" selected="selected">飞利浦PHILIPS</option>
+                    <option value="2">欧普OPPLE</option>
+                    <option value="3">雷士</option>
+                    <option value="4">欧司朗</option>
+                    <option value="5">华艺</option> -->
+                </select>
+                <select id="styleID" name="styleID"  v-model="selectedC">
+                    <option v-for="optionC in optionCs" v-bind:value="optionC.styleID">
+                        {{ optionC.styleName }}
+                    </option>
+<!--                      <option value="1" selected="selected">中式</option>
+                    <option value="2">欧式</option>
+                    <option value="3">现代</option>
+                    <option value="4">古典</option> -->
+                </select>
+			  </div>
+              <div class="form-group">
+                <label for="stuff" >Stuff</label>
+                <input type="text" class="form-control" id="stuff" name="stuff" placeholder="材质" value="" maxlength="20">
+              </div>
+              <div class="form-group">
+                <label for="color">Color</label>
+                <input type="text" class="form-control" id="color" name="color" placeholder="颜色" value="" maxlength="20">
+              </div>
+              <div class="form-group">
+                <label for="locate">Locate</label>
+                <input type="text" class="form-control" id="locate" name="locate" placeholder="产地" value="" maxlength="20">
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <div class="input-group">
+				  <span class="input-group-addon">￥</span>
+				  <input id="price" name="price" type="text" class="form-control" placeholder="00.00"
+				    aria-label="Amount (to the nearest dollar)" value="" maxlength="15">
+				</div>
+              </div>
+              <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <div class="input-group">
+                  <span class="input-group-addon">件</span>
+                  <input type="text" class="form-control" id="quantity" name="quantity"
+                   placeholder="数量" aria-label="Amount (to the nearest dollar)" value="" maxlength="15">
+                </div>
+              </div>
+			  <div class="form-group">
+			    <label for="images">Light IMG&nbsp;&nbsp;(400X400)</label>
+			    <input type="file"  id="images" name="images" onchange="SeeingImg(this)" >
+			    <p class="help-block">Example JPG PNG BMG..</p>
+			  </div>
+              <div class="form-group">
+				<button id="addImgBtn"class="btn btn-info btn-xs " type="button">
+				  添加图片 <span id="imgNumSpan" class="badge">0</span>
+				</button>
+				<span id="tips" style="display:none;">最多上传四张!</span>
+				<div id="otherImg">
+			  </div>
+              <div class="form-group">
+                <label for="InfoImage" style="padding-top: 10px;">Light Info</label>
+                <input type="file"  id="InfoImage" name="InfoImage" >
+              </div>
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" rows="3" placeholder="商品描述.." maxlength="200"></textarea>
+              </div>
+			  <button id="formSubmit" type="button" class="btn btn-default">Submit</button>
+			</form>
+        </div>
+    </div>
+
+
+    <script src="../js/jquery-3.2.1.js"></script>
+    <script src="../js/matrix.js"></script>
+    <script src="../js/boot/bootstrap.min.js"></script>
+<!--     <script type="https://vuejs.org/js/vue.min.js"></script> -->
+    <script type="text/javascript" src="../js/bootbox.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>   
+<script type="text/javascript">
+
+var vm = new Vue({
+	el:"#selectGroup",
+	data:{
+		selectedA:'1',
+	    selectedB:'1',
+	    selectedC:'1',
+		optionAs:[],
+		optionBs:[],
+		optionCs:[]
+	},
+	mounted(){
+		$.ajax({
+			type:'get',
+			url:'../category',
+			dataType: "json",
+			success: function(data){
+				vm.optionAs=data
+				console.log("读取jsonName success!")
+            },
+            error: function(data){
+                console.log("读取jsonName error!")
+            }
+		});
+		
+	      $.ajax({
+	            type:'get',
+	            url:'../brand',
+	            dataType: "json",
+	            success: function(data){
+	            	vm.optionBs=data
+	                console.log("读取jsonName success!")
+	            },
+	            error: function(data){
+	                console.log("读取jsonName error!")
+	            }
+	        });
+	      
+	      $.ajax({
+	            type:'get',
+	            url:'../styles',
+	            dataType: "json",
+	            success: function(data){
+	            	vm.optionCs=data
+	                console.log("读取jsonName success!")
+	            },
+	            error: function(data){
+	                console.log("读取jsonName error!")
+	            }
+	        });
+	}
+});
+
+function SeeingImg(obj){
+    var file = $(obj).val();
+    var Id = $(obj).attr("id");
+    setImagePreview(file,Id);
+}
+
+//实现实时预览的函数
+function setImagePreview(avalue,obj) {
+   var imgObj = document.getElementById(obj);
+   //img
+   var imgObjPreview = document.getElementById("preview");
+   //div
+   var divs = document.getElementById("localImag");
+   if (imgObj.files && imgObj.files[0]) {
+      //火狐下，直接设img属性
+      imgObjPreview.style.display = 'block';
+      imgObjPreview.style.width = '300px';
+      imgObjPreview.style.height = '300px';
+      //imgObjPreview.src = imgObj.files[0].getAsDataURL();
+      //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
+      imgObjPreview.src = window.URL.createObjectURL(imgObj.files[0]);
+    } else {
+      //IE下，使用滤镜
+      imgObj.select();
+      var imgSrc = document.selection.createRange().text;
+      var localImagId = document.getElementById("localImag");
+      //必须设置初始大小
+      localImagId.style.width = "300px";
+      localImagId.style.height = "300px";
+      //图片异常的捕捉，防止用户修改后缀来伪造图片
+      try {
+          localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+          localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+       } catch(e) {
+    	   $("#ImgSet").css("visibility","hidden");
+           alert("您上传的图片格式不正确，请重新选择!");
+           return false;
+       }
+       imgObjPreview.style.display = 'none';
+       document.selection.empty();
+    }
+  $("#ImgSet").css("visibility","visible");
+  return true;
+}
+var i = 1;
+$("#addImgBtn").click(function(){
+	if(i<5){
+		$("#tips").css("display","none");
+		$("#otherImg").append("<input type='file'  id='Imgs"+i+"' name='imgs"+i+"' onchange='SeeingImg(this)'>");
+		$("#imgNumSpan").text(i);
+		i = i + 1;
+	}else{
+		$("#tips").css("display","block");
+	}
+});
+
+$("#formSubmit").click(function(){
+	var name = $("#lightName").val();
+	var stuff = $("#stuff").val();
+	var color = $("#color").val();
+	var locate = $("#locate").val();
+	var price = $("#price").val();
+	var quantity = $("#quantity").val();
+	var images = $("#images").val();
+	var description = $("#description").val();
+
+	if(price=="")
+		$("#price").parent().parent().find("lable").eq(0).css("color","red");
+    if(quantity=="")
+        $("#quantity").parent().parent().find("lable").eq(0).css("color","red");
+    if(images=="")
+        $("#images").parent().parent().find("lable").eq(0).css("color","red");
+    if(name==""||price==""||quantity==""||images==""){
+    	bootbox.alert("请完善输入");
+        return;
+    }
+
+	var formData = new FormData();
+	formData.append("lightName",name);
+    formData.append("color",color);
+    formData.append("locate",locate);
+    formData.append("stuff",stuff);
+    formData.append("price",price);
+    formData.append("quantity",quantity);
+    formData.append("images",images);
+    formData.append("description",description);
+    formData.append("categoryID",$("#categoryID").val());
+    formData.append("brandID",$("#brandID").val());
+    formData.append("styleID",$("#styleID").val());
+    formData.append("image0",$("#images")[0].files[0]);
+    formData.append("imgNum",i-1);
+    formData.append("lightInfo",$("#InfoImage")[0].files[0]);
+    
+    var o;
+    for( o = 1 ; o<i ; o++){
+    	if($("#Imgs"+o).val()==null||$("#Imgs"+o).val()==""){
+    	    formData.append("imgNum",o-1);
+    	    break;
+    	}
+    	else
+    		formData.append("image"+o,$("#Imgs"+o)[0].files[0]);
+    }
+	if(o==i)
+		formData.append("imgNum",i-1);
+	
+	//ajax添加灯饰
+  	$.ajax({
+		url:"../LightInsert",
+		type: "post",
+		data: formData,  
+		cache: false,
+        processData: false,
+        contentType: false,
+        async: false,
+		success: function(res){
+			console.log("读取jsonName Success!");
+        },
+        error: function(res){
+            console.log("读取jsonName error!");
+        }
+	}).done(function(res) {
+		console.log("读取jsonName no done!");
+    }).fail(function(res) {
+    	console.log("读取jsonName no fail!");
+    });
+});
+</script>   
+</body>
+</html>

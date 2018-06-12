@@ -89,4 +89,11 @@ public interface LightDao {
      * @return
      */
     String getSearchPages(String searchMessage);
+    
+    /**
+     * 查询某一商品描述的图片地址
+     * @param lightID
+     * @return
+     */
+    String getLightDescriptionImage(Integer lightID);
 }

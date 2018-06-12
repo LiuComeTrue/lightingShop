@@ -132,12 +132,19 @@ public class LightServiceImpl implements ILightService {
         lightDescription.setSales(light.getSales());
         lightDescription.setScore(light.getScore());
         lightDescription.setStuff(light.getStuff());
+        lightDescription.setQuantity(light.getQuantity());
         
         lightDescription.setCategory(categoryDao.getCategoryName(light.getCategoryID()));
         lightDescription.setBrand(brandDao.getBrandName(light.getBrandID()));
         lightDescription.setStyle(styleDao.getStyleName(light.getStyleID()));
         lightDescription.setComments(commentDao.CountComments(lightID));
         return lightDescription;
+    }
+
+    @Override
+    public String getLightDescriptionImage(Integer lightID) {
+        // TODO Auto-generated method stub
+        return lightDao.getLightDescriptionImage(lightID);
     }
 
 }

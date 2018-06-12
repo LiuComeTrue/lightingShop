@@ -32,4 +32,10 @@ public interface OrdersDao {
     int updateByPrimaryKey(Orders record);
     
     int updateOrderStatus(String orderID, int status);
+    
+    /**
+     * 查询需要处理的订单
+     * @return
+     */
+    Integer selectOrdersTip();
 }

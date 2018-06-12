@@ -34,6 +34,36 @@ public class Light {
     private Integer sales;
     
     private Integer score;
+    
+private Category category;
+    
+    private Brand brand;
+    
+    private Style style;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public Style getStyle() {
+        return style;
+    }
+
+    public void setStyle(Style style) {
+        this.style = style;
+    }
 
     public String getLightName() {
         return lightName;

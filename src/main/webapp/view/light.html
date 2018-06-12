@@ -99,19 +99,24 @@
             <a href="javascript:void(0);" id="shownext"> > </a>
         </p>
 <script>
+function getUrlVars(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+var lightID = getUrlVars("lightID");
+console.log("lightID="+lightID);
 var vm2 = new Vue({
     el: '#lightImage',
     data: {
-        lightImages: ''
+        lightImages: {}
     },
     beforeCreate: function() {
         $.ajax({
             type: "get",
-            url: "../lightImages/101",
+            url: "../lightImages/"+lightID,
             dataType: "json",
             success: function(data){
                 vm2.lightImages = data;
-                //a();
+                console.log(data);
             },
             error: function(data){
                 console.log("读取lightImages error!");
@@ -150,7 +155,7 @@ var vm2 = new Vue({
             <input id="min" name="" type="button" value="-" @click="sub()" />  
             <input id="text_box" name="" type="text" v-model="quantity" style="width:30px; text-align: center; color: #0F0F0F;"/>  
             <input id="add" name="" type="button" value="+" @click="add()" />
-            <span class="Hgt">库存{{ vm1.light.stuff }}</span>
+            <span class="Hgt">库存{{ vm1.light.quantity }}</span>
         </div>
         <div class="nobdr-btns">
             <button class="addcart hu" @click="addShopCart()"><img src="../img/shop.png" width="25" height="25"/>加入购物车</button>
@@ -184,7 +189,7 @@ detail.classList.remove('sticky');
 }
 document.addEventListener('scroll', onScroll); 
 </script>             		 
-    <div class="detail">
+    <div class="detail" id="detailLight">
         <div class="active_tab" id="outer">
             <ul class="act_title_left" id="tab">
                 <li class="act_active">
@@ -206,24 +211,19 @@ document.addEventListener('scroll', onScroll);
 		<!--0-->
 			<div id="ui-a" class="ui-a">
 			    <ul style="display:block;">
-				    <li>商品名称：仙人指路道镜前后双录智能后视镜导航仪行车记录仪后视预警一体机</li>
-					<li>商品编号：ECS001983</li>
-					<li>品牌</li>
-					<li>上架时间：2016-05-24</li>
-					<li>商品毛重：0克</li>
-					<li>库存： 999 </li>
+				    <li>商品名称：{{ light.lightName }}</li>
+					<li>商品ID：{{ light.lightID}}</li>
+					<li>分类: {{ light.category}}</li>
+					<li>品牌: {{ light.brand}}</li>
+					<li>材质：{{ light.stuff}}</li>
+					<li>风格：{{ light.style}}</li>
+					<li>安装位置：{{ light.locate}}</li>
+					<li>库存： {{ light.quantity}}</li>
 				</ul>
 			</div>
 												   <!--商品规格-->
 												    	<div id="bit" class="bit">
-												        <ul style="display:none;">
-												            <li><img src="images/ko-1.jpg"/></li>
-												            <li><img src="images/ko-2.jpg"/></li>
-												            <li><img src="images/ko.jpg"/></li>
-												            <li><img src="images/ko-1.jpg"/></li>
-												            <li><img src="images/ko-2.jpg"/></li>
-												                
-												       </ul>
+												    	<img :src="'../'+descriptionImage" />
 												       </div>
 												       
 												 <!--商品评价-->      
@@ -279,6 +279,27 @@ function getUrlVars() {
 var lightID = getUrlVars()["lightID"];
 console.log(lightID);
 //var lightID = 101;
+var vm4 = new Vue({
+    el: '#detailLight',
+    data: {
+        light:{},
+        descriptionImage: ''
+    },
+    created: function() {
+    	$.ajax({
+            type: "get",
+            url: "../light/descriptionImage/" + lightID,
+            dataType: "text",
+            success: function(data){
+            	console.log(data);
+                vm4.descriptionImage = data;
+            },
+            error: function(data){
+                console.log("读取descriptionImage error!");
+            }
+        });
+    }
+})
 var vm1 = new Vue({
     el: '#mainLight',
     data: {
@@ -292,6 +313,7 @@ var vm1 = new Vue({
             dataType: "json",
             success: function(data){
                 vm1.light = data;
+                vm4.light = data;
             },
             error: function(data){
                 console.log("读取light all description error!");
@@ -374,6 +396,8 @@ var vm3 = new Vue({
         });              
     }
 });
+
+
 </script>
 <script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">

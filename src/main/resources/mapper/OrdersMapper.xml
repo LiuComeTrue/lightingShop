@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lightingshop.dao.OrdersDao">
+     <!-- 单订单结果集不含lights -->
+<resultMap type="com.lightingshop.entity.Orders" id="BaseResultMap">
+    <id property="orderID" jdbcType="VARCHAR" column="orderID"/>
+    <result property="userID" jdbcType="INTEGER" column="userID"/>
+    <result property="totalprice" jdbcType="DECIMAL" column="totalPrice"/>
+    <result property="date" jdbcType="TIMESTAMP" column="date"/>
+    <result property="orderstateid" jdbcType="INTEGER" column="orderStateID"/>
+    <result property="showornot" jdbcType="INTEGER" column="showOrNot"/>
+    <result property="receivename" jdbcType="VARCHAR" column="receiveName"/>
+    <result property="receivephone" jdbcType="VARCHAR" column="receivePhone"/>
+    <result property="address" jdbcType="VARCHAR" column="address"/>
+    <result property="email" jdbcType="VARCHAR" column="email"/>
+    <result property="postalcode" jdbcType="VARCHAR" column="postalCode"/>
+    <result property="posttype" jdbcType="VARCHAR" column="postType"/>
+    <result property="paymenttype" jdbcType="VARCHAR" column="paymentType"/>
+    <result property="postfee" jdbcType="DECIMAL" column="postFee"/>
+</resultMap>
+  
    <!-- 订单-灯联合查询结果集 -->
   <resultMap id="OrderLightsResultMap" type="com.lightingshop.entity.Orders">
     <id column="orderID" jdbcType="VARCHAR" property="orderID" />
@@ -128,4 +146,40 @@
       WHERE
           orderID=#{0}
   </update>
+  
+    <select id="selectOrdersTip" resultType="INTEGER" >
+    SELECT
+    sum(orderStateID)
+    from orders
+    where 
+    orderStateID=0 or orderStateID=1
+  </select>
+  
+  <!-- 更新订单 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.lightingshop.entity.Orders">
+    update orders 
+  <set>
+      <if test="userID != null"> userID = #{userID,jdbcType=INTEGER}, </if>
+      <if test="totalprice != null"> totalPrice = #{totalprice,jdbcType=DECIMAL}, </if>
+      <if test="date != null"> date = #{date,jdbcType=TIMESTAMP}, </if>
+      <if test="orderstateid != null"> orderStateID = #{orderstateid,jdbcType=INTEGER}, </if>
+      <if test="showornot != null"> showOrNot = #{showornot,jdbcType=INTEGER}, </if>
+      <if test="receivename != null"> receiveName = #{receivename,jdbcType=VARCHAR}, </if>
+      <if test="receivephone != null"> receivePhone = #{receivephone,jdbcType=VARCHAR}, </if>
+      <if test="address != null"> address = #{address,jdbcType=VARCHAR}, </if>
+      <if test="email != null"> email = #{email,jdbcType=VARCHAR}, </if>
+      <if test="postalcode != null"> postalCode = #{postalcode,jdbcType=VARCHAR}, </if>
+      <if test="posttype != null"> postType = #{posttype,jdbcType=VARCHAR}, </if>
+      <if test="paymenttype != null"> paymentType = #{paymenttype,jdbcType=VARCHAR}, </if>
+      <if test="postfee != null"> postFee = #{postfee,jdbcType=DECIMAL}, </if>
+  </set>
+    where orderID = #{orderID,jdbcType=VARCHAR} 
+  </update>
+  
+  <!-- 按照ID查询订单 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List"/>
+     from orders where orderID = #{orderID,jdbcType=VARCHAR} 
+    </select>
 </mapper>

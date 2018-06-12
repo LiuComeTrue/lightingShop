@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lightingshop.dao.CountDao">
+    
+    <select id="selectCountLightByDate" resultType="com.lightingshop.dto.OrderLightCount">
+        SELECT
+            ol.lightID,sum(ol.quantity) sum
+        from orderlights ol 
+        left join orders o on o.orderID=ol.orderID
+    <where>
+    o.date BETWEEN date_sub(now(),interval #{dateStart} month) and date_sub(now(),interval #{dateEnd} month)
+    and o.orderStateID not between 3 and 5
+    </where>
+		GROUP BY ol.lightID
+		order by SUM(ol.quantity) DESC
+    </select>
+    
+    <select id="selectCountPriceByDate" resultType="DECIMAL">
+		SELECT
+		sum(totalPrice)
+		
+		from orders
+		
+		where 
+		
+		date BETWEEN date_sub(now(),interval #{dateStart} month) and date_sub(now(),interval #{dateEnd} month)
+		and orderStateID not between 3 and 5
+    </select>
+    
+</mapper>

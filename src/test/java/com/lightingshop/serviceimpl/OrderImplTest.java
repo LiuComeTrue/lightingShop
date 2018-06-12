@@ -35,7 +35,7 @@ public class OrderImplTest extends BaseTest {
         light.add(shopCartLight);
         Integer userID = 101;
         BigDecimal totalMoney = new BigDecimal(100);
-        ordersService.addOrder(light, userID, totalMoney);
+        //ordersService.addOrder(light, userID, totalMoney);
     }
     
     @Test

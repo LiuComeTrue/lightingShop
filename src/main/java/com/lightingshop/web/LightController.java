@@ -72,4 +72,11 @@ public class LightController {
         return lightService.getLightDescription(lightID);
     }
     
+    @RequestMapping("/descriptionImage/{lightID}")
+    @ResponseBody
+    public String getLightDescriptionImage(@PathVariable Integer lightID) {
+        
+        return lightService.getLightDescriptionImage(lightID);
+    }
+    
 }

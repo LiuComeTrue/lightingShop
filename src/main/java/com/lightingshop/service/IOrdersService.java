@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.lightingshop.dto.ShopCartLight;
 import com.lightingshop.entity.Orders;
+import com.lightingshop.entity.User;
 
 public interface IOrdersService {
 
@@ -13,7 +14,7 @@ public interface IOrdersService {
      * @param order
      * @return
      */
-    String addOrder(List<ShopCartLight> light, Integer userID, BigDecimal totalMoney);
+    String addOrder(List<ShopCartLight> light, Integer userID, BigDecimal totalMoney, User user);
     
     /**
      * 获取某一订单的所有商品

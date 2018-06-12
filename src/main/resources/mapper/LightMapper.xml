@@ -168,5 +168,14 @@
         WHERE
             lightname like CONCAT('%',#{searchMessage},'%')
     </select>
+    
+    <select id="getLightDescriptionImage" resultType="string">
+        SELECT
+            images
+        FROM
+            lightdescriptionimages
+        WHERE
+            lightID = #{0}
+    </select>
       
 </mapper>

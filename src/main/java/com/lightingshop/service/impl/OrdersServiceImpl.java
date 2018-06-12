@@ -20,6 +20,7 @@ import com.lightingshop.entity.OrderLights;
 import com.lightingshop.entity.Orders;
 import com.lightingshop.entity.OrdersExample;
 import com.lightingshop.entity.OrdersExample.Criteria;
+import com.lightingshop.entity.User;
 import com.lightingshop.service.IOrdersService;
 import com.lightingshop.util.DateUtil;
 
@@ -40,13 +41,16 @@ public class OrdersServiceImpl implements IOrdersService {
 
     @Transactional
     @Override
-    public String addOrder(List<ShopCartLight> light, Integer userID, BigDecimal totalMoney) {
+    public String addOrder(List<ShopCartLight> light, Integer userID, BigDecimal totalMoney, User user) {
         // TODO Auto-generated method stub
         UUID uuid = UUID.randomUUID();
         String orderID = uuid.toString();
         order.setOrderID(orderID);
         order.setUserID(userID);
         order.setTotalprice(totalMoney);
+        order.setAddress(user.getAddress());
+        order.setReceivephone(user.getPhone());
+        order.setReceivename(user.getUserName());
         String nowDate = null;
         try {
             nowDate = DateUtil.formatDate(new Date());

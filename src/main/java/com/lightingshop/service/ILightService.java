@@ -82,4 +82,11 @@ public interface ILightService {
      */
     LightDescription getLightDescription(Integer lightID);
     
+    /**
+     * 获取商品描述图片地址
+     * @param lightID
+     * @return
+     */
+    String getLightDescriptionImage(Integer lightID);
+    
 }

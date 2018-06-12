@@ -35,7 +35,7 @@ public class OrderController {
         user = (User)session.getAttribute("user");
         Integer userID = user.getUserID();
         String orderID = null;
-        orderID = ordersService.addOrder(light, userID, totalMoney);
+        orderID = ordersService.addOrder(light, userID, totalMoney, user);
         System.out.println(orderID);
         String[] id = new String[1];
         id[0] = orderID;

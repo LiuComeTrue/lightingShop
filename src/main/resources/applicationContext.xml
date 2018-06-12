@@ -103,8 +103,9 @@
     <bean id="multipartResolver"
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <property name="maxUploadSize">
-            <value>1048576</value>
+            <value>10485760</value>
         </property>
+        <property name="maxInMemorySize" value="40960"/>
     </bean>
 	
 </beans>
