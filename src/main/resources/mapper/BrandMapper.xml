@@ -10,5 +10,14 @@
         FROM
             brand
     </select>
+    
+    <select id="getBrandName" parameterType="java.lang.Integer" resultType="string">
+        SELECT
+            brandname
+        FROM
+            brand
+        WHERE
+            brandid = #{id}
+    </select>
 
 </mapper>

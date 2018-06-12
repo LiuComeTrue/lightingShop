@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>首页</title>
+<meta name="keywords" content="商品详情" />
+<meta name="description" content="商品详情" />
+<script src="../js/vendor/jquery-1.12.0.min.js"></script>
+
+
+<!-- vue.js -->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+ <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css" />
+        <link rel="stylesheet" href="../css/font-awesome.min.css" />
+        <!-- Custom CSS -->
+        <link href="../style.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/pagingVue/index.css">
+</head>
+<body>
+
+<header>
+            <div class="header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 hidden-xs">
+                            <div class="header-top-left">
+                                <div class="welcome-msg">
+                                    <span class="default-msg hidden-xs">欢迎来到灯饰店!</span>
+                                    <!-- <span class="phone">Call support free: <span class="number">01234-567890</span></span> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-12" id="userInfo">
+                            <div class="header-top-right">
+                                <ul class="header-links hidden-xs">
+                                    <li><a class="" href="login.html">{{ login }}</a></li>
+                                    <li><a class="" href="regit.html">免费注册</a></li>
+                                    <li><a class="" href="wishList.html">收藏夹</a></li>
+                                    <li><a class="" href="shopcart.html">购物车</a></li>
+                                    <li><a class="" href="myorder.html">我的订单</a></li>
+                                    <li><a class="" href="login.html">退出</a></li>
+                                </ul>                                                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12 col-xs-8">
+                            <div class="logo">
+                                <a href="../index.html"><img src="../img/logo.png" alt="" /></a>
+                            </div>
+                        </div>                  
+                    </div>
+                </div>
+            </div>
+            <div class="main-menu-area hidden-xs hidden-sm">
+                <div class="container">
+                    <div class="row">
+                        <div class="colo-md-12">
+                            <div class="main-menu">
+                                <nav>
+                                    <ul>
+                                        <li><a href="../index.html">Home</a></li>
+                                        <!-- <li><a href="about.html">About</a></li> -->
+                                        <li><a href="shop.html">Shop</a></li>
+                                        <li><a href="help.html">Help</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+<div class="showall">
+    <!--left -->
+    <div class="showbot" id="lightImage">
+        <div id="showbox">            
+            <img v-for="light in lightImages" :src="'../'+light.images" width="400" height="400"/>
+            <!-- <img src="../img/photos/img02.png" width="400" height="400" />
+            <img src="../img/photos/img03.png" width="400" height="400" />
+            <img src="../img/photos/img04.png" width="400" height="400" />
+            <img src="../img/photos/img05.png" width="400" height="400" />
+            <img src="../img/photos/img06.png" width="400" height="400" />   -->                   
+        </div>
+        <!--展示图片盒子-->
+        <div id="showsum">
+        <!--展示图片里边-->
+        </div>
+        <p class="showpage">
+            <a href="javascript:void(0);" id="showlast"> < </a>
+            <a href="javascript:void(0);" id="shownext"> > </a>
+        </p>
+<script>
+var vm2 = new Vue({
+    el: '#lightImage',
+    data: {
+        lightImages: ''
+    },
+    beforeCreate: function() {
+        $.ajax({
+            type: "get",
+            url: "../lightImages/101",
+            dataType: "json",
+            success: function(data){
+                vm2.lightImages = data;
+                //a();
+            },
+            error: function(data){
+                console.log("读取lightImages error!");
+            }
+        });              
+    }
+    
+});
+
+</script>
+    </div>
+    <!--content -->
+    <div class="tb-property" id="mainLight">
+        <div class="tr-nobdr">
+            <h3>{{ light.lightName }}</h3>
+        </div>
+        <div class="txt">
+            <span class="nowprice">￥{{ light.price }}</span>
+            <div class="cumulative">
+                <span class="number ty1">累计售出<br /><em id="add_sell_num_363">{{ light.sales }}</em></span>
+                <span class="number tyu">累计评价<br /><em id="add_sell_num_363">{{ light.comments }}</em></span>
+            </div>
+        </div>
+        <div class="txt-h">
+            <span class="tex-o">分类</span>
+            <ul class="glist" id="glist" data-monitor="goodsdetails_fenlei_click">
+                <li><label>{{ light.category }}</label></li>
+                <li><label>{{ light.brand }}</label></li>
+                <li><label>{{ light.style }}</label></li>
+                <li><label>{{ light.color }}</label></li>
+                <li><label>{{ light.locate }}</label></li>
+            </ul>
+        </div>
+        <div class="gcIpt">
+            <span class="guT">数量</span>
+            <input id="min" name="" type="button" value="-" @click="sub()" />  
+            <input id="text_box" name="" type="text" v-model="quantity" style="width:30px; text-align: center; color: #0F0F0F;"/>  
+            <input id="add" name="" type="button" value="+" @click="add()" />
+            <span class="Hgt">库存{{ vm1.light.stuff }}</span>
+        </div>
+        <div class="nobdr-btns">
+            <button class="addcart hu" @click="addShopCart()"><img src="../img/shop.png" width="25" height="25"/>加入购物车</button>
+            <button class="addcart yh" @click="addWishList()"><img src="../img/ht.png" width="25" height="25"/>加入收藏夹</button>
+        </div>
+        <div class="guarantee">
+            <span>邮费：包邮&nbsp;&nbsp;支持货到付款 <a href=""><img src="../img/me.png"/></a></span>
+        </div>
+    </div>
+</div>                     
+                
+<!-- 商品介紹 -->                
+<div class="gdetail">
+<!-- left -->
+    <div class="aside"  id="other">
+        <h3>看了还看</h3>
+        <dl class="ac-mod-list" v-for="light in lights">
+            <dt><a :href="'light.html?lightID='+light.lightID"><img :src="'../'+light.images"/></a></dt>
+                <dd>
+                    {{ light.lightName }}
+                    <span>￥{{ light.price }}</span>
+                </dd>
+        </dl>
+    </div> 
+<script>
+var detail = document.querySelector('.detail');
+var origOffsetY = detail.offsetTop;
+function onScroll(e) {
+window.scrollY >= origOffsetY ? detail.classList.add('sticky') :
+detail.classList.remove('sticky');
+}
+document.addEventListener('scroll', onScroll); 
+</script>             		 
+    <div class="detail">
+        <div class="active_tab" id="outer">
+            <ul class="act_title_left" id="tab">
+                <li class="act_active">
+				    <a href="#">规格参数</a>
+				</li>
+				<li>
+					<a href="#">商品介绍</a>
+				</li>
+				<li>
+					<a href="#">商品评价</a>
+				</li>
+				<li>
+					<a href="#">售后保障</a>
+				</li>
+			</ul>
+			<div class="clear"></div>
+		</div>
+		<div id="content" class="active_list"> 
+		<!--0-->
+			<div id="ui-a" class="ui-a">
+			    <ul style="display:block;">
+				    <li>商品名称：仙人指路道镜前后双录智能后视镜导航仪行车记录仪后视预警一体机</li>
+					<li>商品编号：ECS001983</li>
+					<li>品牌</li>
+					<li>上架时间：2016-05-24</li>
+					<li>商品毛重：0克</li>
+					<li>库存： 999 </li>
+				</ul>
+			</div>
+												   <!--商品规格-->
+												    	<div id="bit" class="bit">
+												        <ul style="display:none;">
+												            <li><img src="images/ko-1.jpg"/></li>
+												            <li><img src="images/ko-2.jpg"/></li>
+												            <li><img src="images/ko.jpg"/></li>
+												            <li><img src="images/ko-1.jpg"/></li>
+												            <li><img src="images/ko-2.jpg"/></li>
+												                
+												       </ul>
+												       </div>
+												       
+												 <!--商品评价-->      
+												   
+												    <div id="ui-c" class="ui-c">
+												         <ul style="display:none;">
+												         	
+												         </ul>
+												    </div>
+												 <!--售后保障-->
+												 <div id="uic" class="uic">
+												         <ul style="display:none;">
+												         	<p>商品名称：仙人指路道镜前后双录智能后视镜导航仪行车记录仪后视预警一体机</p>
+												         	<p>商品编号：ECS001983</p>
+												         	<p>品牌:威力马哈国产</p>
+												         	<p>上架时间：2016-05-24</p>
+												         	<span><img src="images/ko-1.jpg"/></span>
+												            <span><img src="images/ko-2.jpg"/></span>
+												         </ul>
+												    </div>
+												</div>
+												<script>
+													$(function(){
+														window.onload = function()
+														{
+															var $li = $('#tab li');
+															var $ul = $('#content ul');
+																		
+															$li.mouseover(function(){
+																var $this = $(this);
+																var $t = $this.index();
+																$li.removeClass();
+																$this.addClass('act_active');
+																$ul.css('display','none');
+																$ul.eq($t).css('display','block');
+															})
+														}
+													});  
+												</script>
+                	</div>
+                </div>
+                
+<script type="text/javascript">
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&#]*)/gi,
+        function(m,key,value) {
+            vars[key] = value;
+        }
+    );
+    return vars;
+}
+var lightID = getUrlVars()["lightID"];
+console.log(lightID);
+//var lightID = 101;
+var vm1 = new Vue({
+    el: '#mainLight',
+    data: {
+        light: 'Hello Vue!',
+        quantity: 1
+    },
+    mounted() {
+        $.ajax({
+            type: "get",
+            url: "../light/description/" + lightID,
+            dataType: "json",
+            success: function(data){
+                vm1.light = data;
+            },
+            error: function(data){
+                console.log("读取light all description error!");
+            }
+        });
+    },
+    methods: {
+        sub: function() {
+    		if (vm1.quantity > 1) {
+    			vm1.quantity--;
+    			$('#add').attr('disabled', false);
+    		}
+    		if (vm1.quantity == 1) {
+                $('#min').attr('disabled', true);
+            }
+    	},
+        add: function() {
+        	if (vm1.quantity < vm1.light.stuff) {
+                vm1.quantity++;
+                $('#min').attr('disabled', false);
+            }
+            if (vm1.quantity == vm1.light.stuff) {
+                $('#add').attr('disabled', true);
+            }
+        },
+    	addShopCart: function() {
+    		$.ajax({
+                type: "post",
+                url: "../myShopCart/" + lightID + "/" + vm1.quantity,
+                dataType: "json",
+                success: function(data) {
+                    if (data > 0)
+                    	alert("添加购物车成功");
+                    window.location.href="shopcart.html";
+                },
+                error: function(data){
+                    console.log("addShopCart error!");
+                    if(data.responseText=='loseSession'){  
+                    	alert("请先登录");
+                    	window.location.href="login.html";
+                    } 
+                    
+                }
+            });   		
+    	},
+    	addWishList: function() {
+    		$.ajax({
+                type: "post",
+                url: "../wishList/" + lightID,
+                dataType: "text",
+                success: function(data) {
+                    if (data > 0)
+                        alert("添加收藏夹成功");
+                },
+                error: function(data){
+                    console.log("addWishList error!");                 
+                }
+            });
+    	}
+    }
+});  
+
+var vm3 = new Vue({
+    el: '#other',
+    data: {
+        lights: []
+    },
+    created: function() {
+        $.ajax({
+            type: "get",
+            url: "../bestLight",
+            dataType: "json",
+            success: function(data) {
+                vm3.lights = data;
+                console.log(data);
+            },
+            error: function(data){
+                console.log("读取bestLight error!");
+            }
+        });              
+    }
+});
+</script>
+<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+   $(document).ready(function(){
+      var showproduct = {
+          "boxid":"showbox",
+          "sumid":"showsum",
+          "boxw":400,//宽度,该版本中请把宽高填写成一样
+          "boxh":400,//高度,该版本中请把宽高填写成一样
+          "sumw":60,//列表每个宽度,该版本中请把宽高填写成一样
+          "sumh":60,//列表每个高度,该版本中请把宽高填写成一样
+          "sumi":7,//列表间隔
+          "sums":5,//列表显示个数
+          "sumsel":"sel",
+          "sumborder":1,//列表边框，没有边框填写0，边框在css中修改
+          "lastid":"showlast",
+          "nextid":"shownext"
+          };//参数定义                        
+     $.ljsGlasses.pcGlasses(showproduct);//方法调用，务必在加载完后执行
+  }); 
+   
+   var userInfo = new Vue({
+       el: '#userInfo',
+       data: {
+           login: '请登录'
+       },
+       mounted() {
+           $.ajax({
+               type: "get",
+               url: "../user",
+               dataType: "json",
+               success: function(data){
+                   if (data != "null")      
+                       console.log(data);
+                       userInfo.login = "欢迎您, " + data.userName;
+               },
+               error: function(data){
+                   console.log("读取user error!");
+               }
+           });
+       }
+    });
+</script>
+<link rel="stylesheet" type="text/css" href="../css/normalize.css"/>
+</body>
+</html>

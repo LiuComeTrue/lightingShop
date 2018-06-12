@@ -1,0 +1,126 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="../img/themes/icon.png"/>
+<title>降临-欢迎注册</title>
+<link href="../css/regit/login.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all" />
+<link href="../css/regit/demo.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all" />
+<script src="../js/regit/jquery-1.12.4.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- <script src="../js/regit/yzm.js" type="text/javascript" charset="utf-8"></script> -->
+</head>
+<body>
+
+<div class="header">
+  <h1 class="headerLogo"><a title="降临灯饰店" target="_blank"><img alt="logo" src="../img/themes/logo4.png"></a></h1>
+	<div class="headerNav">
+		<a target="_blank" >关于降临</a>
+		<a target="_blank" >开发团队</a>
+		<a target="_blank" >意见反馈</a>
+		<a target="_blank" >帮助</a>
+	</div>
+</div>
+
+<div class="banner">
+
+<div class="login-aside">
+  <div id="o-box-up"></div>
+  <div id="o-box-down"  style="table-layout:fixed;">
+   <div class="error-box"></div>
+   
+   <form class="registerform">
+   <div class="fm-item">
+	   <label for="logonId" class="form-label">邮箱：</label>
+	   <input type="text" placeholder="输入邮箱" maxlength="100" id="username" class="i-text" ajaxurl="demo/valid.jsp"  datatype="s6-18" >    
+       <div class="ui-form-explain"></div>
+  </div>
+  
+  <div class="fm-item">
+	   <label for="logonId" class="form-label">密码：</label>
+	   <input type="password" placeholder="输入密码" maxlength="100" id="password" class="i-text" datatype="*6-16" >    
+       <div class="ui-form-explain"></div>
+  </div>
+  
+  <div class="fm-item">
+       <label for="logonId" class="form-label">确认密码：</label>
+       <input type="password" placeholder="再次输入密码" maxlength="100" id="password" class="i-text" datatype="*6-16" >    
+       <div class="ui-form-explain"></div>
+  </div>
+  
+  <div class="fm-item">
+       <label for="logonId" class="form-label">姓名：</label>
+       <input type="text" placeholder="输入收货姓名" maxlength="100" id="name" class="i-text" datatype="*6-16" >    
+       <div class="ui-form-explain"></div>
+  </div>
+  
+  <div class="fm-item">
+       <label for="logonId" class="form-label">手机号：</label>
+       <input type="text" placeholder="输入手机号" maxlength="100" id="phone" class="i-text" datatype="*6-16" >    
+       <div class="ui-form-explain"></div>
+  </div>
+  
+  <div class="fm-item">
+       <label for="logonId" class="form-label">收货地址：</label>
+       <input type="text" placeholder="输入收货地址" maxlength="100" id="address" class="i-text" datatype="*6-16" >    
+       <div class="ui-form-explain"></div>
+  </div>
+  
+<!--   <div class="fm-item pos-r">
+	   <label for="logonId" class="form-label">验证码：</label>
+	   <input type="text" placeholder="输入验证码" maxlength="100" id="yzm" class="i-text yzm">    
+        <span id="code"></span>
+  </div> -->
+  
+  
+  <div class="fm-item">
+	   <label for="logonId" class="form-label"></label>
+	   <input type="button" value="注册"  id="send-btn" class="btn-login" onclick="regiter()">
+	   <input type="button" value="登录"  id="send-btn" class="btn-login" onclick="login()"> 
+       <div class="ui-form-explain"></div>
+  </div>
+  </form>
+  </div>
+</div>
+
+	<div class="bd">
+		<ul>
+			<li style="background:url(../img/themes/bg55.jpg) #CCE1F3 center 0 no-repeat;"><a target="_blank" ></a></li>
+			<li style="background:url(../img/themes/bg.jpg) #BCE0FF center 0 no-repeat;"><a target="_blank" ></a></li>
+		</ul>
+	</div>
+
+	<div class="hd"><ul></ul></div>
+</div>
+
+
+<div class="banner-shadow"></div>
+
+<div class="footer">
+   <p>Copyright &copy; 2018.Company name All rights reserved.</p>
+</div>
+<div  language='JavaScript' charset='gb2312'></script></div>
+<script>
+function regiter() {
+    $.ajax({
+        type: "post",
+        url: "../user/regiter/" + $("#username").val() + "/" + $("#password").val() + "/" + $("#name").val() + "/" + $("#phone").val() + "/" + $("#address").val(),
+        dataType: "json",
+        success: function(data) {
+        	console.log(data);
+        	if (data > 0) {
+                alert("注册成功");               
+                window.location.href="login.html";
+            } else
+                alert("注册失败！");
+        },
+        error: function(data) {
+            console.log("regiter error!");
+        }
+    });
+}
+function login() {
+	window.location.href="login.html";
+}
+</script>
+</body>
+</html>

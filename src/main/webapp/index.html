@@ -44,14 +44,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-xs-12 col-sm-12">
+                        <div class="col-md-6 col-xs-12 col-sm-12" id="userInfo">
                             <div class="header-top-right">
                                 <ul class="header-links hidden-xs">
-                                    <li><a class="my-account" href="#">请登录</a></li>
-                                    <li><a class="" href="#">免费注册</a></li>
-                                    <li><a class="" href="#">收藏夹</a></li>
-                                    <li><a class="my-wishlist" href="#">购物车</a></li>
-                                    <li><a class="login" href="#">退出</a></li>
+                                    <li><a class="" href="view/login.html">{{ login }}</a></li>
+                                    <li><a class="" href="view/regit.html">免费注册</a></li>
+                                    <li><a class="" href="view/wishList.html">收藏夹</a></li>
+                                    <li><a class="" href="view/shopcart.html">购物车</a></li>
+                                    <li><a class="" href="view/myorder.html">我的订单</a></li>
+                                    <li><a class="" href="view/login.html">退出</a></li>
                                 </ul>                                                           
                             </div>
                         </div>
@@ -87,7 +88,7 @@
                                         <li><a href="index.html">Home</a></li>
 										<!-- <li><a href="about.html">About</a></li> -->
 										<li><a href="view/shop.html">Shop</a></li>
-                                        <li><a href="contact.html">Help</a></li>
+                                        <li><a href="view/help.html">Help</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -159,14 +160,14 @@
                                 <!-- single-product-start -->
                                 <div class="single-product">
                                     <div class="single-product-img">
-                                        <a href="#"><img :src="light.images" alt="" /></a>
+                                        <a :href="'view/light.html?lightID='+light.lightID"><img :src="light.images" alt="" /></a>
                                         <span class="new-box">
                                                 <span class="new">New</span>
                                         </span>
                                     </div>
                                     <div class="single-product-content">
                                         <div class="product-title">
-                                            <h5><a href="#">{{ light.lightID }}</a></h5>
+                                            <h5><a href="#">{{ light.lightName }}</a></h5>
                                         </div>
                                         <!-- <div class="rating">
                                             <div class="star star-on"></div>
@@ -179,11 +180,11 @@
                                             <span class="price">￥{{ light.price }}</span>
                                             <!-- <span class="old-price">£70.00</span> -->
                                         </div>
-                                        <div class="product-action">
+                                        <!-- <div class="product-action">
                                             <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
                                             <a class="add-wishlist" href="#" title="add to wishlist"><i class="fa fa-heart"></i></a>
                                             <a class="quick-view" href="#" title="quick view" data-toggle="modal" data-target="#myModal"><i class="fa fa-search"></i></a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <!-- single-product-end -->
@@ -204,12 +205,12 @@
                             <div class="best-seller-content" id="topLight">
                                 <div class="single-new-product" v-for="light in topLights">
                                     <div class="product-img">
-                                        <a href="#"><img :src="light.images" alt="" /></a>
+                                        <a :href="'view/light.html?lightID='+light.lightID"><img :src="light.images" alt="" /></a>
                                     </div>
                                     <div class="product-details">
                                         <div class="single-product-content">
                                             <div class="product-title">
-                                                <h5><a href="#">{{ light.lightID }}</a></h5>
+                                                <h5><a href="#">{{ light.lightName }}</a></h5>
                                             </div>
                                             <!-- <div class="rating">
                                                 <div class="star star-on"></div>
@@ -222,9 +223,9 @@
                                                 <span class="price">￥{{ light.price }}</span>
                                                 <!-- <span class="old-price">£70.00</span> -->
                                             </div>
-                                            <div class="product-action">
+                                            <!-- <div class="product-action">
                                                 <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>                               
@@ -237,12 +238,12 @@
                             <div class="best-seller-content" id="bestLight">
                                 <div class="single-new-product" v-for="light in bestLights">
                                     <div class="product-img">
-                                        <a href="#"><img :src="light.images" alt="" /></a>
+                                        <a :href="'view/light.html?lightID='+light.lightID"><img :src="light.images" alt="" /></a>
                                     </div>
                                     <div class="product-details">
                                         <div class="single-product-content">
                                             <div class="product-title">
-                                                <h5><a href="#">{{ light.lightID }}</a></h5>
+                                                <h5><a href="#">{{ light.lightName }}</a></h5>
                                             </div>
                                             <!-- <div class="rating">
                                                 <div class="star star-on"></div>
@@ -255,9 +256,9 @@
                                                 <span class="price">￥{{ light.price }}</span>
                                                 <!-- <span class="old-price">£70.00</span> -->
                                             </div>
-                                            <div class="product-action">
+                                            <!-- <div class="product-action">
                                                 <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>                               
@@ -270,12 +271,12 @@
                             <div class="best-seller-content" id="ratedLight">
                                 <div class="single-new-product" v-for="light in ratedLights">
                                     <div class="product-img">
-                                        <a href="#"><img :src="light.images" alt="" /></a>
+                                        <a :href="'view/light.html?lightID='+light.lightID"><img :src="light.images" alt="" /></a>
                                     </div>
                                     <div class="product-details">
                                         <div class="single-product-content">
                                             <div class="product-title">
-                                                <h5><a href="#">{{ light.lightID }}</a></h5>
+                                                <h5><a href="#">{{ light.lightName }}</a></h5>
                                             </div>
                                             <!-- <div class="rating">
                                                 <div class="star star-on"></div>
@@ -288,9 +289,9 @@
                                                 <span class="price">￥{{ light.price }}</span>
                                                 <!-- <span class="old-price">£70.00</span> -->
                                             </div>
-                                            <div class="product-action">
+                                           <!--  <div class="product-action">
                                                 <button class="btn btn-default add-cart" title="add to cart">Add to cart</button>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>                                
@@ -708,7 +709,28 @@
                 });
             }
          });
-         </script>
+        var vm5 = new Vue({
+            el: '#userInfo',
+            data: {
+                login: '请登录'
+            },
+            mounted() {
+                $.ajax({
+                    type: "get",
+                    url: "user",
+                    dataType: "json",
+                    success: function(data){
+                        if (data != "null")      
+                        	console.log(data);
+                            vm5.login = "欢迎您, " + data.userName;
+                    },
+                    error: function(data){
+                        console.log("读取user error!");
+                    }
+                });
+            }
+         });
+        </script>
         
         <!-- bootstrap js -->
         <script src="js/bootstrap.min.js"></script>

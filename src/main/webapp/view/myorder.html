@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>我的订单</title>
+<link rel="stylesheet" href="../css/bootstrapTable/bootstrap.min.css">
+<link rel="stylesheet" href="../css/bootstrapTable/bootstrap-table.css">
+<script src="../js/bootstrapTable/jquery.min.js"></script>
+<script src="../js/bootstrapTable/bootstrap.min.js"></script>
+<script src="../js/bootstrapTable/bootstrap-table.js"></script>
+
+ <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css" />
+        <link rel="stylesheet" href="../css/font-awesome.min.css" />
+        <!-- Custom CSS -->
+        <link href="../style.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/pagingVue/index.css">
+</head>
+<body>
+
+<header>
+            <div class="header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 hidden-xs">
+                            <div class="header-top-left">
+                                <div class="welcome-msg">
+                                    <span class="default-msg hidden-xs"><a href="shop.html" style="color:white">欢迎来到灯饰店!</a></span>
+                                    <!-- <span class="phone">Call support free: <span class="number">01234-567890</span></span> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-12" id="userInfo">
+                            <div class="header-top-right">
+                                <ul class="header-links hidden-xs">
+                                    <li><a class="" href="login.html">{{ login }}</a></li>
+                                    <li><a class="" href="regit.html">免费注册</a></li>
+                                    <li><a class="" href="wishList.html">收藏夹</a></li>
+                                    <li><a class="" href="shopcart.html">购物车</a></li>
+                                    <li><a class="" href="myorder.html">我的订单</a></li>
+                                    <li><a class="" href="login.html">退出</a></li>
+                                </ul>                                                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-middle"></div>
+        </header>
+
+<div class="container">
+    <h1>我的订单</h1>
+    <table id="table" class="table table-striped"
+           data-height="460"
+           data-url="../order"
+           data-pagination="true"
+           data-formatter="true"
+           data-page-size="2"
+           data-page-list="[5,8,10]"
+           data-pagination-first-text="First"
+           data-pagination-pre-text="Previous"
+           data-pagination-next-text="Next"
+           data-pagination-last-text="Last">
+     
+    </table>
+    <div class="modal fade" id="modalTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Modal table</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="table1"
+                        data-height="299"
+                        data-formatter="true">
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <!-- vue.js -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+
+function refresh() {
+	var opt = {
+	        url: "../order",
+	        silent: true,	        
+	    };
+	$("#table").bootstrapTable('refresh', opt);
+}
+
+function operateFormatter(value, row, index) {
+    //var value = 0;
+	if (value == 0)
+		return [
+	        '<span class="label label-info">待发货</span>&nbsp&nbsp&nbsp',
+	        '<button type="button" class="cancel btn btn-warning">取消订单</button>',       
+	    ].join('');
+	else if (value == 1)
+		return [
+            '<span class="label label-primary">申请退货中...</span>'      
+        ].join('');
+	else if (value == 2)
+		return [
+            '<span class="label label-default">已发货</span>&nbsp&nbsp&nbsp',
+            '<button type="button" class="confirm btn btn-success">确定收货</button>',      
+        ].join('');
+	else if (value == 3)
+		return [
+			'<span class="label label-default">已退货</span>'      
+        ].join('');
+	else if (value == 4)
+		return [
+            '<span class="label label-default">订单已取消</span>'      
+        ].join('');
+	else if (value == 5) 
+		return [
+	        '<button type="button" class="pay btn btn-info">待付款</button>&nbsp&nbsp&nbsp',
+	        '<button type="button" class="cancel btn btn-warning">取消订单</button>',       
+	    ].join('');
+	else if (value == 6)
+		return [
+            '<span class="label label-success">订单已完成</span>&nbsp&nbsp&nbsp',
+            '<button type="button" class="refund btn label-danger">申请退货</button>',      
+        ].join('');
+}
+window.operateEvents = {        
+    'click .cancel': function (e, value, row, index) {
+        $.ajax({
+            type: "PUT",
+            url: "../order/" + row.orderID,
+            dataType: "text",
+            success: function(data){
+                alert("订单已取消");
+                refresh();                            
+            },
+            error: function(data){
+                console.log("cancel order error!");
+            }
+        });    
+    },
+    'click .refund': function (e, value, row, index) {
+        $.ajax({
+            type: "DELETE",
+            url: "../order/" + row.orderID,
+            dataType: "text",
+            success: function(data){
+                alert("已向商家发出退货请求，请等待商家处理");
+                refresh();                            
+            },
+            error: function(data){
+                console.log("return of goods error!");
+            }
+        });    
+    },
+    'click .pay': function (e, value, row, index) {
+        window.location.href="confirmOrder.html?orderID="+row.orderID;    	   
+    },
+    'click .confirm': function (e, value, row, index) {
+        $.ajax({
+            type: "PUT",
+            url: "../order/confirm/" + row.orderID,
+            dataType: "text",
+            success: function(data){
+                refresh();                            
+            },
+            error: function(data){
+                console.log("confirm receive goods error!");
+            }
+        });    
+    }
+};  
+
+var $table = $('#table1');
+$table.bootstrapTable({
+    columns: [
+        {
+            title: 'image',
+            field: 'image',
+            formatter: function(value, row, index){
+                var s1 = '<a class = "view"  href="light.html?lightID='+row.lightID;
+                var s2 = '"><img style="width:70;height:30px;"  src="../'+row.image+'" /></a>';                   
+                return s1 + s2;                            
+            }
+        },
+        {
+            title: 'lightName',
+            field: 'lightName'
+        },
+        {
+            title: 'singlePrice',
+            field: 'price'
+        },
+        {
+            title: 'quantity',
+            field: 'quantity'
+        },
+    ]
+    
+});
+ 
+window.modalTable = {
+	'click .description': function (e, value, row, index) {
+		$('#modalTable').on('shown.bs.modal', function () {
+	        var opt = {
+		        url: "../order/"+ row.orderID,
+		        silent: true,           
+		    };
+		    $table.bootstrapTable('refresh', opt);		    			    	    	
+		});	  
+	}
+}
+
+$('#table').bootstrapTable({        
+        url:"../order",          
+        columns: [
+            {
+                title: 'orderID',
+                field: 'orderID',
+                align: 'center',
+                valign: 'middle'
+                //footerFormatter: totalTextFormatter
+            },
+            {
+                title: 'lights',
+                field: 'lightNames',
+                sortable: true,
+                align: 'center',
+                valign: 'middle',
+                formatter: function(value, row, index){
+                    var s = '<button class="btn description" data-toggle="modal" data-target="#modalTable">商品详情</button>'                  
+                        return s;                            
+                },
+                events: modalTable
+                //footerFormatter: totalTextFormatter
+            },
+            {
+                title: 'totalprice',
+                field: 'totalprice',
+                sortable: true,
+                align: 'center',
+                valign: 'middle'
+                
+                //footerFormatter: totalTextFormatter
+            },
+            {
+                title: 'date',
+                field: 'date',
+                sortable: true,
+                align: 'center',
+                valign: 'middle'
+                
+                //footerFormatter: totalTextFormatter
+            },
+            {
+                field: 'orderstateid',
+                title: 'status',
+                align: 'center',
+                events: operateEvents,
+                formatter: operateFormatter
+            }
+        ]
+    });
+
+var userInfo = new Vue({
+    el: '#userInfo',
+    data: {
+        login: '请登录'
+    },
+    mounted() {
+        $.ajax({
+            type: "get",
+            url: "../user",
+            dataType: "json",
+            success: function(data){
+                if (data != "null")      
+                    console.log(data);
+                    userInfo.login = "欢迎您, " + data.userName;
+            },
+            error: function(data){
+                console.log("读取user error!");
+            }
+        });
+    }
+ });
+</script>
+</body>
+</html>

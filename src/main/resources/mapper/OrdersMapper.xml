@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lightingshop.dao.OrdersDao">
+   <!-- 订单-灯联合查询结果集 -->
+  <resultMap id="OrderLightsResultMap" type="com.lightingshop.entity.Orders">
+    <id column="orderID" jdbcType="VARCHAR" property="orderID" />
+    <result column="userID" jdbcType="INTEGER" property="userID" />
+    <result column="totalPrice" jdbcType="DECIMAL" property="totalprice" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
+    <result column="orderStateID" jdbcType="INTEGER" property="orderstateid" />
+    <result column="showOrNot" jdbcType="INTEGER" property="showornot" />
+    <result column="receiveName" jdbcType="VARCHAR" property="receivename" />
+    <result column="receivePhone" jdbcType="VARCHAR" property="receivephone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="postalCode" jdbcType="VARCHAR" property="postalcode" />
+    <result column="postType" jdbcType="VARCHAR" property="posttype" />
+    <result column="paymentType" jdbcType="VARCHAR" property="paymenttype" />
+    <result column="postFee" jdbcType="DECIMAL" property="postfee" />
+    <collection property="lights" ofType="OrderLights">
+        <id column="lightID" property="lightID" />
+        <id column="OrderIDWithList" property="orderID" />
+        <result column="quantity" property="quantity" />
+        <result column="singleprice" property="singleprice" />
+    </collection>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    orderID, userID, totalPrice, date, orderStateID, showOrNot, receiveName, receivePhone, 
+    address, email, postalCode, postType, paymentType, postFee
+  </sql>
+  <sql id="Lights_Column_List">
+    orderID, userID, totalPrice, date, orderStateID, showOrNot, receiveName, receivePhone, 
+    address, email, postalCode, postType, paymentType, postFee 
+  </sql>
+  
+  <!-- 查询订单还有订单里灯的信息 -->
+  <select id="selectByExampleWithLights" parameterType="com.lightingshop.entity.OrdersExample" resultMap="OrderLightsResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    o.*, l.lightID , l.quantity, l.singlePrice , l.orderID 'OrderIDWithList'
+    from orders o
+    left join orderlights l on o.orderID=l.orderID
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+    <insert id="insert" parameterType="com.lightingshop.entity.Orders">
+    insert into orders (orderID, userID, totalPrice, 
+      date, orderStateID, showOrNot, 
+      receiveName, receivePhone, address, 
+      email, postalCode, postType, 
+      paymentType, postFee)
+    values (#{orderID,jdbcType=VARCHAR}, #{userID,jdbcType=INTEGER}, #{totalprice,jdbcType=DECIMAL}, 
+      #{date,jdbcType=VARCHAR}, #{orderstateid,jdbcType=INTEGER}, #{showornot,jdbcType=INTEGER}, 
+      #{receivename,jdbcType=VARCHAR}, #{receivephone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{postalcode,jdbcType=VARCHAR}, #{posttype,jdbcType=VARCHAR}, 
+      #{paymenttype,jdbcType=VARCHAR}, #{postfee,jdbcType=DECIMAL})
+  </insert>
+
+  <update id="updateOrderStatus">
+      UPDATE orders
+      SET
+          orderStateID=#{1}
+      WHERE
+          orderID=#{0}
+  </update>
+</mapper>

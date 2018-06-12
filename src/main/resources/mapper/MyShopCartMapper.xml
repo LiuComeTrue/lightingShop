@@ -6,9 +6,48 @@
     
     <insert id="addMyShopCart" keyColumn="shopCardID" keyProperty="shopCardID" useGeneratedKeys="true" parameterType="MyShopCart">
         INSERT INTO
-            myshopcart(lightID, userID, addDate)
+            myshopcart(lightID, userID, quantity, addDate)
         VALUES
-            (#{lightID}, #{userID}, #{addDate})
+            (#{lightID}, #{userID}, #{quantity}, #{addDate})
     </insert>
+    
+    <select id="shopCartExist" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            myshopcart
+        WHERE
+            lightid=#{0} AND userid=#{1}      
+    </select>
+    
+    <update id="updateMyShopCart" parameterType="MyShopCart">
+        update
+            myshopcart
+        SET
+            quantity = quantity + #{quantity}
+        WHERE
+            lightid=#{lightID} AND userid=#{userID}
+    </update>
+    
+    <select id="listShopCartLight" parameterType="java.lang.Integer" resultType="MyShopCart">
+        SELECT
+            *
+        FROM
+            myshopcart
+        WHERE
+            userid = #{userid}      
+    </select>
+    
+    <delete id="deleteMyShopCart" >
+        DELETE FROM
+            myshopcart
+        WHERE
+            lightid IN
+            <foreach collection="lightID" item="item" index="index" open="(" separator="," close=")">
+                #{item}  
+            </foreach> 
+        AND
+            userid = #{userID}
+    </delete>
       
 </mapper>

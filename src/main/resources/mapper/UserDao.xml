@@ -4,46 +4,41 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lightingshop.dao.UserDao">
 
-	<select id="getUserById" resultType="User" parameterType="int">
+	<select id="getUserById" resultType="User">
 		SELECT
-			id,
-			name,
-			password
+		    *
 		FROM
-			user
+		    user
 		WHERE
-			id = #{id}
+		    userID = #{0}
+		
 	</select>
 	
 	<select id="listUser" resultType="User">
-		SELECT
-			id,
-			name,
-			password
-		FROM
-			user
+		
 	</select>
 	
 	<select id="checkUser" resultType="String" parameterType="User">
-		SELECT
-			name
-		FROM
-			user
-		WHERE
-			id = #{id} and password = #{password}
+		
 	</select>
 	
 	<update id="updateUser" parameterType="User">
-		Update 
-			user
-		<set>
-			<if test="name != null">
-				name = #{name},
-			</if>
-			<if test="password != null">
-				password = #{password}
-			</if>
-		</set>	
+
 	</update>
+	
+	<insert id="regiter">
+	    INSERT INTO
+	        user(loginID, loginPwd, userName, phone, address)
+	    VALUES (#{0}, #{1}, #{2}, #{3}, #{4})	    
+	</insert>
+	
+	<select id="login" resultType="User">
+	    SELECT
+	        *
+	    FROM
+	        user
+	    WHERE
+	       loginid=#{0} AND loginpwd=#{1}
+	</select>
 	
 </mapper>

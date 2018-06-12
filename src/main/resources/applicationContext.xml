@@ -11,7 +11,7 @@
 			http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 	
 	<!-- 配置整合mybatis过程 -->
 	<!-- 1.配置数据库相关参数properties的属性：${url} -->
@@ -88,11 +88,13 @@
 	
 	<!-- 扫描包下JavaBean的注解 -->
 	<context:component-scan base-package="com.lightingshop.entity" />
+	<context:component-scan base-package="com.lightingshop.dto" />
 	
 	<!-- 配置拦截器 -->
-	<!-- <mvc:interceptors>
+<!-- 	<mvc:interceptors>
 	   <mvc:interceptor>
 	       <mvc:mapping path="/*"/>
+	       <mvc:mapping path="/index.html"/>	         
 	       <bean class="com.lightingshop.interceptor.LoginInterceptor"></bean>
 	   </mvc:interceptor>
 	</mvc:interceptors> -->

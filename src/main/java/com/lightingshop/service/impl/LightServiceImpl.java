@@ -7,7 +7,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lightingshop.dao.BrandDao;
+import com.lightingshop.dao.CategoryDao;
+import com.lightingshop.dao.CommentDao;
 import com.lightingshop.dao.LightDao;
+import com.lightingshop.dao.StyleDao;
+import com.lightingshop.dto.LightDescription;
 import com.lightingshop.entity.Light;
 import com.lightingshop.service.ILightService;
 
@@ -94,6 +99,45 @@ public class LightServiceImpl implements ILightService {
         int size = 2;
         String allPages = String.valueOf((int)Math.ceil(Double.parseDouble(all) / size));
         return allPages;
+    }
+
+    @Autowired
+    private LightDescription lightDescription;
+    
+    @Autowired
+    private Light light;
+    
+    @Autowired
+    private CategoryDao categoryDao;
+    
+    @Autowired
+    private BrandDao brandDao;
+    
+    @Autowired
+    private StyleDao styleDao;
+    
+    @Autowired
+    private CommentDao commentDao;
+    
+    @Override
+    public LightDescription getLightDescription(Integer lightID) {
+        // TODO Auto-generated method stub
+        light = lightDao.getLightByID(lightID);
+        lightDescription.setLightID(lightID);
+        lightDescription.setColor(light.getColor());
+        lightDescription.setDescription(light.getDescription());
+        lightDescription.setLightName(light.getLightName());
+        lightDescription.setLocate(light.getLocate());
+        lightDescription.setPrice(light.getPrice());
+        lightDescription.setSales(light.getSales());
+        lightDescription.setScore(light.getScore());
+        lightDescription.setStuff(light.getStuff());
+        
+        lightDescription.setCategory(categoryDao.getCategoryName(light.getCategoryID()));
+        lightDescription.setBrand(brandDao.getBrandName(light.getBrandID()));
+        lightDescription.setStyle(styleDao.getStyleName(light.getStyleID()));
+        lightDescription.setComments(commentDao.CountComments(lightID));
+        return lightDescription;
     }
 
 }

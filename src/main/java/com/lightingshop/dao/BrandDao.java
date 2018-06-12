@@ -11,4 +11,11 @@ public interface BrandDao {
      * @return
      */
     List<Brand> listBrand();
+    
+    /**
+     * 获取品牌名称
+     * @param brandID
+     * @return
+     */
+    String getBrandName(Integer brandID);
 }

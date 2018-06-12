@@ -49,14 +49,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-xs-12 col-sm-12">
+                        <div class="col-md-6 col-xs-12 col-sm-12" id="userInfo">
                             <div class="header-top-right">
                                 <ul class="header-links hidden-xs">
-                                    <li><a class="my-account" href="#">请登录</a></li>
-                                    <li><a class="" href="#">免费注册</a></li>
-                                    <li><a class="" href="#">收藏夹</a></li>
-                                    <li><a class="my-wishlist" href="#">购物车</a></li>
-                                    <li><a class="login" href="#">退出</a></li>
+                                    <li><a class="" href="login.html">{{ login }}</a></li>
+                                    <li><a class="" href="regit.html">免费注册</a></li>
+                                    <li><a class="" href="wishList.html">收藏夹</a></li>
+                                    <li><a class="" href="shopcart.html">购物车</a></li>
+                                    <li><a class="" href="myorder.html">我的订单</a></li>
+                                    <li><a class="" href="login.html">退出</a></li>
                                 </ul>                                                           
                             </div>
                         </div>
@@ -68,7 +69,7 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-12 col-xs-8">
                             <div class="logo">
-                                <a href="index.html"><img src="img/logo.png" alt="" /></a>
+                                <a href="../index.html"><img src="../img/logo.png" alt="" /></a>
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-6 hidden-xs">
@@ -87,10 +88,10 @@
                             <div class="main-menu">
                                 <nav>
                                     <ul>
-                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="../index.html">Home</a></li>
                                         <!-- <li><a href="about.html">About</a></li> -->
-                                        <li><a href="view/shop.html">Shop</a></li>
-                                        <li><a href="contact.html">Help</a></li>
+                                        <li><a href="shop.html">Shop</a></li>
+                                        <li><a href="help.html">Help</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -106,7 +107,7 @@
                 <div class="row">
                     <div class="col-md-12 col-xs-12">
                         <div class="breadcrumb">
-                            <a title="Return to Home" href="index.html">
+                            <a title="Return to Home" href="../index.html">
                                 <i class="icon-home"></i>
                             </a>
                             <span class="navigation-page">
@@ -237,7 +238,7 @@
                                                         <!-- single-product-start -->
                                                         <div class="single-product">
                                                             <div class="single-product-img">
-                                                                <a href="#">
+                                                                <a :href="'light.html?lightID='+light.lightID">
                                                                     <img :src="'../'+light.images" alt="" />
                                                                 </a>
                                                                 <span class="sale-box">
@@ -250,7 +251,7 @@
                                                             <div class="single-product-content">
                                                                 <div class="product-title">
                                                                     <h5>
-                                                                        <a href="#">{{ light.lightID }}</a>
+                                                                        <a href="#">{{ light.lightName }}</a>
                                                                     </h5>
                                                                 </div>
                                                                 <!-- <div class="rating">
@@ -263,7 +264,7 @@
                                                                 <div class="price-box">
                                                                     <span class="price">￥{{ light.price }}</span>                                                                  
                                                                 </div>
-                                                                <div class="product-action">
+                                                                <!-- <div class="product-action">
                                                                     <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
                                                                     <a class="add-wishlist" href="#" title="add to wishlist">
                                                                         <i class="fa fa-heart"></i>
@@ -271,7 +272,7 @@
                                                                     <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
                                                                         <i class="fa fa-search"></i>
                                                                     </a>
-                                                                </div>
+                                                                </div> -->
                                                             </div>
                                                         </div>
                                                         <!-- single-product-end -->
@@ -320,7 +321,7 @@
                                                                                 <span class="price">￥{{ light.price }}</span>
                                                                             </div>
                                                                             <p class="product-desc">{{ light.description }}</p>
-                                                                            <div class="product-action">
+                                                                            <!-- <div class="product-action">
                                                                                 <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
                                                                                 <a class="add-wishlist" href="#" title="add to wishlist">
                                                                                     <i class="fa fa-heart"></i>
@@ -328,7 +329,7 @@
                                                                                 <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
                                                                                     <i class="fa fa-search"></i>
                                                                                 </a>
-                                                                            </div>
+                                                                            </div> -->
                                                                             <div class="availability">
                                                                                 <span>In stock</span>
                                                                             </div>
@@ -982,6 +983,28 @@
                }
             });  
         }
+        
+        var userInfo = new Vue({
+            el: '#userInfo',
+            data: {
+                login: '请登录'
+            },
+            mounted() {
+                $.ajax({
+                    type: "get",
+                    url: "../user",
+                    dataType: "json",
+                    success: function(data){
+                        if (data != "null")      
+                            console.log(data);
+                            userInfo.login = "欢迎您, " + data.userName;
+                    },
+                    error: function(data){
+                        console.log("读取user error!");
+                    }
+                });
+            }
+         });
         </script>
     </body>
 </html>

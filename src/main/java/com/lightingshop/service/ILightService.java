@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.lightingshop.dto.LightDescription;
 import com.lightingshop.entity.Light;
 
 public interface ILightService {
@@ -74,5 +75,11 @@ public interface ILightService {
      * @return
      */
     String getSearchPages(String searchMessage);
+    
+    /**
+     * 获取某一灯饰的详情信息，封装为LightDescription
+     * @return
+     */
+    LightDescription getLightDescription(Integer lightID);
     
 }

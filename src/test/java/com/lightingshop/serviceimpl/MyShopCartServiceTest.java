@@ -13,6 +13,6 @@ public class MyShopCartServiceTest extends BaseTest {
     
     @Test
     public void test() {
-        System.out.println(myShopCartService.addMyShopCart(101, 101));
+        System.out.println(myShopCartService.addMyShopCart(101, 101, 1));
     }
 }

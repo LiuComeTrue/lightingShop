@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lightingshop.dto.LightDescription;
 import com.lightingshop.entity.Light;
 import com.lightingshop.service.ILightService;
 
@@ -62,6 +63,13 @@ public class LightController {
     public String getSearchPages(@PathVariable String searchMessage) {
         
         return lightService.getSearchPages(searchMessage);
+    }
+    
+    @RequestMapping("/description/{lightID}")
+    @ResponseBody
+    public LightDescription getLightDescription(@PathVariable Integer lightID) {
+        
+        return lightService.getLightDescription(lightID);
     }
     
 }

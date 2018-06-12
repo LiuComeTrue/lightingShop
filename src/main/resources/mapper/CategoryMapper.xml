@@ -10,5 +10,14 @@
         FROM
             category
     </select>
+    
+    <select id="getCategoryName" parameterType="java.lang.Integer" resultType="string">
+        SELECT
+            categoryname
+        FROM
+            category
+        WHERE
+            categoryid = #{id}
+    </select>
 
 </mapper>

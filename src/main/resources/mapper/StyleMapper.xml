@@ -10,5 +10,14 @@
         FROM
             style
     </select>
+    
+    <select id="getStyleName" parameterType="java.lang.Integer" resultType="string">
+        SELECT
+            stylename
+        FROM
+            style
+        WHERE
+            styleid = #{id}
+    </select>
 
 </mapper>

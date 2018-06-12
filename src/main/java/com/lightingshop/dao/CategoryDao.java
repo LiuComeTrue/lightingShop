@@ -11,4 +11,11 @@ public interface CategoryDao {
      * @return
      */
     List<Category> listCategory();
+    
+    /**
+     * 获取分类名称
+     * @param categoryID
+     * @return
+     */
+    String getCategoryName(Integer categoryID);
 }

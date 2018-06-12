@@ -11,4 +11,11 @@ public interface StyleDao {
      * @return
      */
     List<Style> listStyle();
+    
+    /**
+     * 获取风格名称
+     * @param styleName
+     * @return
+     */
+    String getStyleName(Integer styleName);
 }
