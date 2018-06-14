@@ -28,10 +28,14 @@ public class CountController {
 		
 		List<String> id = new ArrayList();
 		List<String> num = new ArrayList();
+		int i=0;
 		List<OrderLightCount> list = countService.setCountLight(n);
 		for(OrderLightCount o : list) {
-			id.add("灯饰ID:"+o.getLightID().toString());
+			id.add("ID"+o.getLightID().toString());
 			num.add(o.getSum().toString());
+			i++;
+			if(i==10)//修改显示统计销售量数目
+				break;
 		}
 		count.setLightID(id);
 		count.setSum(num);

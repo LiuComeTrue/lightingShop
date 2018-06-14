@@ -78,7 +78,7 @@ public class LightServiceImpl implements ILightService {
         if (listStyles.size() == 0)
             listStyles = null;
         String all = lightDao.getAllPages(listCategories, listBrands, listStyles, lowPrice, highPrice);
-        int size = 2;
+        int size = 3;
         String allPages = String.valueOf((int)Math.ceil(Double.parseDouble(all) / size));
         return allPages;
     }
@@ -96,7 +96,7 @@ public class LightServiceImpl implements ILightService {
     public String getSearchPages(String searchMessage) {
         // TODO Auto-generated method stub
         String all = lightDao.getSearchPages(searchMessage);
-        int size = 2;
+        int size = 3;
         String allPages = String.valueOf((int)Math.ceil(Double.parseDouble(all) / size));
         return allPages;
     }

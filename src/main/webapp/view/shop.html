@@ -2,6 +2,7 @@
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="shortcut icon" href="../img/themes/icon.png"/>
         <title>Shop</title>
         <meta name="description" content="">
         <meta name="author" content="">
@@ -288,7 +289,7 @@
                                                                     <!-- single-product-start -->
                                                                     <div class="single-product">
                                                                         <div class="single-product-img">
-                                                                            <a href="#">
+                                                                            <a :href="'light.html?lightID='+light.lightID">
                                                                                 <img :src="'../'+light.images" alt="" />
                                                                             </a>
                                                                             <span class="sale-box">
@@ -714,7 +715,7 @@
                 console.log("currentpage:" + app.cur);
             	$.ajax({
                     type: "get",
-                    url: "../light/1/2",
+                    url: "../light/1/3",
                     dataType: "json",
                     success: function(data){
                         vm1.lights = data;
@@ -854,7 +855,7 @@
         	vm6.message='';
         	$.ajax({
                 type: "post",
-                url: "../type/"+app.cur+"/2",
+                url: "../type/"+app.cur+"/3",
                 dataType: "json",                       
                 data:JSON.stringify({"categories":vm2.selectedOptions, "brands":vm3.selectedOptions, 
                 	"styles":vm4.selectedOptions, "sort":vm5.selected, "lowPrice":vm7.lowPrice, "highPrice":vm7.highPrice}),
@@ -872,7 +873,7 @@
         function showSearchLight() {
         	$.ajax({
                 type: "get",
-                url: "../light/" + vm6.message + "/" + app.cur + "/2",
+                url: "../light/" + vm6.message + "/" + app.cur + "/3",
                 dataType: "json",
                 success: function(data){
                     vm1.lights = data;                           

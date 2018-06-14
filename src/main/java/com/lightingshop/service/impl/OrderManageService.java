@@ -23,8 +23,7 @@ public class OrderManageService implements IOrderManageService {
 	@Autowired
 	private OrdersDao ordersDao;
 	
-	@Autowired
-	private Orders order;
+
 	
 	/**
 	 * 修改订单收货信息
@@ -46,11 +45,12 @@ public class OrderManageService implements IOrderManageService {
 	 */
 	@Override
 	public void Express(String id) {
-		order.setOrderID(id);
+		Orders orderSET = new Orders();
+		orderSET.setOrderID(id);
 		
 		if(ordersDao.selectByPrimaryKey(id).getOrderstateid().equals(new Integer(0))) {
-			order.setOrderstateid(new Integer(2));
-			ordersDao.updateByPrimaryKeySelective(order);
+			orderSET.setOrderstateid(new Integer(2));
+			ordersDao.updateByPrimaryKeySelective(orderSET);
 			System.out.println("---发货成功---");
 		}
 		else {
@@ -64,11 +64,12 @@ public class OrderManageService implements IOrderManageService {
 	 */
 	@Override
 	public void Return(String id,int flag) {
-		order.setOrderID(id);
+		Orders orderSET = new Orders();
+		orderSET.setOrderID(id);
 		
 		if(ordersDao.selectByPrimaryKey(id).getOrderstateid().equals(new Integer(1))) {
-			order.setOrderstateid(new Integer(flag));
-			ordersDao.updateByPrimaryKeySelective(order);
+			orderSET.setOrderstateid(new Integer(flag));
+			ordersDao.updateByPrimaryKeySelective(orderSET);
 			System.out.println("---处理退货请求成功---");
 		}
 		else {

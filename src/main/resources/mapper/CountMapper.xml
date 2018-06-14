@@ -9,6 +9,7 @@
             ol.lightID,sum(ol.quantity) sum
         from orderlights ol 
         left join orders o on o.orderID=ol.orderID
+
     <where>
     o.date BETWEEN date_sub(now(),interval #{dateStart} month) and date_sub(now(),interval #{dateEnd} month)
     and o.orderStateID not between 3 and 5

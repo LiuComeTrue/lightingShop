@@ -32,8 +32,7 @@ import com.lightingshop.util.IMGUtil;
 @Controller
 public class InsertLightController {
 	
-	@Autowired
-	Light light;
+
 	
 	@Autowired
 	LightImage lightImage;
@@ -55,7 +54,7 @@ public class InsertLightController {
 		//裁剪imgPath
 		String imgPath = mult.getParameter("images");
 		imgPath = this.SUBPath(imgPath);
-		
+		Light light = new Light(); 
 		//将灯饰信息封装
 		light.setLightName(mult.getParameter("lightName"));
 		light.setCategoryID(Integer.valueOf(mult.getParameter("categoryID")));
