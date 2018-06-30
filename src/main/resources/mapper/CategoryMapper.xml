@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lightingshop.dao.CategoryDao">
+    
+    <select id="listCategory" resultType="Category">
+        SELECT
+            *
+        FROM
+            category
+    </select>
+    
+    <select id="getCategoryName" parameterType="java.lang.Integer" resultType="string">
+        SELECT
+            categoryname
+        FROM
+            category
+        WHERE
+            categoryid = #{id}
+    </select>
+
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lightingshop.dao.WishListDao">
+    
+    <insert id="addWishList" keyColumn="wishListID" keyProperty="wishListID" useGeneratedKeys="true" parameterType="WishList">
+        INSERT INTO
+            wishlist(lightID, userID, storeDate)
+        VALUES
+            (#{lightID}, #{userID}, #{storeDate})
+    </insert>
+    
+    <select id="listWishList" parameterType="java.lang.Integer" resultType="WishList">
+        SELECT
+            *
+        FROM
+            wishlist
+        WHERE
+            userID = #{id}
+    </select>
+    
+    <delete id="deleteWishList">
+        DELETE FROM
+            wishlist
+        WHERE
+            lightID = #{0} AND userID = #{1}
+    </delete>
+    
+    <select id="getWishList" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            wishlist
+        WHERE
+            lightID=#{0} AND userID = #{1}
+    </select>
+      
+</mapper>

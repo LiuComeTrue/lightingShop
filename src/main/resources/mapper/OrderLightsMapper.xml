@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lightingshop.dao.OrderLightsDao">
+  <resultMap id="BaseResultMap" type="com.lightingshop.entity.OrderLights">
+    <id column="orderID" jdbcType="VARCHAR" property="orderid" />
+    <id column="lightID" jdbcType="INTEGER" property="lightid" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="singlePrice" jdbcType="DECIMAL" property="singleprice" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    orderID, lightID, quantity, singlePrice
+  </sql>
+  
+  <insert id="insert" parameterType="com.lightingshop.entity.OrderLights">
+    insert into orderlights (orderID, lightID, quantity, 
+      singlePrice)
+    values (#{orderID,jdbcType=VARCHAR}, #{lightID,jdbcType=INTEGER}, #{quantity,jdbcType=INTEGER}, 
+      #{singleprice,jdbcType=DECIMAL})
+  </insert>
+  
+  <select id="listOrderLights" parameterType="string" resultType="OrderLights">
+    SELECT
+        *
+    FROM
+        orderlights
+    WHERE
+        orderID=#{orderID}   
+  </select>
+  
+</mapper>

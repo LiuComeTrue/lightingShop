@@ -30,4 +30,16 @@ public class UserServiceImpl implements IUserService{
 		return userDao.checkUser(user);
 	}
 
+    @Override
+    public int regiter(String id, String psw, String name, String phone, String address) {
+        // TODO Auto-generated method stub
+        return userDao.regiter(id, psw, name, phone, address);
+    }
+
+    @Override
+    public User login(String id, String psw) {
+        // TODO Auto-generated method stub
+        return userDao.login(id, psw);
+    }
+
 }

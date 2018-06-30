@@ -17,8 +17,7 @@ public class UserDaoTest extends BaseTest {
 	@Test
 	public void test() {
 		
-		user.setName("nName");	
-		userdao.updateUser(user);
+		
 	}
 	
 }

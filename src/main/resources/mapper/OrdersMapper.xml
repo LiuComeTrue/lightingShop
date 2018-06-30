@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lightingshop.dao.OrdersDao">
+     <!-- 单订单结果集不含lights -->
+<resultMap type="com.lightingshop.entity.Orders" id="BaseResultMap">
+    <id property="orderID" jdbcType="VARCHAR" column="orderID"/>
+    <result property="userID" jdbcType="INTEGER" column="userID"/>
+    <result property="totalprice" jdbcType="DECIMAL" column="totalPrice"/>
+    <result property="date" jdbcType="TIMESTAMP" column="date"/>
+    <result property="orderstateid" jdbcType="INTEGER" column="orderStateID"/>
+    <result property="showornot" jdbcType="INTEGER" column="showOrNot"/>
+    <result property="receivename" jdbcType="VARCHAR" column="receiveName"/>
+    <result property="receivephone" jdbcType="VARCHAR" column="receivePhone"/>
+    <result property="address" jdbcType="VARCHAR" column="address"/>
+    <result property="email" jdbcType="VARCHAR" column="email"/>
+    <result property="postalcode" jdbcType="VARCHAR" column="postalCode"/>
+    <result property="posttype" jdbcType="VARCHAR" column="postType"/>
+    <result property="paymenttype" jdbcType="VARCHAR" column="paymentType"/>
+    <result property="postfee" jdbcType="DECIMAL" column="postFee"/>
+</resultMap>
+  
+   <!-- 订单-灯联合查询结果集 -->
+  <resultMap id="OrderLightsResultMap" type="com.lightingshop.entity.Orders">
+    <id column="orderID" jdbcType="VARCHAR" property="orderID" />
+    <result column="userID" jdbcType="INTEGER" property="userID" />
+    <result column="totalPrice" jdbcType="DECIMAL" property="totalprice" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
+    <result column="orderStateID" jdbcType="INTEGER" property="orderstateid" />
+    <result column="showOrNot" jdbcType="INTEGER" property="showornot" />
+    <result column="receiveName" jdbcType="VARCHAR" property="receivename" />
+    <result column="receivePhone" jdbcType="VARCHAR" property="receivephone" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="postalCode" jdbcType="VARCHAR" property="postalcode" />
+    <result column="postType" jdbcType="VARCHAR" property="posttype" />
+    <result column="paymentType" jdbcType="VARCHAR" property="paymenttype" />
+    <result column="postFee" jdbcType="DECIMAL" property="postfee" />
+    <collection property="lights" ofType="OrderLights">
+        <id column="lightID" property="lightID" />
+        <id column="OrderIDWithList" property="orderID" />
+        <result column="quantity" property="quantity" />
+        <result column="singleprice" property="singleprice" />
+    </collection>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    orderID, userID, totalPrice, date, orderStateID, showOrNot, receiveName, receivePhone, 
+    address, email, postalCode, postType, paymentType, postFee
+  </sql>
+  <sql id="Lights_Column_List">
+    orderID, userID, totalPrice, date, orderStateID, showOrNot, receiveName, receivePhone, 
+    address, email, postalCode, postType, paymentType, postFee 
+  </sql>
+  
+  <!-- 查询订单还有订单里灯的信息 -->
+  <select id="selectByExampleWithLights" parameterType="com.lightingshop.entity.OrdersExample" resultMap="OrderLightsResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    o.*, l.lightID , l.quantity, l.singlePrice , l.orderID 'OrderIDWithList'
+    from orders o
+    left join orderlights l on o.orderID=l.orderID
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+    <insert id="insert" parameterType="com.lightingshop.entity.Orders">
+    insert into orders (orderID, userID, totalPrice, 
+      date, orderStateID, showOrNot, 
+      receiveName, receivePhone, address, 
+      email, postalCode, postType, 
+      paymentType, postFee)
+    values (#{orderID,jdbcType=VARCHAR}, #{userID,jdbcType=INTEGER}, #{totalprice,jdbcType=DECIMAL}, 
+      #{date,jdbcType=VARCHAR}, #{orderstateid,jdbcType=INTEGER}, #{showornot,jdbcType=INTEGER}, 
+      #{receivename,jdbcType=VARCHAR}, #{receivephone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{postalcode,jdbcType=VARCHAR}, #{posttype,jdbcType=VARCHAR}, 
+      #{paymenttype,jdbcType=VARCHAR}, #{postfee,jdbcType=DECIMAL})
+  </insert>
+
+  <update id="updateOrderStatus">
+      UPDATE orders
+      SET
+          orderStateID=#{1}
+      WHERE
+          orderID=#{0}
+  </update>
+  
+    <select id="selectOrdersTip" resultType="INTEGER" >
+    SELECT
+    Count(orderStateID)
+    from orders
+    where 
+    orderStateID BETWEEN 0 and 1
+  </select>
+  
+  <!-- 更新订单 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.lightingshop.entity.Orders">
+    update orders 
+  <set>
+      <if test="userID != null"> userID = #{userID,jdbcType=INTEGER}, </if>
+      <if test="totalprice != null"> totalPrice = #{totalprice,jdbcType=DECIMAL}, </if>
+      <if test="date != null"> date = #{date,jdbcType=TIMESTAMP}, </if>
+      <if test="orderstateid != null"> orderStateID = #{orderstateid,jdbcType=INTEGER}, </if>
+      <if test="showornot != null"> showOrNot = #{showornot,jdbcType=INTEGER}, </if>
+      <if test="receivename != null"> receiveName = #{receivename,jdbcType=VARCHAR}, </if>
+      <if test="receivephone != null"> receivePhone = #{receivephone,jdbcType=VARCHAR}, </if>
+      <if test="address != null"> address = #{address,jdbcType=VARCHAR}, </if>
+      <if test="email != null"> email = #{email,jdbcType=VARCHAR}, </if>
+      <if test="postalcode != null"> postalCode = #{postalcode,jdbcType=VARCHAR}, </if>
+      <if test="posttype != null"> postType = #{posttype,jdbcType=VARCHAR}, </if>
+      <if test="paymenttype != null"> paymentType = #{paymenttype,jdbcType=VARCHAR}, </if>
+      <if test="postfee != null"> postFee = #{postfee,jdbcType=DECIMAL}, </if>
+  </set>
+    where orderID = #{orderID,jdbcType=VARCHAR} 
+  </update>
+  
+  <!-- 按照ID查询订单 -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select 
+    <include refid="Base_Column_List"/>
+     from orders where orderID = #{orderID,jdbcType=VARCHAR} 
+    </select>
+</mapper>

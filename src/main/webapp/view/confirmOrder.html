@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>锡货超市</title>
+<link rel="stylesheet" type="text/css" href="../css/confirmOrder/base.css"/>
+<script type="text/javascript" src="../js/confirmOrder/jquery_cart.js"></script>  
+<link rel="stylesheet" type="text/css" href="../css/confirmOrder/checkOut.css" />
+
+<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css" />
+        <link rel="stylesheet" href="../css/font-awesome.min.css" />
+        <!-- Custom CSS -->
+        <link href="../style.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/pagingVue/index.css">
+
+</head>
+
+<body>  
+
+<header>
+            <div class="header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 hidden-xs">
+                            <div class="header-top-left">
+                                <div class="welcome-msg">
+                                    <span class="default-msg hidden-xs"><a href="shop.html" style="color:white">欢迎来到灯饰店!</a></span>
+                                    <!-- <span class="phone">Call support free: <span class="number">01234-567890</span></span> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-12" id="userInfo">
+                            <div class="header-top-right">
+                                <ul class="header-links hidden-xs">
+                                    <li><a class="" href="login.html">{{ login }}</a></li>
+                                    <li><a class="" href="regit.html">免费注册</a></li>
+                                    <li><a class="" href="wishList.html">收藏夹</a></li>
+                                    <li><a class="" href="shopcart.html">购物车</a></li>
+                                    <li><a class="" href="myorder.html">我的订单</a></li>
+                                    <li><a class="" href="login.html">退出</a></li>
+                                </ul>                                                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-middle"></div>
+        </header>
+
+<div class="banner_red_top"></div>  
+    
+
+<!--收货地址body部分开始-->  
+<div class="border_top_cart" id="app">
+  <script type="text/javascript">
+    var checkoutConfig={
+        addressMatch:'common',
+        addressMatchVarName:'data',
+        hasPresales:false,
+        hasBigTv:false,
+        hasAir:false,
+        hasScales:false,
+        hasGiftcard:false,
+        totalPrice:244.00,
+        postage:10,//运费
+        postFree:true,//活动是否免邮了
+        bcPrice:150,//计算界值
+        activityDiscountMoney:0.00,//活动优惠
+        showCouponBox:0,
+        invoice:{
+            NA:"0",
+            personal:"1",
+            company:"2",
+            electronic:"4"
+        }
+    };
+    var miniCartDisable=true;
+</script>
+<div class="container">
+    <div class="checkout-box">
+        <form  id="checkoutForm" action="#" method="post">
+            <div class="checkout-box-bd">
+                    <!-- 地址状态 0：默认选择；1：新增地址；2：修改地址 -->
+                <input type="hidden" name="Checkout[addressState]" id="addrState" value="0">
+                <!-- 收货地址 -->
+                <div class="xm-box">
+                    <div class="box-hd ">
+                        <h2 class="title">收货地址</h2>
+                    </div>
+                <div class="box-bd">
+                    <div class="clearfix xm-address-list" id="checkoutAddrList">
+                        <dl class="item" >
+                            <dt>
+                                <strong class="itemConsignee">{{ user.userName }}</strong>
+                            </dt>
+                            <dd>
+                                <p class="tel itemTel">{{ user.phone }}</p>
+                                <p class="itemRegion">{{ user.address }}</p>
+                                <!-- <p class="itemStreet">民丰西苑82号202室(214045)</p>
+                                <span class="edit-btn J_editAddr">编辑</span> -->
+                            </dd>
+                            <dd style="display:none">
+                                <input type="radio" name="Checkout[address]" class="addressId"  value="10140916720030323">
+                            </dd>
+                        </dl>
+                        <!-- <div class="item use-new-addr"  id="J_useNewAddr" data-state="off">
+                            <span class="iconfont icon-add"><img src="../img/add_cart.png" /></span>使用新地址
+                        </div> -->
+                    </div>
+    <input type="hidden" name="newAddress[type]" id="newType" value="common">
+    <input type="hidden" name="newAddress[consignee]" id="newConsignee">
+    <input type="hidden" name="newAddress[province]" id="newProvince">
+    <input type="hidden" name="newAddress[city]" id="newCity">
+    <input type="hidden" name="newAddress[district]" id="newCounty">
+    <input type="hidden" name="newAddress[address]" id="newStreet">
+    <input type="hidden" name="newAddress[zipcode]" id="newZipcode">
+    <input type="hidden" name="newAddress[tel]" id="newTel">
+    <input type="hidden" name="newAddress[tag_name]" id="newTag">
+    <!--点击弹出新增/收货地址界面start-->
+    <div class="xm-edit-addr-box" id="J_editAddrBox">
+        <div class="bd">
+            <div class="item">
+                <label>收货人姓名<span>*</span></label> 
+                <input type="text" name="userAddress[consignee]" id="Consignee" class="input" placeholder="收货人姓名" maxlength="15" autocomplete='off'>
+                <p class="tip-msg tipMsg"></p>
+            </div>
+            <div class="item">
+                <label>联系电话<span>*</span></label> 
+                <input type="text" name="userAddress[tel]" class="input" id="Telephone" placeholder="11位手机号" autocomplete='off'>
+                <p class="tel-modify-tip" id="telModifyTip"></p>
+                <p class="tip-msg tipMsg"></p>
+            </div>
+            <div class="item">
+                <label>地址<span>*</span></label>
+                <select name="userAddress[province]" id="Provinces" class="select-1">
+                    <option>省份/自治区</option>
+                </select>
+                <select name="userAddress[city]"  id="Citys" class="select-2" disabled>
+                    <option>城市/地区/自治州</option>
+                </select>
+                <select name="userAddress[county]"  id="Countys" class="select-3" disabled>
+                    <option>区/县</option>
+                </select>
+                <textarea   name="userAddress[street]" class="input-area" id="Street" placeholder="路名或街道地址，门牌号"></textarea>
+                <p class="tip-msg tipMsg"></p>
+            </div>
+            <div class="item">
+                <label>邮政编码<span>*</span></label> 
+                <input type="text" name="userAddress[zipcode]" id="Zipcode" class="input" placeholder="邮政编码"  autocomplete='off'>
+                <p class="zipcode-tip" id="zipcodeTip"></p>
+                <p class="tip-msg tipMsg"></p>
+            </div>
+            <div class="item">
+                <label>地址标签<span>*</span></label> 
+                <input type="text" name="userAddress[tag]" id="Tag" class="input" placeholder='地址标签：如"家"、"公司"。限5个字内'  >
+                <p class="tip-msg tipMsg"></p>
+            </div>
+        </div>
+        <div class="ft clearfix">
+            <button  type="button"  class="btn btn-lineDake btn-small " id="J_editAddrCancel">取消</button>
+            <button type="button" class="btn btn-primary  btn-small " id="J_editAddrOk">保存</button>
+        </div>
+    </div>
+    <!--点击弹出新增/收货地址界面end-->
+    <div class="xm-edit-addr-backdrop" id="J_editAddrBackdrop"></div>
+</div>                
+</div>
+<!-- 收货地址 END-->
+                
+</div>
+            <div class="checkout-box-ft">
+                 <!-- 商品清单 -->
+                <div id="checkoutGoodsList" class="checkout-goods-box">
+                                    <div class="xm-box">
+                    <div class="box-hd">
+                        <h2 class="title">确认订单信息</h2>
+                    </div>
+                    <div class="box-bd">
+                        <dl class="checkout-goods-list">
+                            <dt class="clearfix">
+                                <span class="col col-1">商品名称</span>
+                                <span class="col col-2">购买价格</span>
+                                <span class="col col-3">购买数量</span>
+                                <span class="col col-4">小计（元）</span>
+                            </dt>
+                            <dd class="item clearfix" v-for="(light,index) in lights">
+                                <div class="item-row">
+                                    <div class="col col-1">
+                                        <div class="g-pic">
+                                            <img :src="'../'+light.image" width="40" height="40" />
+                                        </div>
+                                        <div class="g-info">
+                                        <a href="#">{{ light.lightName }}</a>
+                                        </div>
+                                    </div>
+                
+                                    <div class="col col-2">{{ light.price }}</div>
+                                    <div class="col col-3">{{ light.quantity }}</div>
+                                    <div class="col col-4">{{ light.price * light.quantity }}</div>
+                                </div>
+                            </dd>
+                        </dl>
+                        <div class="checkout-count clearfix">
+                            <!-- checkout-count-extend -->
+                            <div class="checkout-price">
+                                
+                                <p class="checkout-total">应付总额：<span><strong>{{ totalMoney }}</strong>元</span></p>
+                            </div>
+                            <!--  -->
+                        </div>
+                    </div>
+                </div>
+
+    
+    <!--S 保障计划 产品选择弹框 -->
+    
+    
+                </div>
+                <!-- 商品清单 END -->
+                <input type="hidden"  id="couponType" name="Checkout[couponsType]">
+                <input type="hidden" id="couponValue" name="Checkout[couponsValue]">
+                <div class="checkout-confirm">
+                    
+                     <a href="./shopcart.html" class="btn btn-lineDakeLight btn-back-cart">返回购物车</a>
+                     <input type="button" class="btn btn-primary" value="立即付款" id="checkoutToPay" @click="pay()"/>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>   
+
+<script src="../js/confirmOrder/base.min.js"></script>
+<script type="text/javascript" src="../js/confirmOrder/address_all.js"></script>
+<script type="text/javascript" src="../js/confirmOrder/checkout.min.js"></script> 
+</div>
+<!--收货地址body部分结束-->
+    
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="../js/confirmOrder/unslider.min.js" type="text/javascript"></script>
+    <script src="../js/confirmOrder/index.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script type="text/javascript"> 
+function getUrlVars(name) {
+	return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+}
+var orderID = getUrlVars("orderID");
+//orderID = "030f9207-6e82-4a6a-9a89-57e514fb0de7";
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                lights: [],
+                totalMoney: 0,
+                user: []
+            },
+            mounted() {
+                $.ajax({
+                    type: "get",
+                    url: "../order/" + orderID,
+                    dataType: "json",
+                    success: function(data){
+                        vm.lights = data;
+                        data.forEach(function(item,index){
+                            vm.totalMoney += item.price * item.quantity;
+                        })
+                    },
+                    error: function(data){
+                        console.log("读取订单商品 error!");
+                    }
+                });
+                $.ajax({
+                    type: "get",
+                    url: "../user",
+                    dataType: "json",
+                    success: function(data){
+                        vm.user = data;                        
+                    },
+                    error: function(data){
+                        console.log("读取address error!");
+                    }
+                });
+            }
+         });
+function pay() {
+	$.ajax({
+        type: "PUT",
+        url: "../order/pay/" + orderID,
+        dataType: "text",
+        success: function(data){
+            if(data > 0) {
+            	alert("付款成功");
+            	window.location.href = "myorder.html";
+            }           	
+        },
+        error: function(data){
+            console.log("pay error!");
+        }
+    });
+}
+
+var userInfo = new Vue({
+    el: '#userInfo',
+    data: {
+        login: '请登录'
+    },
+    mounted() {
+        $.ajax({
+            type: "get",
+            url: "../user",
+            dataType: "json",
+            success: function(data){
+                if (data != "null")      
+                    console.log(data);
+                    userInfo.login = "欢迎您, " + data.userName;
+            },
+            error: function(data){
+                console.log("读取user error!");
+            }
+        });
+    }
+ });
+</script>
+</body>
+</html>

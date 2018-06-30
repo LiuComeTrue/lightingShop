@@ -1,0 +1,1012 @@
+﻿<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="shortcut icon" href="../img/themes/icon.png"/>
+        <title>Shop</title>
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="keywords" content="">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <!-- Mobile Specific Meta  -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <!-- Google Fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700,900,100' rel='stylesheet' type='text/css'>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css" />
+        <link rel="stylesheet" href="../css/font-awesome.min.css" />
+        <!-- Custom CSS -->
+        <link href="../style.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/pagingVue/index.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="http://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="http://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+
+
+
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <!-- header-start -->
+        <header>
+            <div class="header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 hidden-xs">
+                            <div class="header-top-left">
+                                <div class="welcome-msg">
+                                    <span class="default-msg hidden-xs">欢迎来到灯饰店!</span>
+                                    <!-- <span class="phone">Call support free: <span class="number">01234-567890</span></span> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-12" id="userInfo">
+                            <div class="header-top-right">
+                                <ul class="header-links hidden-xs">
+                                    <li><a class="" href="login.html">{{ login }}</a></li>
+                                    <li><a class="" href="regit.html">免费注册</a></li>
+                                    <li><a class="" href="wishList.html">收藏夹</a></li>
+                                    <li><a class="" href="shopcart.html">购物车</a></li>
+                                    <li><a class="" href="myorder.html">我的订单</a></li>
+                                    <li><a class="" href="login.html">退出</a></li>
+                                </ul>                                                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-middle">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12 col-xs-8">
+                            <div class="logo">
+                                <a href="../index.html"><img src="../img/logo.png" alt="" /></a>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-sm-6 hidden-xs">
+                            <div class="search-box" id="searchLight">
+                                    <input class="form-control search-form" type="text" v-model="message" placeholder="Search entire store here" />
+                                    <button class="search-button" value="Search" type="button" @click="search()"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+            <div class="main-menu-area hidden-xs hidden-sm">
+                <div class="container">
+                    <div class="row">
+                        <div class="colo-md-12">
+                            <div class="main-menu">
+                                <nav>
+                                    <ul>
+                                        <li><a href="../index.html">Home</a></li>
+                                        <!-- <li><a href="about.html">About</a></li> -->
+                                        <li><a href="shop.html">Shop</a></li>
+                                        <li><a href="help.html">Help</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header-end -->
+        <!-- heading-banner-start -->
+        <div class="heading-banner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <div class="breadcrumb">
+                            <a title="Return to Home" href="../index.html">
+                                <i class="icon-home"></i>
+                            </a>
+                            <span class="navigation-page">
+                                <span class="navigation-pipe">></span>
+                                Shop
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- heading-banner-end -->
+        <!-- shop-area-start -->
+        <div class="shop-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-12">
+                        <div class="shop-left-col wow fadeIn" data-wow-duration=".5s" data-wow-delay=".5s">
+                            <div class="content-box">
+                                <h2>Categories</h2>
+                                <ul id="categories">
+                                    <li v-for="(option,index) in options">
+                                        <span class="checkit">
+                                            <input class="checkbox" v-model="selectedOptions" :value="option.categoryID" :id="'cate'+index" type="checkbox" @change="select()" />
+                                        </span>
+                                        <label class="check-label" :for="'cate'+index" v-text="option.categoryName"></label>
+                                    </li>                                    
+                                </ul>
+                            </div>
+                            <div class="content-box">
+                                <h2>Price</h2>
+                                <div class="info_widget">
+                                    <div class="price_filter">
+                                        <div id="slider-range"></div>
+                                        <div class="price_slider_amount" id="priceRange">
+                                            <input type="text" id="amount" name="price"  placeholder="￥10 - ￥475" />
+                                            <input type="submit" value="Range" @click="priceRange();">  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-box">
+                                <h2>Brands</h2>
+                                <ul id="brands">
+                                    <li v-for="(option,index) in options">
+                                        <span class="checkit">
+                                            <input class="checkbox" v-model="selectedOptions" :value="option.brandID" :id="'brand'+index" type="checkbox" @change="select()" />
+                                        </span>
+                                        <label class="check-label" :for="'brand'+index" v-text="option.brandName"></label>
+                                    </li>         
+                                </ul>
+                            </div>
+                            <div class="content-box">
+                                <h2>Styles</h2>
+                                <ul id="styles">
+                                    <li v-for="(option,index) in options">
+                                        <span class="checkit">
+                                            <input class="checkbox" v-model="selectedOptions" :value="option.styleID" :id="'style'+index" type="checkbox" @change="select()" />
+                                        </span>
+                                        <label class="check-label" :for="'style'+index" v-text="option.styleName"></label>
+                                    </li>                                    
+                                </ul>
+                            </div>                          
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                        <div class="shop-right-col wow fadeIn" data-wow-duration=".5s" data-wow-delay=".5s">
+                            <div class="category-products">
+                                <div class="topbar-category">
+                                    <div class="pager-area">
+                                        <div>
+                                            <!-- Nav tabs -->
+                                            <ul class="shop-tab">
+                                                <li role="presentation" class="active"><a href="#gried_view" role="tab" data-toggle="tab">
+                                                        <i class="fa fa-th-large"></i></a>
+                                                </li>
+                                                <li role="presentation"><a href="#list_view" role="tab" data-toggle="tab">
+                                                        <i class="fa fa-th-list"></i></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by hidden-xs" id="sort">
+                                        <label>Sort by</label>
+                                        <select v-model="selected" @change="select()">
+                                            <option value="1">Price: Lowest first</option>
+                                            <option value="2">Price: Highest first</option>
+                                            <option value="3">Score: Lowest first</option>
+                                            <option value="4">Score: Highest first</option>  
+                                            <option value="5">Sales: Lowest first</option>
+                                            <option value="6">Sales: Highest first</option>                                          
+                                            <option selected="selected" value="0">--</option>
+                                        </select>
+                                    </div>
+                                    <!-- <div class="show hidden-xs">
+                                        <label>Show</label>
+                                        <select>
+                                            <option value="#">24</option>
+                                            <option selected="selected" value="#">12</option>
+                                        </select>
+                                        <span>per page</span>
+                                    </div>
+                                    <div class="shop-breadcrumb">
+                                        <ul>
+                                            <li class="active">
+                                                <a href="#">1</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">2</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">3</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">></a>
+                                            </li>
+                                        </ul>
+                                    </div> -->
+                                </div>
+                                <div class="shop-category-product">
+                                    <div class="row">
+                                        <div class="category-product">
+                                            <!-- Tab panes -->
+                                            <div class="tab-content" id="mainLight">
+                                                <div role="tabpanel" class="tab-pane active fade in" id="gried_view">
+                                                    
+                                                    <div class="col-md-4 col-sm-6 col-xs-12 top-mar" v-for="light in lights">
+                                                        <!-- single-product-start -->
+                                                        <div class="single-product">
+                                                            <div class="single-product-img">
+                                                                <a :href="'light.html?lightID='+light.lightID">
+                                                                    <img :src="'../'+light.images" alt="" />
+                                                                </a>
+                                                                <span class="sale-box">
+                                                                    <span class="sale">Sale</span>
+                                                                </span>
+                                                                <span class="new-box">
+                                                                    <span class="new">New</span>
+                                                                </span>
+                                                            </div>
+                                                            <div class="single-product-content">
+                                                                <div class="product-title">
+                                                                    <h5>
+                                                                        <a href="#">{{ light.lightName }}</a>
+                                                                    </h5>
+                                                                </div>
+                                                                <!-- <div class="rating">
+                                                                    <div class="star star-on"></div>
+                                                                    <div class="star star-on"></div>
+                                                                    <div class="star star-on"></div>
+                                                                    <div class="star star-on"></div>
+                                                                    <div class="star"></div>
+                                                                </div> -->
+                                                                <div class="price-box">
+                                                                    <span class="price">￥{{ light.price }}</span>                                                                  
+                                                                </div>
+                                                                <!-- <div class="product-action">
+                                                                    <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
+                                                                    <a class="add-wishlist" href="#" title="add to wishlist">
+                                                                        <i class="fa fa-heart"></i>
+                                                                    </a>
+                                                                    <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
+                                                                        <i class="fa fa-search"></i>
+                                                                    </a>
+                                                                </div> -->
+                                                            </div>
+                                                        </div>
+                                                        <!-- single-product-end -->
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div role="tabpanel" class="tab-pane fade" id="list_view">
+                                                    <div class="list-view">
+                                                        <div class="row">
+                                                            
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 top-mar" v-for="light in lights">
+                                                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                                                    <!-- single-product-start -->
+                                                                    <div class="single-product">
+                                                                        <div class="single-product-img">
+                                                                            <a :href="'light.html?lightID='+light.lightID">
+                                                                                <img :src="'../'+light.images" alt="" />
+                                                                            </a>
+                                                                            <span class="sale-box">
+                                                                                <span class="sale">Sale</span>
+                                                                            </span>
+                                                                            <span class="new-box">
+                                                                                <span class="new">New</span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- single-product-end -->
+                                                                </div>
+                                                                <div class="col-md-8 col-sm-8 col-xs-12">
+                                                                    <!-- single-product-start -->
+                                                                    <div class="single-product">
+                                                                        <div class="single-product-content">
+                                                                            <div class="product-title">
+                                                                                <h5>
+                                                                                    <a href="#">{{ light.lightID }}</a>
+                                                                                </h5>
+                                                                            </div>
+                                                                            <!-- <div class="rating">
+                                                                                <div class="star star-on"></div>
+                                                                                <div class="star star-on"></div>
+                                                                                <div class="star star-on"></div>
+                                                                                <div class="star star-on"></div>
+                                                                                <div class="star star-on"></div>
+                                                                            </div> -->
+                                                                            <div class="price-box">
+                                                                                <span class="price">￥{{ light.price }}</span>
+                                                                            </div>
+                                                                            <p class="product-desc">{{ light.description }}</p>
+                                                                            <!-- <div class="product-action">
+                                                                                <button class="button btn btn-default add-cart" title="add to cart">Add to cart</button>
+                                                                                <a class="add-wishlist" href="#" title="add to wishlist">
+                                                                                    <i class="fa fa-heart"></i>
+                                                                                </a>
+                                                                                <a class="quick-view" href="#" title="quick view"  data-toggle="modal" data-target="#myModal">
+                                                                                    <i class="fa fa-search"></i>
+                                                                                </a>
+                                                                            </div> -->
+                                                                            <div class="availability">
+                                                                                <span>In stock</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- single-product-end -->
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="topbar-category" id="app" style="text-align: center;">
+                                    <vue-nav :cur="cur" :all="all" :callback="callback"></vue-nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- shop-area-end -->
+        <!-- brand-area-start -->
+        <div class="brand-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-heading">
+                            <h3>our brands</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="brands wow fadeIn" data-wow-duration=".5s" data-wow-delay=".5s">
+                        <div class="brand-carousel">
+                            <div class="col-md-12">
+                                <div class="single-brand">
+                                    <a href="#">
+                                        <img src="img/brand/1.png" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="single-brand">
+                                    <a href="#">
+                                        <img src="img/brand/1.png" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="single-brand">
+                                    <a href="#">
+                                        <img src="img/brand/1.png" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="single-brand">
+                                    <a href="#">
+                                        <img src="img/brand/1.png" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="single-brand">
+                                    <a href="#">
+                                        <img src="img/brand/1.png" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="single-brand">
+                                    <a href="#">
+                                        <img src="img/brand/1.png" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="single-brand">
+                                    <a href="#">
+                                        <img src="img/brand/1.png" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="single-brand">
+                                    <a href="#">
+                                        <img src="img/brand/1.png" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- brand-area-end -->
+        <!-- footer-start -->
+        <footer>
+            <div class="footer-area wow fadeIn" data-wow-duration=".5s" data-wow-delay=".5s">
+                <div class="footer-middle">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <h4>Information</h4>
+                                        <ul class="toggle-footer">
+                                            <li>
+                                                <a title="Specials" href="#">Specials</a>
+                                            </li>
+                                            <li>
+                                                <a title="New products" href="#">New products</a>
+                                            </li>
+                                            <li>
+                                                <a title="Best sellers" href="#">Best sellers</a>
+                                            </li>
+                                            <li>
+                                                <a title="Our stores" href="#">Our stores</a>
+                                            </li>
+                                            <li>
+                                                <a title="Contact us" href="#">Contact us</a>
+                                            </li>
+                                            <li>
+                                                <a title="Sitemap" href="#">Sitemap</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <h4>My account</h4>
+                                        <ul class="toggle-footer">
+                                            <li>
+                                                <a title="My orders" href="#">My orders</a>
+                                            </li>
+                                            <li>
+                                                <a title="My credit slips" href="#"> My credit slips</a>
+                                            </li>
+                                            <li>
+                                                <a title="My addresses" href="#">My addresses</a>
+                                            </li>
+                                            <li>
+                                                <a title="My personal info" href="#">My personal info</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-12">
+                                        <h4>category</h4>
+                                        <ul class="toggle-footer">
+                                            <li>
+                                                <a title="My orders" href="#">women</a>
+                                            </li>
+                                            <li>
+                                                <a title="My credit slips" href="#">men</a>
+                                            </li>
+                                            <li>
+                                                <a title="My addresses" href="#">category</a>
+                                            </li>
+                                            <li>
+                                                <a title="My personal info" href="#">equipment</a>
+                                            </li>
+                                            <li>
+                                                <a title="My personal info" href="#">watch</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-3  col-sm-3 col-xs-12">
+                                        <h4>Shop Location</h4>
+                                        <div class="footer-contact">
+                                            <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                                                Duis dignissim erat ut laoreet pharetra....
+                                            </p>
+                                            <p class="address add">
+                                                <span>No. 96, Jecica City, NJ 07305, New York, USA</span>
+                                            </p>
+                                            <p class="phone add">
+                                                <span> 01234-567890</span>
+                                            </p>
+                                            <p class="email add">
+                                                <a href="#">admin@admin.com</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment">
+                            <a href="#">
+                                <img src="img/payment.png" alt="" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-xs-12 footer-link">
+                                <ul>
+                                    <li>
+                                        <a href="#">Customer Service</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Secure payment</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Term of Use</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">About us</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12 address">
+                                Copyright &copy; 2017.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer-end -->
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="product-details">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-5 col-xs-12 col-sm-5">
+                                        <div class="picture-tab">
+                                            <ul class="pic-tabs">
+                                                <li class="active"><a data-toggle="tab" href="#pic11"><img src="img/pro-tab/1.jpg" alt="" /></a></li>
+                                                <li><a data-toggle="tab" href="#pic12"><img src="img/pro-tab/2.jpg" alt="" /></a></li>
+                                                <li><a data-toggle="tab" href="#pic13"><img src="img/pro-tab/3.jpg" alt="" /></a></li>
+                                                <li><a data-toggle="tab" href="#pic14"><img src="img/pro-tab/4.jpg" alt="" /></a></li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div id="pic11" class="tab-pane fade in active">
+                                                    <!-- single-product-start -->
+                                                    <div class="single-product">
+                                                        <div class="single-product-img">
+                                                            <a href="#">
+                                                                <img src="img/singlepro/21.jpg" alt="" />
+                                                            </a>
+                                                            <span class="sale-box">
+                                                                <span class="sale">Sale</span>
+                                                            </span>
+                                                            <span class="new-box">
+                                                                <span class="new">New</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- single-product-end -->
+                                                </div>
+                                                <div id="pic12" class="tab-pane fade">
+                                                    <!-- single-product-start -->
+                                                    <div class="single-product">
+                                                        <div class="single-product-img">
+                                                            <a href="#">
+                                                                <img src="img/singlepro/22.jpg" alt="" />
+                                                            </a>
+                                                            <span class="sale-box">
+                                                                <span class="sale">Sale</span>
+                                                            </span>
+                                                            <span class="new-box">
+                                                                <span class="new">New</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- single-product-end -->
+                                                </div>
+                                                <div id="pic13" class="tab-pane fade">
+                                                    <!-- single-product-start -->
+                                                    <div class="single-product">
+                                                        <div class="single-product-img">
+                                                            <a href="#">
+                                                                <img src="img/singlepro/23.jpg" alt="" />
+                                                            </a>
+                                                            <span class="sale-box">
+                                                                <span class="sale">Sale</span>
+                                                            </span>
+                                                            <span class="new-box">
+                                                                <span class="new">New</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- single-product-end -->
+                                                </div>
+                                                <div id="pic14" class="tab-pane fade">
+                                                    <!-- single-product-start -->
+                                                    <div class="single-product">
+                                                        <div class="single-product-img">
+                                                            <a href="#">
+                                                                <img src="img/singlepro/24.jpg" alt="" />
+                                                            </a>
+                                                            <span class="sale-box">
+                                                                <span class="sale">Sale</span>
+                                                            </span>
+                                                            <span class="new-box">
+                                                                <span class="new">New</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- single-product-end -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 col-xs-12 col-sm-7">
+                                        <div class="product-details-info">
+                                            <h5 class="product-title">Feugiat justo lacinia</h5>
+                                            <div class="price-box">
+                                                <span class="price">£50.00</span>
+                                                <span class="old-price">£70.00</span>
+                                            </div>
+                                            <div class="rating">
+                                                <div class="star star-on"></div>
+                                                <div class="star star-on"></div>
+                                                <div class="star star-on"></div>
+                                                <div class="star star-on"></div>
+                                                <div class="star"></div>
+                                            </div>
+                                            <div class="short-description">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue nec est tristique auctor. Donec non est at libero vulputate rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi, vulputate adipiscing cursus eu, suscipit id nulla.
+                                                </p>
+                                            </div>
+                                            <div class="add-cart">
+                                                <p class="quantity cart-plus-minus">
+                                                    <label>Quantity</label>
+                                                    <input type="text" value="1" />
+                                                </p>
+                                                <div class="shop-add-cart">
+                                                    <button>add to cart</button>
+                                                </div>
+                                            </div>
+                                            <div class="widget-icon">
+                                                <a href="#">
+                                                    <i class="fa fa-facebook"></i>
+                                                </a>
+                                                <a href="#">
+                                                    <i class="fa fa-twitter"></i>
+                                                </a>
+                                                <a href="#">
+                                                    <i class="fa fa-linkedin"></i>
+                                                </a>
+                                                <a href="#">
+                                                    <i class="fa fa-google-plus"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal-end -->
+        <!-- all js here -->
+        <!-- jquery latest version -->
+        <script src="../js/vendor/jquery-1.12.0.min.js"></script>
+        
+        <!-- vue.js -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script type="text/javascript">
+        var vm1 = new Vue({
+            el: '#mainLight',
+            data: {
+                lights:"Hello Vue"
+            },
+            mounted() {
+                console.log("currentpage:" + app.cur);
+            	$.ajax({
+                    type: "get",
+                    url: "../light/1/3",
+                    dataType: "json",
+                    success: function(data){
+                        vm1.lights = data;
+                    },
+                    error: function(data){
+                        console.log("读取alllights error!");
+                    }
+                });
+            }                  
+        });
+        
+        var vm2 = new Vue({
+            el: '#categories',
+            data: {
+                options:[],
+                selectedOptions:[]
+            },
+            created: function(){
+                this.getOptions();
+            },
+            methods:{
+                getOptions: function(){
+                    $.ajax({
+                        type: "get",
+                        url: "../category",
+                        dataType: "json",
+                        success: function(data){
+                            vm2.options = data;                         
+                        },
+                        error: function(data){
+                            console.log("读取categories error!");
+                        }
+                    }); 
+                },
+                select: function() {
+                    app.cur = 1;
+                    getAllPages();
+                	showTypeLight();
+                }
+            }           
+        });
+        
+        var vm3 = new Vue({
+            el: '#brands',
+            data: {
+                options:[],
+                selectedOptions:[]
+            },
+            created: function(){
+                this.getOptions();
+            },
+            methods:{
+                getOptions: function(){
+                    $.ajax({
+                        type: "get",
+                        url: "../brand",
+                        dataType: "json",
+                        success: function(data){
+                            vm3.options = data;                           
+                        },
+                        error: function(data){
+                            console.log("读取brands error!");
+                        }
+                    }); 
+                },
+                select: function() {
+                    app.cur = 1;
+                    getAllPages();
+                	showTypeLight();
+                }
+            }           
+        });
+        
+        var vm4 = new Vue({
+            el: '#styles',
+            data: {
+                options:[],
+                selectedOptions:[]
+            },
+            created: function(){
+                this.getOptions();
+            },
+            methods:{
+                getOptions: function(){
+                    $.ajax({
+                        type: "get",
+                        url: "../styles",
+                        dataType: "json",
+                        success: function(data){
+                            vm4.options = data;                           
+                        },
+                        error: function(data){
+                            console.log("读取style error!");
+                        }
+                    }); 
+                },
+                select: function() {
+                    app.cur = 1;
+                    getAllPages();
+                	showTypeLight();
+                }
+            }           
+        });
+        
+        var vm5 = new Vue({
+            el: '#sort',
+            data: {
+            	selected: '0'
+            },
+            methods:{              
+                select: function() {
+                	app.cur = 1;
+                    //getAllPages();
+                    showTypeLight(); 
+                }
+            }           
+        });
+        
+        var vm6 = new Vue({
+            el: '#searchLight',
+            data: {
+                message: ''
+            },
+            methods:{              
+                search: function() {
+                    getSearchPages();
+                    app.cur = 1;
+                    console.log("总页数："+app.all);
+                    showSearchLight();
+                }
+            }           
+        });
+        
+        
+             
+        function showTypeLight() {
+        	vm6.message='';
+        	$.ajax({
+                type: "post",
+                url: "../type/"+app.cur+"/3",
+                dataType: "json",                       
+                data:JSON.stringify({"categories":vm2.selectedOptions, "brands":vm3.selectedOptions, 
+                	"styles":vm4.selectedOptions, "sort":vm5.selected, "lowPrice":vm7.lowPrice, "highPrice":vm7.highPrice}),
+                contentType:"application/json;charset=utf-8",
+                success: function(data) {
+                    vm1.lights = data;
+                    console.log(data);
+                },
+                error: function(data) {
+                    console.log("传值 error!");
+                }
+            });  
+        }      
+        
+        function showSearchLight() {
+        	$.ajax({
+                type: "get",
+                url: "../light/" + vm6.message + "/" + app.cur + "/3",
+                dataType: "json",
+                success: function(data){
+                    vm1.lights = data;                           
+                },
+                error: function(data){
+                    console.log("读取searchLight error!");
+                }
+            });
+        }
+        </script>        
+        
+        
+        
+        <!-- bootstrap js -->
+        <script src="../js/bootstrap.min.js"></script>
+        <!-- owl.carousel js -->
+        <script src="../js/owl.carousel.min.js"></script>
+        <!-- meanmenu js -->
+        <script src="../js/jquery.meanmenu.js"></script>
+        <!-- countdown js -->
+        <script src="../js/countdown.js"></script>
+        <!-- jquery.nivo.slider.pack js -->
+        <script src="../js/jquery.nivo.slider.pack.js"></script>
+        <!-- jquery-ui.min.js -->
+        <script src="../js/jquery-ui.min.js"></script>
+        <!-- wow js -->
+        <script src="../js/wow.min.js"></script>
+        <!-- plugins js -->
+        <script src="../js/plugins.js"></script>    
+        <!-- main js -->
+        <script src="../js/main.js"></script>    
+        
+        <script>
+        var vm7 = new Vue({
+            el: '#priceRange',
+            data: {      
+            	lowPrice: 10,
+            	highPrice: 475
+            },
+            methods:{              
+                priceRange: function() {
+                    console.log($("#slider-range").slider("values", 0));
+                    console.log($("#slider-range").slider("values", 1));
+                    vm7.lowPrice = $("#slider-range").slider("values", 0);
+                    vm7.highPrice = $("#slider-range").slider("values", 1);
+                    app.cur = 1;
+                    getAllPages();
+                    showTypeLight();
+                }
+            }           
+        });
+        </script>
+        <!-- 分页组件 -->
+        <script src="../js/pagingVue/vue-nav.js"></script>
+        <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                cur: 1,
+                all: 20
+            },
+            created: function() {
+                getAllPages();
+            },
+            components:{
+                'vue-nav': Vnav
+            },
+            methods:{
+                callback(data) {
+                    this.cur = data;
+                    if (vm6.message == '')
+                        showTypeLight();
+                    else
+                        showSearchLight();
+                }
+            }
+        });
+        
+        
+        
+        function getAllPages() {
+            $.ajax({
+               type: "post",
+               url: "../type",
+               dataType: "json",                       
+               data:JSON.stringify({"categories":vm2.selectedOptions, "brands":vm3.selectedOptions, 
+                   "styles":vm4.selectedOptions, "lowPrice":vm7.lowPrice, "highPrice":vm7.highPrice}),
+               contentType:"application/json;charset=utf-8",
+               success: function(data) {
+                   app.all = data;
+               },
+               error: function(data) {
+                   console.log("getAllPages error!");
+               }
+            });  
+        } 
+        
+        function getSearchPages() {
+            $.ajax({
+               type: "get",
+               url: "../light/" + vm6.message,
+               dataType: "json",
+               success: function(data) {
+                   app.all = data;
+               },
+               error: function(data) {
+                   console.log("getSearchPages error!");
+               }
+            });  
+        }
+        
+        var userInfo = new Vue({
+            el: '#userInfo',
+            data: {
+                login: '请登录'
+            },
+            mounted() {
+                $.ajax({
+                    type: "get",
+                    url: "../user",
+                    dataType: "json",
+                    success: function(data){
+                        if (data != "null")      
+                            console.log(data);
+                            userInfo.login = "欢迎您, " + data.userName;
+                    },
+                    error: function(data){
+                        console.log("读取user error!");
+                    }
+                });
+            }
+         });
+        </script>
+    </body>
+</html>
+

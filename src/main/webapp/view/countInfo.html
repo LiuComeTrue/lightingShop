@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+<link rel="shortcut icon" href="../img/themes/icon.png"/>
+<title>统计信息</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/fullcalendar.css" />
+<link rel="stylesheet" href="../css/matrix-style.css" />
+<link rel="stylesheet" href="../css/matrix-media.css" />
+<link href="../font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" href="../css/jquery.gritter.css" />
+<link rel="stylesheet" href="../css/bootstrap-datetimepicker.min.css" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+    <div id="header">
+        <h1>
+            <a href="#"></a>
+        </h1>
+    </div>
+    <div id="user-nav" class="navbar navbar-inverse">
+        <ul class="nav">
+            <li class=""><a title="" href="adminLogin.html"><i class="icon icon-share-alt"></i> <span class="text">退出</span></a></li>
+        </ul>
+    </div>
+
+    <div id="sidebar">
+        <a href="#" class="visible-phone"><i class="icon icon-home"></i>
+            控制台</a>
+        <ul>
+            <li><a href="adminIndex.html"><i class="icon icon-home"></i>
+                    <span>首页</span></a></li>
+            <li><a href="orderManage.html"><i class="icon icon-th-list"></i>
+                    <span>订单管理</span></a></li>
+            <li class="submenu"><a href="#"><i class="icon icon-th-list"></i>
+                    <span>商品管理</span> </a>
+                <ul>
+                    <li><a href="AddLight.html">商品添加</a></li>
+                    <li><a href="lightManage.html">信息修改</a></li>
+                </ul>
+           </li>
+            <li class="submenu active"><a href="countInfo.html"><i class="icon icon-th-list"></i>
+                    <span>统计信息</span></a></li>
+
+
+        </ul>
+    </div>
+    <div id="content">
+        <div id="content-header">
+            <div id="breadcrumb">
+                <a href="adminIndex.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+                <a href="countInfo.html" class="current">信息统计</a>
+            </div>
+            <h1></h1>
+        </div>
+        <div class="panel panel-default" style="width:600px;height:550px;float:left;margin-left:100px;margin-top:100px;" >
+            <div class="panel-heading">商品统计信息</div>
+            <div class="panel-body" style="height: 450px;width: 600px;">
+	            <div id="vue">
+	               <button onclick="nextCount(this)" class="btn btn-info" style="margin:5px;margin-left:420px; height: 35px;">查看最近{{ num  }}个月</button>
+	            </div>
+	            <div id="chart1" style="height: 400px;width: 600px; margin-top:30px;">
+	            </div>
+            </div>
+         </div>
+         
+        <div class="panel panel-default" style="width:600px;height:550px;float:left;margin-left:100px;margin-top:100px;" >
+            <div class="panel-heading">总销售额信息统计</div>
+            <div id="chart2" class="panel-body" style="height: 400px;width: 600px; margin-top:80px;">
+
+            </div>
+         </div>
+                 
+<!--         <div class="container" style=" width:1600px;">
+
+        </div> -->
+    </div>
+
+<script src="../js/jquery-3.2.1.js"></script>
+<script src="../js/matrix.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>   
+<script src="../js/boot/bootstrap.min.js"></script>
+<script type="https://vuejs.org/js/vue.min.js"></script>
+<script type="text/javascript" src="../js/bootbox.min.js"></script>
+<script src="../js/echarts.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+	var xJson;
+	var yJson;
+	var xJson2;
+	var yJson2;
+	var month=0;
+	
+	$(document).ready(function(){
+	    $.ajax({
+            type: "get",
+	    	url:"../CountLight/"+month,
+	    	dataType: "json",
+	    	success: function(data){
+	    		xJson=data.lightID
+	    		yJson=data.sum
+	    		console.log("读取json success!")
+	    		Countinit1();
+	    	},
+	    	error: function(data){
+                console.log("读取json error!")
+            }
+	    });
+		
+        $.ajax({
+            type: "get",
+            url:"../CountPrice",
+            dataType: "json",
+            success: function(data){
+                xJson2=data.lightID
+                yJson2=data.sum
+                console.log("读取json success!")
+                Countinit2();
+            },
+            error: function(data){
+                console.log("读取json error!")
+            }
+        });
+	});
+	
+    // 初始化图表标签
+	function Countinit1(){
+	      var myChart = echarts.init(document.getElementById('chart1'));
+	      var n = month+1;
+	        var options={
+	            //定义一个标题
+	            title:{
+	                text:'最近'+n+'个月 销售量前十'
+	            },
+	            tooltip:{},
+	            legend:{
+	                data:['销量']
+	            },
+	            //X轴设置
+	            xAxis:{
+	                data:xJson
+	            },
+	            yAxis:{
+	            },
+	            series:[{
+	                name:'销量',
+	                type:'bar',
+	                data:yJson
+	            }]
+	        };
+	        myChart.setOption(options);
+	}
+    
+    function Countinit2(){
+        var myChart = echarts.init(document.getElementById('chart2'));
+          var options2={
+              //定义一个标题
+              title:{
+                  text:'近六个月的销售额'
+              },
+              tooltip:{},
+              legend:{
+                  data:['销量额']
+              },
+              //X轴设置
+              xAxis:{
+                  data:xJson2
+              },
+              yAxis:{
+              },
+              series:[{
+                  name:'销量额',
+                  type:'line',
+                  data:yJson2
+              }]
+          };
+          myChart.setOption(options2);
+  }
+  var vm = new Vue({
+	  el:'#vue',
+	  data:{
+		  num:2,
+	  },
+	  mounted()   {
+		  
+	  }
+  });
+  
+function nextCount(obj) {
+	month = vm.num-1;
+	vm.num++;
+    $.ajax({
+        type: "get",
+        url:"../CountLight/"+month,
+        dataType: "json",
+        success: function(data){
+            xJson=data.lightID
+            yJson=data.sum
+            console.log("读取json success!")
+            Countinit1();
+        },
+        error: function(data){
+            console.log("读取json error!")
+        }
+    });
+}
+</script>
+
+</body>
+</html>

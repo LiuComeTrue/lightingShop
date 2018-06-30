@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lightingshop.dao.LightDao">
+    
+    <select id="listNewLight" resultType="Light">
+        SELECT
+            *
+        FROM
+            light
+        LIMIT 
+            0, 5
+    </select>
+    
+    <select id="listTopSeller" resultType="Light">
+        SELECT
+            *
+        FROM
+            light
+        ORDER BY 
+            sales DESC
+        LIMIT 
+            0, 3
+    </select>
+    
+    <select id="listRated" resultType="Light">
+        SELECT
+            *
+        FROM
+            light
+        ORDER BY 
+            score DESC
+        LIMIT 
+            0, 3
+    </select>
+    
+    <select id="getLightByID" resultType="Light" parameterType="int">
+        SELECT
+            *
+        FROM
+            light
+        WHERE
+            lightid = #{id}
+    </select>
+    
+    <select id="getListLight" resultType="Light" parameterType="java.util.ArrayList">
+        SELECT
+            *
+        FROM
+            light
+        WHERE
+            lightid 
+        IN 
+        <foreach collection="list" item="BestLight" index="index" open="(" separator="," close=")">
+            #{BestLight.lightID}  
+        </foreach>
+    </select>
+    
+    <select id="listLight" parameterType="map" resultType="Light">
+        select 
+            * 
+        FROM 
+            light 
+        limit 
+            #{currentIndex} , #{pageSize}
+    </select>
+    
+    <select id="listTypeLight" resultType="Light">
+        select 
+            * 
+        FROM 
+            light
+        <where>            
+        <if test="categories != null">
+            categoryid IN 
+            <foreach collection="categories" item="item" index="index" open="(" separator="," close=")">
+                #{item}  
+            </foreach> 
+        </if>
+        <if test="brands != null">
+            AND brandid IN 
+            <foreach collection="brands" item="item" index="index" open="(" separator="," close=")">
+                #{item}  
+            </foreach> 
+        </if>
+        <if test="styles != null">
+            AND styleid IN 
+            <foreach collection="styles" item="item" index="index" open="(" separator="," close=")">
+                #{item}  
+            </foreach> 
+        </if>
+        AND
+            price
+        BETWEEN #{lowPrice} AND #{highPrice}
+        </where>
+        <!-- 此处不能写为test="sort=='1'", 1会被识别为字符char，不与字符串String相等 -->  
+        <choose>
+            <when test='sort == "1"'>
+                ORDER BY price 
+            </when>
+            <when test='sort == "2"'>
+                ORDER BY price DESC
+            </when>
+            <when test='sort == "3"'>
+                ORDER BY score 
+            </when>
+            <when test='sort == "4"'>
+                ORDER BY score DESC 
+            </when>
+            <when test='sort == "5"'>
+                ORDER BY sales 
+            </when>
+            <when test='sort == "6"'>
+                ORDER BY sales DESC 
+            </when>
+        </choose>   
+        limit 
+            #{page.currentIndex} , #{page.pageSize}              
+    </select>
+    
+    <select id="getAllPages" resultType="string">
+        select 
+            COUNT(*) 
+        FROM 
+            light
+        <where>            
+        <if test="categories != null">
+            categoryid IN 
+            <foreach collection="categories" item="item" index="index" open="(" separator="," close=")">
+                #{item}  
+            </foreach> 
+        </if>
+        <if test="brands != null">
+            AND brandid IN 
+            <foreach collection="brands" item="item" index="index" open="(" separator="," close=")">
+                #{item}  
+            </foreach> 
+        </if>
+        <if test="styles != null">
+            AND styleid IN 
+            <foreach collection="styles" item="item" index="index" open="(" separator="," close=")">
+                #{item}  
+            </foreach> 
+        </if>
+        AND
+            price
+        BETWEEN #{lowPrice} AND #{highPrice}
+        </where>           
+    </select>
+    
+    <select id="listSearchLight" resultType="Light">
+        select 
+            * 
+        FROM 
+            light 
+        WHERE
+            lightname like CONCAT('%',#{searchMessage},'%')
+        limit 
+            #{page.currentIndex} , #{page.pageSize}
+    </select>
+    
+    <select id="getSearchPages" parameterType="string" resultType="string">
+        select 
+            COUNT(*) 
+        FROM 
+            light 
+        WHERE
+            lightname like CONCAT('%',#{searchMessage},'%')
+    </select>
+    
+    <select id="getLightDescriptionImage" resultType="string">
+        SELECT
+            images
+        FROM
+            lightdescriptionimages
+        WHERE
+            lightID = #{0}
+    </select>
+      
+</mapper>

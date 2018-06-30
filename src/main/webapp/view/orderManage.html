@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+<link rel="shortcut icon" href="../img/themes/icon.png"/>
+<title>订单管理</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/fullcalendar.css" />
+<link rel="stylesheet" href="../css/matrix-style.css" />
+<link rel="stylesheet" href="../css/matrix-media.css" />
+<link href="../font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" href="../css/jquery.gritter.css" />
+<link rel="stylesheet" href="../css/bootstrap-datetimepicker.min.css" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+
+</head>
+<body style="padding-right:0px !important;">
+	<div id="header">
+		<h1>
+			<a href="dashboard.html">MatAdmin</a>
+		</h1>
+	</div>
+	<div id="user-nav" class="navbar navbar-inverse">
+		<ul class="nav">
+            <li class=""><a title="" href="adminLogin.html"><i class="icon icon-share-alt"></i> <span class="text">退出</span></a></li>
+		</ul>
+	</div>
+
+	<div id="sidebar">
+		<a href="#" class="visible-phone"><i class="icon icon-home"></i>
+			控制台</a>
+		<ul>
+			<li><a href="adminIndex.html"><i class="icon icon-home"></i>
+					<span>首页</span></a></li>
+			<li class="active"><a href="orderManage.html"><i class="icon icon-th-list"></i>
+					<span>订单管理</span></a></li>
+			<li class="submenu"><a href="#"><i class="icon icon-th-list"></i>
+					<span>商品管理</span> </a>
+				<ul>
+					<li><a href="AddLight.html">商品添加</a></li>
+					<li><a href="lightManage.html">信息修改</a></li>
+				</ul></li>
+            <li><a href="countInfo.html"><i class="icon icon-th-list"></i>
+                    <span>统计信息</span></a>
+            </li>
+		</ul>
+	</div>
+	<div id="content">
+		<div id="content-header">
+			<div id="breadcrumb">
+				<a href="adminIndex.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a> 
+				<a href="orderManage.html" class="current">订单管理</a>
+			</div>
+			<h1></h1>
+		</div>
+		<div class="container" style=" width:1600px;">
+			<!-- 标题 -->
+			<div class="row">
+				<div class="col-md-12">
+					<h1>订单信息</h1>
+				</div>
+			</div>
+			<!-- 搜索设置 -->
+ 			<div class="row">
+ 			    <div class="col-md-7">
+ 			        <span>开始日期:</span>
+			        <div class="input-group date form_datetime" style="width:200px;">
+			            <input id="dateStart" class="form-control" size="16" type="text" value="" readonly >
+					    <span class="input-group-btn">
+					       <button id="clearStar" class="btn btn-default" type="button">×</button>
+					    </span>
+			        </div>
+                    <span>结束日期:</span>
+                    <div class="input-group date form_datetime" style="width:200px;">
+                        <input id="dateEnd"  class="form-control" size="16" type="text" value="" readonly >
+                        <span class="input-group-btn">
+                           <button id="clearEnd" class="btn btn-default" type="button">×</button>
+                        </span>
+                    </div>
+ 			    </div>
+ 			    <div class="col-md-1" style="padding-top: 62px;">
+					<div class="form" style="margin: 5px;height:20px;">
+					    <select id="Keytype">
+					        <option selected="selected" value="orderID">订单号</option>
+					        <option value="orderstateid">订单状态</option>
+					        <option value="address">收货地址</option>
+					    </select>
+					</div>
+ 			    </div>
+				<div class="col-md-2" style="padding-top: 62px;">
+				    <div class="input-group">
+				      <input type="text" id="Keyword" class="form-control" placeholder="">
+				      <span class="input-group-btn">
+				        <button id="Seacher" class="btn btn-default" type="button">搜索</button>
+				      </span>
+				    </div><!-- /input-group -->
+				  </div><!-- /.col-lg-6 -->
+			</div>
+			<!-- 显示表格数据 -->
+			<div class="row">
+				<div class="col-md-10">
+					<table class="table table-bordered table-condensed" style="table-layout: fixed; width: 100%">
+						<thead>
+							<tr>
+                                <th style="width:170px;"><label><a id="OrderByID" href="#">订单号</a></label></th>
+								<th style="width:180px;"><a id="OrderByDate" href="#">下单时间</a></th>
+								<th style="width:100px;"><a id="OrderByState" href="#">订单状态</a></th>
+								<th style="width:250px;">商品信息</th>
+								<th  style="width:80px;">总价格(元)</th>
+                                <th style="width:60px;"><a id="OrderByUserID" href="#">用户ID</a></th>
+								<th style="width:60px;">收件人</th>
+                                <th style="width:110px;">收件地址</th>
+								<th style="width:120px;">收件电话</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="orderlist" style="font-size: 14px;">
+							<tr v-for="list in lists">
+								<td>{{ list.orderID }}</td>
+                                <td>{{ list.date }}</td>
+								<td v-if="list.orderstateid==0"><span style="color: red">未发货</span></td>
+								<td v-else-if="list.orderstateid==1"><span style="color: red">申请退货中</span></td>
+                                <td v-else-if="list.orderstateid==2"><span style="color: blue;">已发货</span></td>
+                                <td v-else-if="list.orderstateid==3">已退货</td>
+                                <td v-else-if="list.orderstateid==4"><span style="color: lightgray;">订单已取消</span></td>
+                                <td v-else-if="list.orderstateid==5"><span>下单未付款</span></td>
+								<td v-else><span style="color: green;">订单已完成</span></td>
+								<td><p v-for="lightInfo in list.lights">商品ID:{{ lightInfo.lightID }}, 数量:{{ lightInfo.quantity }}件, 单价:{{ lightInfo.singleprice }}元;  </p></td>
+								<td>{{ list.totalprice }}</td>
+                                <td>{{ list.userID }}</td>
+                                <td>{{ list.receivename }}</td>
+								<td>{{ list.address }}</td>
+								<td>{{ list.receivephone }}</td>
+								<td>
+                                    <button type="button" class="btn btn-info" onclick="changeInfo(this)" >修改信息</button>
+                                    <button v-if="list.orderstateid==0"  type="button" class="btn btn-danger expressG" onclick="expressG(this)">立即发货</button>
+                                    <button v-else-if="list.orderstateid==1"  type="button" class="btn btn-primary returnG" onclick="returnG(this)" >退货申请</button>
+                                </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- 显示分页信息 -->
+			<div id="PageInfo" class="row">
+			     <!-- 记录信息 -->
+                <div class="col-md-7">
+                    <p style="font-size: 18px;">当前第{{ PageNum }}页,总{{ pages }}页</p><!-- ,总{{ total }}条记录 -->
+                </div>
+                <!-- 页 -->
+                <div class="col-md-5">
+ 					<nav aria-label="Page navigation">
+					  <ul class="pagination">
+                        <li><a id="firstPage" href="#">首页</a></li>
+					    <li>
+					      <a id="prePage" href="#" aria-label="Previous">
+					        <span aria-hidden="true">&laquo;</span>
+					      </a>
+					    </li>
+ 					    <li class="active" ><a href="#">{{ PageNum }}</a></li>
+<!--					    <li><a href="#">2</a></li>
+					    <li><a href="#">3</a></li>
+					    <li><a href="#">4</a></li>
+					    <li><a href="#">5</a></li> -->
+					    <li>
+					      <a id="nextPage" href="#" aria-label="Next">
+					        <span aria-hidden="true">&raquo;</span>
+					      </a>
+					    </li>
+                        <li><a id="lastPage" href="#">末页</a></li>
+					  </ul>
+					</nav>
+                </div>
+			</div>
+		</div>
+	</div>
+
+<script src="../js/jquery-3.2.1.js"></script>	   
+<!-- <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> -->
+<!--     <script src="../js/excanvas.min.js"></script>-->
+<!--    <script src="../js/jquery.min.js"></script>-->
+<!--    <script src="../js/jquery.ui.custom.js"></script>-->
+<!-- 	<script src="../js/jquery.flot.min.js"></script>-->
+<!--  	<script src="../js/jquery.flot.resize.min.js"></script>-->
+<!-- 	<script src="../js/jquery.peity.min.js"></script>-->
+<!--  	<script src="../js/fullcalendar.min.js"></script>-->
+	<script src="../js/matrix.js"></script>
+<!--	<script src="../js/matrix.dashboard.js"></script>
+	<script src="../js/jquery.gritter.min.js"></script>
+	<script src="../js/matrix.interface.js"></script>
+	<script src="../js/matrix.chat.js"></script>
+	<script src="../js/jquery.validate.js"></script>
+	<script src="../js/matrix.form_validation.js"></script>
+	<script src="../js/jquery.wizard.js"></script>
+	<script src="../js/jquery.uniform.js"></script>
+	<script src="../js/select2.min.js"></script>
+	<script src="../js/matrix.popover.js"></script>
+	<script src="../js/jquery.dataTables.min.js"></script>
+	<script src="../js/matrix.tables.js"></script> -->
+    <script src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../js/boot/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="../js/bootbox.min.js"></script>
+
+	<!--  
+<script src="js/bootstrap-table-zh-CN.js"></script> 
+<script src="js/bootstrap-table.js"></script> 
+ TEST
+-->
+
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>   
+	<script type="text/javascript">
+	var pn=1;
+	var type='all';
+	var key='all';
+	var prePage=false;
+	var nextPage=false;
+	var firstPage=1;
+	var lastPage=1;
+	var starDate='all';
+	var endDate='all';
+	var By="dateDESC";
+	var loading=false;
+	//vue.js
+     var PageInfo = new Vue({
+        el:'#PageInfo',
+        data:{
+            PageNum :0,
+            pages : 0,
+            total : 0
+        }
+    }); 
+	
+	//进去页面订单列表信息获取
+	var vm = new Vue({
+	    el: '#orderlist',
+	    data: {
+	        lists: 'Hello Vue!',
+	    },
+	    mounted()   {
+	        $.ajax({
+	            type: "get",
+	            url: "../OrderManageList/1/all/all/all/all/"+By,
+	            dataType: "json",
+	            success: function(data){
+	                vm.lists = data.list
+	                PageInfo.PageNum = data.pageNum
+	                PageInfo.pages  = data.pages
+	                PageInfo.total  = data.total
+	                pn=data.pageNum
+                    prePage=true
+                    nextPage=true
+                    loading=true
+                    if(data.isFirstPage)prePage=false
+                    if(data.isLastPage)nextPage=false
+	            },
+	            error: function(data){
+	                console.log("读取jsonName error!");
+	            }
+	        });
+	    }
+	 });
+    //首页
+	$("#firstPage").click(function(){
+	    if(pn != 1)
+	    	$.ajax({
+                type: "get",
+                url: "../OrderManageList/"+1+"/"+type+"/"+key+"/"+starDate+"/"+endDate+"/"+By,
+                dataType: "json",
+                success: function(data){
+                    vm.lists = data.list
+                    PageInfo.PageNum = data.pageNum
+                    PageInfo.pages  = data.pages
+                    PageInfo.total  = data.total
+                    pn=data.pageNum
+                    prePage=true
+                    nextPage=true
+                    if(data.isFirstPage)prePage=false
+                    if(data.isLastPage)nextPage=false
+                },
+                error: function(data){
+                    console.log("读取jsonName error!");
+                }
+            });
+	});
+	//上一页
+    $("#prePage").click(function(){
+        if(prePage){
+            pn = pn - 1;
+        	$.ajax({
+                type: "get",
+                url: "../OrderManageList/"+pn+"/"+type+"/"+key+"/"+starDate+"/"+endDate+"/"+By,
+                dataType: "json",
+                success: function(data){
+                    vm.lists = data.list
+                    PageInfo.PageNum = data.pageNum
+                    PageInfo.pages  = data.pages
+                    PageInfo.total  = data.total
+                    pn=data.pageNum
+                    prePage=true
+                    nextPage=true
+                    if(data.isFirstPage)prePage=false
+                    if(data.isLastPage)nextPage=false
+                },
+                error: function(data){
+                    console.log("读取jsonName error!");
+                }
+            });
+        }
+    });
+    //下一页
+    $("#nextPage").click(function(){
+        if(nextPage){
+        	pn=pn+1;
+            $.ajax({
+                type: "get",
+                url: "../OrderManageList/"+pn+"/"+type+"/"+key+"/"+starDate+"/"+endDate+"/"+By,
+                dataType: "json",
+                success: function(data){
+                    vm.lists = data.list
+                    PageInfo.PageNum = data.pageNum
+                    PageInfo.pages  = data.pages
+                    PageInfo.total  = data.total
+                    pn=data.pageNum
+                    prePage=true
+                    nextPage=true
+                    if(data.isFirstPage)prePage=false
+                    if(data.isLastPage)nextPage=false
+                },
+                error: function(data){
+                    console.log("读取jsonName error!");
+                }
+            });
+        }
+    });
+    //末页
+    $("#lastPage").click(function(){
+    	$.ajax({
+            type: "get",
+            url: "../OrderManageList/"+9999+"/"+type+"/"+key+"/"+starDate+"/"+endDate+"/"+By,
+            dataType: "json",
+            success: function(data){
+                vm.lists = data.list
+                PageInfo.PageNum = data.pageNum
+                PageInfo.pages  = data.pages
+                PageInfo.total  = data.total
+                pn=data.pageNum
+                prePage=true
+                nextPage=true
+                if(data.isFirstPage)prePage=false
+                if(data.isLastPage)nextPage=false
+            },
+            error: function(data){
+                console.log("读取jsonName error!");
+            }
+        });
+    });
+    
+    //搜索事件
+    $("#Seacher").click(function(){
+    	key=$("#Keyword").val();
+    	type=$("#Keytype").val();
+        starDate=$("#dateStart").val();
+        endDate=$("#dateEnd").val();
+    	if(key==""||type==""){
+    		key="all";
+    		type="all"
+    	}
+    	if(starDate=="")
+    		starDate="all";
+    	if(endDate=="")
+    		endDate="all";
+    	$.ajax({
+            type: "get",
+            url: "../OrderManageList/"+1+"/"+type+"/"+key+"/"+starDate+"/"+endDate+"/"+By,
+            dataType: "json",
+            success: function(data){
+                vm.lists = data.list
+                PageInfo.PageNum = data.pageNum
+                PageInfo.pages  = data.pages
+                PageInfo.total  = data.total
+                pn=data.pageNum
+                prePage=true
+                nextPage=true
+                if(data.isFirstPage)prePage=false
+                if(data.isLastPage)nextPage=false
+            },
+            error: function(data){
+                console.log("读取jsonName error!");
+            }
+        });
+    });
+    
+
+    //日期选择
+    $('#dateStart').datetimepicker({
+        format: 'yyyy-mm-dd hh:mm',
+        weekStart: 1,
+        todayBtn:  0,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 0,
+        language: 'zh-CN',
+        endDate : new Date()
+    }).on("hide",function(ev){
+    	$('#dateEnd').datetimepicker("setStartDate", $(this).val());
+    });
+    $('#dateEnd').datetimepicker({
+        format: 'yyyy-mm-dd hh:mm',
+        weekStart: 1,
+        todayBtn:  0,
+        autoclose: true,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 0,
+        language: 'zh-CN',
+        endDate : new Date()
+    }).on("hide",function(ev){
+    	$('#dateStart').datetimepicker("setEndDate", $(this).val());
+    });
+    //清空日期事件
+    $("#clearStar").click(function(){
+        starDate="all";
+        $("#dateStart").val("");
+        $('#dateEnd').datetimepicker("setStartDate", null);
+    });
+    $("#clearEnd").click(function(){
+        endDate="all";
+        $("#dateEnd").val("");
+        $('#dateStart').datetimepicker("setEndDate", new Date());
+    });
+    
+       //排序
+     $("#OrderByID").click(function(){
+    	if(By=="orderIDDESC")
+    		By="orderIDASC";
+    	else
+    	   By="orderIDDESC";
+    	OrderBy();
+    });
+    $("#OrderByDate").click(function(){
+        if(By=="dateDESC")
+            By="dateASC";
+        else
+           By="dateDESC";
+        OrderBy();
+    });
+    $("#OrderByState").click(function(){
+        if(By=="orderstateidASC")
+            By="orderstateidDESC";
+        else
+           By="orderstateidASC";
+        OrderBy();
+    });
+    $("#OrderByUserID").click(function(){
+        if(By=="userIDDESC")
+            By="userIDASC";
+        else
+           By="userIDDESC";
+        OrderBy();
+    });
+      //排序ajax
+     function OrderBy() {
+        if(loading){
+           $.ajax({
+               type: "get",
+               url: "../OrderManageList/"+pn+"/"+type+"/"+key+"/"+starDate+"/"+endDate+"/"+By,
+               dataType: "json",
+               success: function(data){
+                   vm.lists = data.list
+                   PageInfo.PageNum = data.pageNum
+                   PageInfo.pages  = data.pages
+                   PageInfo.total  = data.total
+                   pn=data.pageNum
+                   prePage=true
+                   nextPage=true
+                   if(data.isFirstPage)prePage=false
+                   if(data.isLastPage)nextPage=false
+               },
+               error: function(data){
+                   console.log("读取jsonName error!");
+               }
+           });
+       }
+   }
+      
+
+     
+     function expressG(obj){
+    	 
+    	  bootbox.confirm({
+    	        title:"",
+    	        message:"★确认发货吗?",
+    	        buttons:{
+    	            confirm:{
+    	                label:"确定"
+    	            }
+    	        },
+    	        callback:function(result){
+    	            if(result){
+    	                var orderId = $(obj).parent().parent().find("td:first").text();
+    	                
+    	                //发送更新请求
+    	                $.ajax({
+    	                    type:"post",
+    	                    url:"../UpateOrder/express/"+orderId,
+    	                    success: function(message){
+    	                        console.log("发货成功!");
+    	                        bootbox.alert("★发货成功");
+    	                        OrderBy();
+    	                    },
+    	                    error: function(message){
+    	                        console.log("发货失败!");
+                                bootbox.alert("★发货失败");
+    	                    }
+    	                });
+
+    	            }else{
+
+    	            }
+    	        }
+    	        
+    	    });
+    	 
+     }
+     
+     function returnG(obj){
+    	 var orderId = $(obj).parent().parent().find("td:first").text();
+    	 $("#SetOrderID").val(orderId);
+         $("#orderSure").modal('toggle');
+
+     }
+     
+
+     function changeInfo(obj){
+         var orderId = $(obj).parent().parent().find("td:first").text();
+         var name = $(obj).parent().parent().find("td").eq(6).text();
+         var address = $(obj).parent().parent().find("td").eq(7).text();
+         var phone = $(obj).parent().parent().find("td").eq(8).text();
+         if(orderId==4){
+        	 bootbox.alert("订单已取消!");
+        	 return;
+         }
+         
+         $("#changeModal").modal('toggle');
+         $("#orderID").val(orderId);
+         $("#receiveName").val(name);
+         $("#receivePhone").val(phone);
+         $("#address").val(address);
+     }
+     
+     function SureInfo(obj){
+     	 $.ajax({
+    		 url:"../SaveReceive",
+    		 type:"POST",
+    		 data:$("#changeModal form").serialize(),
+    		 success:function(result){
+    			 bootbox.alert(result.message);
+                 console.log("修改收货信息成功!");
+                 OrderBy();
+    		 },
+             error: function(result){
+            	 bootbox.alert(result.message);
+                 console.log("修改收货信息失败!");
+             }
+    	 });
+         $("#changeModal").modal('hide');
+     }
+
+     function SureOrder(id){
+    	 var orderId = $("#SetOrderID").val();
+         //发送更新请求
+         $.ajax({
+             type:"post",
+             url:"../UpateOrder/return/"+orderId+"/"+id,
+             success: function(message){
+                 console.log("处理申请成功!");
+                 bootbox.alert("处理成功");
+                 OrderBy();
+             },
+             error: function(message){
+                 console.log("处理失败!");
+             }
+         });
+
+     }
+</script>
+
+<!-- 按钮触发模态框:修改信息 -->
+<div class="modal fade" id="changeModal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">修改收件信息</h4>
+            </div>
+            <div class="modal-body">
+				<form class="form-horizontal">
+				  <div class="form-group">
+				    <label for="orderID" class="col-sm-2 control-label">订单ID</label>
+				    <div class="col-sm-8">
+				      <input type="text" class="form-control" id="orderID" name="orderID" placeholder="OrderID" readonly>
+				    </div>
+				  </div>
+                  <div class="form-group">
+                    <label for="receiveName" class="col-sm-2 control-label">收货人</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="receiveName" name="receivename" placeholder="ReceiveName" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="receivePhone" class="col-sm-2 control-label">联系方式</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="receivePhone" name="receivephone" placeholder="ReceivePhone" >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="address" class="col-sm-2 control-label">收货地址</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="address" name="address" placeholder="Address" >
+                    </div>
+                  </div>
+				</form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button onclick="SureInfo(this)" type="button" class="btn btn-primary">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 按钮触发模态框:修改信息 -->
+<div class="modal fade" id="orderSure" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">退货申请</h4>
+                <input type="hidden" id="SetOrderID" name="SetOrderID" value="">
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <span>是否同意退货申请？</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button onclick="SureOrder(6)" type="button" class="btn btn-default" data-dismiss="modal">拒绝</button>
+                <button onclick="SureOrder(3)" type="button" class="btn btn-primary" data-dismiss="modal">同意</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

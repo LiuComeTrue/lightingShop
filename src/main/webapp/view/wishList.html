@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="../img/themes/icon.png"/>
+<title>我的收藏夹</title>
+<link rel="stylesheet" href="../css/bootstrapTable/bootstrap.min.css">
+<link rel="stylesheet" href="../css/bootstrapTable/bootstrap-table.css">
+<script src="../js/bootstrapTable/jquery.min.js"></script>
+<script src="../js/bootstrapTable/bootstrap.min.js"></script>
+<script src="../js/bootstrapTable/bootstrap-table.js"></script>
+ <!-- Bootstrap CSS -->
+
+        <link rel="stylesheet" href="../css/font-awesome.min.css" />
+        <!-- Custom CSS -->
+        <link href="../style.css" rel="stylesheet">
+        
+        <link rel="stylesheet" href="../css/pagingVue/index.css">
+</head>
+<body>
+
+<header>
+            <div class="header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 hidden-xs">
+                            <div class="header-top-left">
+                                <div class="welcome-msg">
+                                    <span class="default-msg hidden-xs"><a href="shop.html" style="color:white">欢迎来到灯饰店!</a></span>
+                                    <!-- <span class="phone">Call support free: <span class="number">01234-567890</span></span> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-12" id="userInfo">
+                            <div class="header-top-right">
+                                <ul class="header-links hidden-xs">
+                                    <li><a class="" href="login.html">{{ login }}</a></li>
+                                    <li><a class="" href="regit.html">免费注册</a></li>
+                                    <li><a class="" href="wishList.html">收藏夹</a></li>
+                                    <li><a class="" href="shopcart.html">购物车</a></li>
+                                    <li><a class="" href="myorder.html">我的订单</a></li>
+                                    <li><a class="" href="login.html">退出</a></li>
+                                </ul>                                                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-middle"></div>
+        </header>
+
+<div class="container">
+    <h1>我的收藏夹</h1>
+    <table id="table1" class="table table-striped"
+           data-height="460"
+           data-url="../wishList"
+           data-pagination="true"
+           data-formatter="true"
+           data-page-size="4"
+           data-page-list="[5,8,10]"
+           data-pagination-first-text="First"
+           data-pagination-pre-text="Previous"
+           data-pagination-next-text="Next"
+           data-pagination-last-text="Last">
+     
+    </table>
+    <!-- <table id="table"
+           data-toggle="table"
+           data-height="460"
+           data-url="../wishList"
+           data-pagination="true"
+           data-page-size="2"
+           data-page-list="[5,8,10]"
+           data-pagination-first-text="First"
+           data-pagination-pre-text="Previous"
+           data-pagination-next-text="Next"
+           data-pagination-last-text="Last">
+        <thead>
+        <tr>
+            <th data-field="image">灯饰图片</th>
+            <th data-field="lightName" data-sortable="true">Item Name</th>
+            <th data-field="price" data-sortable="true">Item Price</th>
+        </tr>
+        </thead>
+    </table> -->
+</div>
+        <!-- vue.js -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+function operateFormatter(value, row, index) {
+    return [        
+        '<button type="button" class="remove btn btn-danger" title="Remove">删除</button>'    	
+    ].join('');
+}
+window.operateEvents = {        
+        'click .remove': function (e, value, row, index) {
+        	$.ajax({
+                type: "DELETE",
+                url: "../wishList/" + row.lightID,
+                dataType: "text",
+                success: function(data){
+                	$('#table1').bootstrapTable('remove', {
+                        field: 'image',
+                        values: [row.image]
+                    });                            
+                },
+                error: function(data){
+                    console.log("delete wishList error!");
+                }
+            });       	
+        }
+};	
+
+$('#table1').bootstrapTable({        
+        url:"../wishList",          
+    	columns: [
+            {
+            	title: 'image',
+                field: 'image',
+                align: 'center',
+                valign: 'middle',
+                formatter: function(value, row, index){
+                	var s1 = '<a class = "view"  href="light.html?lightID='+row.lightID;
+                	var s2 = '"><img style="width:70;height:30px;"  src="../'+row.image+'" /></a>';                   
+                	return s1 + s2;                            
+                }
+                //footerFormatter: totalTextFormatter
+            },
+            {
+                title: 'name',
+                field: 'lightName',
+                sortable: true,
+                align: 'center',
+                valign: 'middle'
+                
+                //footerFormatter: totalTextFormatter
+            },
+            {
+                title: 'price',
+                field: 'price',
+                sortable: true,
+                align: 'center',
+                valign: 'middle'
+                
+                //footerFormatter: totalTextFormatter
+            },
+            {
+                field: 'operate',
+                title: 'Operate',
+                align: 'center',
+                events: operateEvents,
+                formatter: operateFormatter
+            }
+        ]
+    });
+
+var userInfo = new Vue({
+    el: '#userInfo',
+    data: {
+        login: '请登录'
+    },
+    mounted() {
+        $.ajax({
+            type: "get",
+            url: "../user",
+            dataType: "json",
+            success: function(data){
+                if (data != "null")      
+                    console.log(data);
+                    userInfo.login = "欢迎您, " + data.userName;
+            },
+            error: function(data){
+                console.log("读取user error!");
+            }
+        });
+    }
+ });
+</script>
+</body>
+</html>

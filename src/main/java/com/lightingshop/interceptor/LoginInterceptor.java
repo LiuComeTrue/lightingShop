@@ -1,5 +1,7 @@
 package com.lightingshop.interceptor;
 
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,23 +31,45 @@ public class LoginInterceptor implements HandlerInterceptor {
         
         System.out.println("Interceptor:preHandle");
         //获取请求的URL  
-        String url = request.getRequestURI();  
-        //URL:login.jsp是公开的;这个demo是除了login.jsp是可以公开访问的，其它的URL都进行拦截控制  
-        if(url.indexOf("login") >= 0) {  
-            return true;  
-        }  
-        //获取Session  
+        String url = request.getRequestURI();
+        
+        //拦截所有请求，必须先登录
         HttpSession session = request.getSession();  
-        User currUser = (User)session.getAttribute("currUser");  
+        //User currUser = (User)session.getAttribute("user");         
+        if(session.getAttribute("user") == null) {  
+            if(url.contains("login.html")) {  
+                return true;  
+            }
+            else 
+                request.getRequestDispatcher("/view/login.html").forward(request, response);
+            return false;  
+        }
+        
+        /*//获取请求的URL  
+        String url = request.getRequestURI();  
+        
+        if (request.getHeader("x-requested-with") != null && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")){ //如果是ajax请求响应头会有x-requested-with    
+            
+            if (url.contains("myShopCart")) {
+                System.out.println("myShopCart");
+                PrintWriter out = response.getWriter();    
+                out.print("loseSession");//session失效  
+                out.flush();  
+                return false;  
+            }
+        }
+        //URL:login.jsp是公开的;这个demo是除了login.jsp是可以公开访问的，其它的URL都进行拦截控制  
+        if(url.indexOf("wishList") >= 0 || url.indexOf("myShopCart") >= 0 || url.indexOf("order") >= 0) {  
+            //获取Session  
+            HttpSession session = request.getSession();  
+            User currUser = (User)session.getAttribute("user"); 
+            if(currUser == null) {  
+                request.getRequestDispatcher("login.html").forward(request, response);  
+                return false;  
+            } 
+        }  */
+        return true; 
 
-        if(currUser != null) {  
-            return true;  
-        }  
-
-        //不符合条件的，跳转到登录界面  
-        request.getRequestDispatcher("login.jsp").forward(request, response);  
-
-        return false;
     }
     
 }

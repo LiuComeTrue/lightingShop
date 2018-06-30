@@ -25,4 +25,20 @@ public interface IUserService {
 	 * @return User中的name属性
 	 */
 	String checkUser(User user);
+	
+	/**
+     * 注册
+     * @param id
+     * @param psw
+     * @return
+     */
+    int regiter(String id, String psw, String name, String phone, String address);
+    
+    /**
+     * 登录验证
+     * @param id
+     * @param psw
+     * @return
+     */
+    User login(String id, String psw);
 }

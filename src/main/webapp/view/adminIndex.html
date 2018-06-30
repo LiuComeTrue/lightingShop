@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+<link rel="shortcut icon" href="../img/themes/icon.png"/>
+<title>降临-后台管理</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" href="../css/fullcalendar.css" />
+<link rel="stylesheet" href="../css/matrix-style.css" />
+<link rel="stylesheet" href="../css/matrix-media.css" />
+<link href="../font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" href="../css/jquery.gritter.css" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+
+<style>
+
+</style>
+
+</head>
+<body>
+<div id="header">
+  <h1></h1>
+</div>
+<div id="user-nav" class="navbar navbar-inverse">
+  <ul class="nav">
+    <li class=""><a title="" href="adminLogin.html"><i class="icon icon-share-alt"></i> <span class="text">退出</span></a></li>
+  </ul>
+</div>
+
+<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> 控制台</a>
+        <ul>
+            <li class="active"><a href="adminIndex.html"><i class="icon icon-home"></i>
+                    <span>首页</span></a></li>
+            <li><a href="orderManage.html"><i class="icon icon-th-list"></i>
+                    <span>订单管理</span></a></li>
+            <li class="submenu"><a href="#"><i class="icon icon-th-list"></i>
+                    <span>商品管理</span> </a>
+                <ul>
+                    <li><a href="AddLight.html">商品添加</a></li>
+                    <li><a href="lightManage.html">信息修改</a></li>
+                </ul></li>
+            <li><a href="countInfo.html"><i class="icon icon-th-list"></i>
+                    <span>统计信息</span></a>
+            </li>
+        </ul>
+</div>
+<div id="content">
+  <div id="content-header">
+    <div id="breadcrumb"> <a href="adminIndex.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 首页</a></div>
+    <h1>欢迎登录</h1>
+  </div>
+  <div class="container-fluid">
+    <div class="quick-actions_homepage">
+      <ul class="quick-actions" id="Tips">
+        <li class="bg_lb span3"> <a href="orderManage.html"> <i class="icon-th"></i> <span class="label label-important">{{ orderTips }}</span> 订单信息</a> </li>
+        <li class="bg_ly span3"> <a href="lightManage.html"> <i class="icon-inbox"></i><span class="label label-success">{{ lightTips }}</span> 商品信息 </a> </li>
+        <li class="bg_lo span3"> <a href="countInfo.html"> <i class="icon-th"></i> 统计信息</a> </li>      
+      </ul>
+   </div>
+</div>
+</div>
+    <script src="../js/jquery-3.2.1.js"></script>
+    <script src="../js/matrix.js"></script>
+    <script src="../js/boot/bootstrap.min.js"></script>
+<!--     <script type="https://vuejs.org/js/vue.min.js"></script> -->
+    <script type="text/javascript" src="../js/bootbox.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>   
+<script type="text/javascript">
+var vm = new Vue({
+	el:"#Tips",
+	data:{
+		orderTips:0,
+		lightTips:0
+	},
+    mounted(){
+    	$.ajax({
+    		url:'../ordersTips',
+    		type:'GET',
+    		datatype:'JSON',
+    		success: function(data){
+    			vm.orderTips=data
+    			console.log("success")
+    		},
+    		error: function(data){
+    			console.log("error")
+    		}
+    	});
+    	$.ajax({
+            url:'../lightTips',
+            type:'GET',
+            datatype:'JSON',
+            success: function(data){
+                vm.lightTips=data
+                console.log("success")
+            },
+            error: function(data){
+                console.log("error")
+            }
+        });
+    }
+});
+
+
+</script>
+</body>
+</html>
