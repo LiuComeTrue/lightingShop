@@ -12,7 +12,7 @@
 		-->
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:applicationContext.xml</param-value>
+			<param-value>classpath:applicationContext.xml,classpath:redis_config.xml</param-value>
 		</init-param>
 		<!-- 启动优先级，数字越低优先级越高 -->
 		<load-on-startup>1</load-on-startup>

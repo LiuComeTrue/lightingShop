@@ -42,10 +42,14 @@ public class MyShopCartImpl implements IMyShopCartService {
         myShopCart.setAddDate(nowDate);
         
         int exist = myShopCartDao.shopCartExist(lightID, userID);
-        if (exist == 0)        
-            return myShopCartDao.addMyShopCart(myShopCart);
-        else 
-            return myShopCartDao.updateMyShopCart(myShopCart);
+        if (exist == 0) {
+            myShopCartDao.addMyShopCart(myShopCart);
+            return myShopCart.getLightID();
+        }
+        else {
+            myShopCartDao.updateMyShopCart(myShopCart);
+            return myShopCart.getLightID();
+        }
     }
 
     //@Autowired
@@ -68,7 +72,7 @@ public class MyShopCartImpl implements IMyShopCartService {
         Integer lightID = 0;
         ShopCartLight shopCartLight;
         for (int i = 0; i < listLight.size(); i++) {
-            shopCartLight = new ShopCartLight();
+            /*shopCartLight = new ShopCartLight();
             lightID = listLight.get(i).getLightID();
             light = lightDao.getLightByID(lightID);
             shopCartLight.setLightID(lightID);
@@ -81,16 +85,46 @@ public class MyShopCartImpl implements IMyShopCartService {
             String brand = brandDao.getBrandName(light.getBrandID());            
             shopCartLight.setBrand(brand);
             System.out.println(shopCartLight.toString());
-            listCartLight.add(shopCartLight);
+            listCartLight.add(shopCartLight);*/
+            lightID = listLight.get(i).getLightID();
+            listCartLight.add(getShopCartLight(lightID, userID));
         }
         return listCartLight;
     }
 
     @Override
-    public int deleteMyShopCart(List<Integer> listLightID, Integer userID) {
+    public List<Integer> deleteMyShopCart(List<Integer> listLightID, Integer userID) {
         // TODO Auto-generated method stub
         
-        return myShopCartDao.deleteMyShopCart(listLightID, userID);
+        myShopCartDao.deleteMyShopCart(listLightID, userID);
+        return listLightID;
+    }
+    
+    //获取某用户购物车里某件商品的信息
+    @Override
+    public ShopCartLight getShopCartLight(Integer lightID, Integer userID) {
+        
+        System.out.println("==========" + lightID + "===" + userID);
+        System.out.println(myShopCartDao);
+        List<MyShopCart> listLight = myShopCartDao.listShopCartLight(userID);
+        Integer Quantity = 1;
+        for (MyShopCart a : listLight) {
+            if (a.getLightID().equals(lightID))
+                Quantity = a.getQuantity();                
+        }
+        
+        ShopCartLight shopCartLight = new ShopCartLight();
+        light = lightDao.getLightByID(lightID);
+        shopCartLight.setLightID(lightID);
+        shopCartLight.setLightName(light.getLightName());
+        shopCartLight.setImage(light.getImages());
+        shopCartLight.setPrice(light.getPrice());
+        shopCartLight.setQuantity(light.getQuantity());
+        shopCartLight.setStock(light.getQuantity());
+        shopCartLight.setQuantity(Quantity);
+        String brand = brandDao.getBrandName(light.getBrandID());            
+        shopCartLight.setBrand(brand);
+        return shopCartLight;
     }
 
 }

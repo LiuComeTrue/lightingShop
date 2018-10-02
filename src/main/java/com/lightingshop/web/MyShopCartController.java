@@ -50,7 +50,8 @@ public class MyShopCartController {
         
         user = (User)session.getAttribute("user");
         Integer userID = user.getUserID();
-        return myShopCartService.deleteMyShopCart(listLight, userID);
+        myShopCartService.deleteMyShopCart(listLight, userID);
+        return 1;
     }
     
 }

@@ -26,5 +26,7 @@ public interface IMyShopCartService {
      * @param listLightID
      * @return
      */
-    int deleteMyShopCart(List<Integer> listLightID, Integer userID);
+    List<Integer> deleteMyShopCart(List<Integer> listLightID, Integer userID);
+    
+    ShopCartLight getShopCartLight(Integer lightID, Integer userID);
 }

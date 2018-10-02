@@ -1,11 +1,12 @@
 package com.lightingshop.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import org.springframework.stereotype.Component;
 
 @Component("shopCartLight")
-public class ShopCartLight {
+public class ShopCartLight implements Serializable{
 
     private Integer lightID;
     
@@ -85,6 +86,31 @@ public class ShopCartLight {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+   
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((lightID == null) ? 0 : lightID.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ShopCartLight other = (ShopCartLight) obj;
+        if (lightID == null) {
+            if (other.lightID != null)
+                return false;
+        } else if (!lightID.equals(other.lightID))
+            return false;
+        return true;
     }
 
     @Override
